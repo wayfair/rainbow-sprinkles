@@ -1,0 +1,25 @@
+name: Identify and close stale issues and pull requests
+
+on:
+  schedule:
+  - cron: "0 0 * * 0"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/stale@v5
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        days-before-stale: 60
+        stale-issue-label: 'stale'
+        stale-pr-label: 'stale'
+        stale-issue-message: 'Automatically marking issue as stale due to lack of activity'
+        stale-pr-message: 'Automatically marking pull request as stale due to lack of activity'
+        days-before-close: 7
+        close-issue-message: 'Automatically closing this issue as stale'
+        close-pr-message: 'Automatically closing this pull request as stale'
