@@ -28,5 +28,14 @@
   },
   "files": [
     "dist/"
-  ]
+  ],
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "jest": "^27.4.7"
+  },
+  "dependencies": {
+    "@vanilla-extract/css": "^1.7.0",
+    "@vanilla-extract/dynamic": "^2.0.2",
+    "csstype": "^3.0.11"
+  }
 }
