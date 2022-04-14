@@ -1,23 +1,32 @@
 name: Validate
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
+on: [push, pull_request]
 
 jobs:
   test:
-    name: 'CI'
+    name: Lint & Test
     runs-on: ubuntu-latest
+    env:
+      CI: true
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: pnpm/action-setup@v2.0.1
         with:
-          node-version: 16
+          version: 6.23.1
+
+      - name: Checkout Repo
+        uses: actions/checkout@main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@main
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
       - name: Install Dependencies
-        uses: bahmutov/npm-install@v1
+        run: pnpm i
+
       - name: Build
         run: pnpm build
+
       - name: Test
         run: pnpm test
