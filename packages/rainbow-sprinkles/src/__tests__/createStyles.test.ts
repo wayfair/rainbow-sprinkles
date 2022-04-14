@@ -1,7 +1,6 @@
 import * as VE from '@vanilla-extract/css';
 import { createStyles } from '../createStyles';
 import { BaseConditions } from '../types';
-import '@vanilla-extract/css/disableRuntimeStyles';
 
 const TABLET = 'screen and (min-width: 768px)';
 const DESKTOP = 'screen and (min-width: 1024px)';

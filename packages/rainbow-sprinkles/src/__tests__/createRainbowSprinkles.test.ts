@@ -320,8 +320,8 @@ describe('static and dynamic properties', () => {
         className: '',
       });
       expect(
-        // @ts-expect-error
         getBoxProps(classes, {
+          // @ts-expect-error
           textAlign: { mobile: 'left', tablet: 'center' },
         }),
       ).toEqual({

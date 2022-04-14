@@ -1,6 +1,5 @@
 import { BaseConditions, CSSProperties } from './types';
 import { CreateStylesOutput } from './createStyles';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 
 function _assignInlineVars<Conditions extends BaseConditions>(
