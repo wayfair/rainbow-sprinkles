@@ -12,7 +12,9 @@
     "postinstall": "preconstruct dev",
     "format": "prettier --write .",
     "example": "rm -rf examples/next/.next && pnpm --dir examples/next run dev",
-    "test": "jest"
+    "test": "jest",
+    "version": "changeset version && pnpm install --lockfile-only",
+    "release": "pnpm build && changeset publish"
   },
   "preconstruct": {
     "packages": [
@@ -23,6 +25,7 @@
     "@babel/core": "^7.17.9",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
+    "@changesets/cli": "^2.22.0",
     "@preconstruct/cli": "^2.1.5",
     "@types/jest": "^27.4.1",
     "@types/lodash.merge": "^4.6.6",

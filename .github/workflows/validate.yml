@@ -1,0 +1,23 @@
+name: Validate
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    name: 'CI'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      - name: Install Dependencies
+        uses: bahmutov/npm-install@v1
+      - name: Build
+        run: pnpm build
+      - name: Test
+        run: pnpm test

@@ -1,6 +1,6 @@
 # How to Contribute
 
-Thanks for your interest in contributing to `<project name>`! Here are a few general guidelines on contributing and
+Thanks for your interest in contributing to Rainbow Sprinkles! Here are a few general guidelines on contributing and
 reporting bugs that we ask you to review. Following these guidelines helps to communicate that you respect the time of
 the contributors managing and developing this open source project. In return, they should reciprocate that respect in
 addressing your issue, assessing changes, and helping you finalize your pull requests. In that spirit of mutual respect,
@@ -10,6 +10,16 @@ requests after 60 days of inactivity.
 Please note that all of your interactions in the project are subject to our [Code of Conduct](CODE_OF_CONDUCT.md). This
 includes creation of issues or pull requests, commenting on issues or pull requests, and extends to all interactions in
 any real-time space (eg. Slack, Discord, etc).
+
+## Project Setup
+
+Clone the repo and install dependencies.
+
+```bash
+git clone https://github.com/wayfair-incubator/rainbow-sprinkles.git
+
+pnpm install
+```
 
 ## Reporting Issues
 

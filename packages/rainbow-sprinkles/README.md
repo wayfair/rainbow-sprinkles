@@ -1,4 +1,4 @@
-# Rainbow Sprinkles
+# Rainbow Sprinkles 🧁
 
 Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).
 
@@ -14,14 +14,14 @@ Compared to sprinkles:
 
 Install Rainbow Sprinkles.
 
-```sh
-$ yarn add rainbow-sprinkles
+```bash
+npm install @homebase/rainbow-sprinkles
 ```
 
 Create a `rainbow-sprinkles.css.ts` file, then export your configuration methods:
 
 ```typescript
-import { rainbowSprinkles } from 'rainbow-sprinkles';
+import { rainbowSprinkles } from '@homebase/rainbow-sprinkles';
 
 const vars = {
   space: {
@@ -133,3 +133,15 @@ function App() {
   );
 }
 ```
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. For detailed contributing guidelines, please see [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+
+Rogin Farrer - [@roginfarrer](https://twitter.com/roginfarrer)
