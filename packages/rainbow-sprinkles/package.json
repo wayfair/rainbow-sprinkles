@@ -1,0 +1,32 @@
+{
+  "name": "@homebase/rainbow-sprinkles",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/homebase-rainbow-sprinkles.cjs.js",
+  "module": "dist/homebase-rainbow-sprinkles.esm.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wayfair-incubator/rainbow-sprinkles.git"
+  },
+  "keywords": [
+    "vanilla-extract",
+    "styled-system",
+    "css",
+    "system-props",
+    "react"
+  ],
+  "author": "Homebase",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wayfair-incubator/rainbow-sprinkles/issues"
+  },
+  "homepage": "https://github.com/wayfair-incubator/rainbow-sprinkles#readme",
+  "preconstruct": {
+    "entrypoints": [
+      "index.ts"
+    ]
+  },
+  "files": [
+    "dist/"
+  ]
+}

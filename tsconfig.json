@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["dom", "ESNext"],
+    "importHelpers": true,
+    "sourceMap": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "preserveSymlinks": true,
+    "noEmit": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true
+  }
+}

@@ -1,0 +1,11 @@
+import type { Adapter } from './types';
+export declare const mockAdapter: Adapter;
+export declare const setAdapterIfNotSet: (newAdapter: Adapter) => void;
+export declare const setAdapter: (newAdapter: Adapter) => void;
+export declare const removeAdapter: () => void;
+export declare const appendCss: Adapter['appendCss'];
+export declare const registerClassName: Adapter['registerClassName'];
+export declare const registerComposition: Adapter['registerComposition'];
+export declare const markCompositionUsed: Adapter['markCompositionUsed'];
+export declare const onEndFileScope: Adapter['onEndFileScope'];
+export declare const getIdentOption: Adapter['getIdentOption'];
