@@ -1,6 +1,10 @@
 name: Validate
 
-on: [push, pull_request]
+on: # Rebuild any PRs and main branch changes
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   test:
