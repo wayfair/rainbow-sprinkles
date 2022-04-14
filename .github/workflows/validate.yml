@@ -34,3 +34,9 @@ jobs:
 
       - name: Test
         run: pnpm test
+
+      - name: Lint Markdown files
+        uses: avto-dev/markdown-lint@v1
+        with:
+          config: '.markdownlint.json'
+          args: '**/*.md .github/**/*.md'
