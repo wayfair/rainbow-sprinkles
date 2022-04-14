@@ -8,7 +8,7 @@ on: # Rebuild any PRs and main branch changes
 
 jobs:
   test:
-    name: Lint & Test
+    name: Test
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -19,6 +19,13 @@ jobs:
 
       - name: Checkout Repo
         uses: actions/checkout@main
+
+      # Run before install deps so we don't lint node_modules
+      - name: Lint Markdown files
+        uses: avto-dev/markdown-lint@v1
+        with:
+          config: '.markdownlint.json'
+          args: '**/*.md .github/**/*.md'
 
       - name: Setup Node.js
         uses: actions/setup-node@main
@@ -34,9 +41,3 @@ jobs:
 
       - name: Test
         run: pnpm test
-
-      - name: Lint Markdown files
-        uses: avto-dev/markdown-lint@v1
-        with:
-          config: '.markdownlint.json'
-          args: '**/*.md .github/**/*.md'
