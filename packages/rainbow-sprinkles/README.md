@@ -55,7 +55,7 @@ export const {
     desktop: { '@media': 'screen and (min-width: 1024px)' },
   },
   defaultCondition: 'mobile',
-  properties: {
+  dynamicProperties: {
     // Define pre-determined values, which will be autosuggested
     color: vars.colors,
     backgroundColor: vars.colors,
@@ -70,6 +70,10 @@ export const {
     flexDirection: true,
     justifyContent: true,
     alignItems: true,
+  },
+  staticProperties: {
+    // Build out utility classes that don't use CSS variables
+    display: ['block', 'flex', 'inline-block', 'inline-flex'],
   },
   shorthands: {
     bg: ['backgroundColor'],
