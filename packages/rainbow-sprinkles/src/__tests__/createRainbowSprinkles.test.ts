@@ -191,7 +191,7 @@ describe('dynamic properties only', () => {
         height: 200,
       }),
     ).toEqual({
-      systemProps: {
+      sprinkles: {
         display: 'block',
         height: 200,
       },
