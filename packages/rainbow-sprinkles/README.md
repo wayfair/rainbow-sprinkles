@@ -15,13 +15,13 @@ Compared to sprinkles:
 Install Rainbow Sprinkles.
 
 ```bash
-npm install @homebase/rainbow-sprinkles
+npm install rainbow-sprinkles
 ```
 
 Create a `rainbow-sprinkles.css.ts` file, then export your configuration methods:
 
 ```typescript
-import { rainbowSprinkles } from '@homebase/rainbow-sprinkles';
+import { rainbowSprinkles } from 'rainbow-sprinkles';
 
 const vars = {
   space: {

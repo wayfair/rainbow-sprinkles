@@ -1,9 +1,9 @@
 {
-  "name": "@homebase/rainbow-sprinkles",
+  "name": "rainbow-sprinkles",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/homebase-rainbow-sprinkles.cjs.js",
-  "module": "dist/homebase-rainbow-sprinkles.esm.js",
+  "main": "dist/rainbow-sprinkles.cjs.js",
+  "module": "dist/rainbow-sprinkles.esm.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wayfair-incubator/rainbow-sprinkles.git"
