@@ -1,4 +1,4 @@
-import createRainbowSprinkles from '../createRainbowSprinkles';
+import { createRainbowSprinkles } from '../createRainbowSprinkles';
 
 const vars = {
   space: {
