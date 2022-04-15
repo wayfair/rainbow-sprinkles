@@ -39,7 +39,7 @@ type UnconditionalProperties<
   defaultCondition: keyof Conditions;
 };
 
-export default function createRainbowSprinkles<
+export function createRainbowSprinkles<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,
   Conditions extends BaseConditions,
@@ -103,8 +103,7 @@ export default function createRainbowSprinkles<
           ? keyof DynamicProperties
           : never
       >]?: DynamicSystemPropValue<Key>;
-    } & // Static properties
-    {
+    } & { // Static properties
       [Key in keyof Pick<
         CSSProperties,
         keyof ExclusivelyStaticProperties extends keyof CSSProperties
@@ -113,8 +112,7 @@ export default function createRainbowSprinkles<
       >]?: StaticProperties[Key] extends string[]
         ? ValueOrConditionObject<StaticProperties[Key][number]>
         : ValueOrConditionObject<keyof StaticProperties[Key]>;
-    } & // Shorthands
-    {
+    } & { // Shorthands
       [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof CSSProperties
         ? DynamicSystemPropValue<Shorthands[Key][0]>
         : never;

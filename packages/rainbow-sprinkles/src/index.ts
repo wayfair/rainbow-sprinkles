@@ -1,1 +1,1 @@
-export { default } from './createRainbowSprinkles';
+export { createRainbowSprinkles } from './createRainbowSprinkles';
