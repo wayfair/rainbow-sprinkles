@@ -21,9 +21,6 @@
       "packages/*"
     ]
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
     "@babel/core": "^7.17.9",
     "@babel/preset-env": "^7.16.11",
