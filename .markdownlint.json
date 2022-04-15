@@ -1,5 +1,6 @@
 {
   "default": true,
+  "MD012": false,
   "MD013": {
     "line_length": 10000,
     "headings": false,
