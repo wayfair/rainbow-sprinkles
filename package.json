@@ -11,7 +11,7 @@
     "watch": "preconstruct watch",
     "postinstall": "preconstruct dev",
     "format": "prettier --write .",
-    "example": "rm -rf examples/next/.next && pnpm --dir examples/next run dev",
+    "example": "rm -rf example/.next && pnpm --dir example run dev",
     "test": "jest",
     "version": "changeset version && pnpm install --lockfile-only",
     "release": "pnpm build && changeset publish"
@@ -21,6 +21,9 @@
       "packages/*"
     ]
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "dependencies": {
     "@babel/core": "^7.17.9",
     "@babel/preset-env": "^7.16.11",

@@ -21,11 +21,6 @@
     "url": "https://github.com/wayfair-incubator/rainbow-sprinkles/issues"
   },
   "homepage": "https://github.com/wayfair-incubator/rainbow-sprinkles#readme",
-  "preconstruct": {
-    "entrypoints": [
-      "index.ts"
-    ]
-  },
   "files": [
     "dist/"
   ],
