@@ -1,7 +1,7 @@
 {
   "name": "rainbow-sprinkles",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.6.0",
+  "description": "Responsive, theme-based style props for Vanilla Extract",
   "main": "dist/rainbow-sprinkles.cjs.js",
   "module": "dist/rainbow-sprinkles.esm.js",
   "repository": {
@@ -13,9 +13,11 @@
     "styled-system",
     "css",
     "system-props",
-    "react"
+    "react",
+    "design-tokens",
+    "design-system"
   ],
-  "author": "Homebase",
+  "author": "Rogin Farrer <rogin@roginfarrer.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/wayfair-incubator/rainbow-sprinkles/issues"
