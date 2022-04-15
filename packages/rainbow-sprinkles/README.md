@@ -21,7 +21,7 @@ npm install rainbow-sprinkles
 Create a `rainbow-sprinkles.css.ts` file, then export your configuration methods:
 
 ```typescript
-import { rainbowSprinkles } from 'rainbow-sprinkles';
+import { createRainbowSprinkles } from 'rainbow-sprinkles';
 
 const vars = {
   space: {
@@ -48,7 +48,7 @@ export const {
   createSystemPropType,
   properties,
   config,
-} = rainbowSprinkles({
+} = createRainbowSprinkles({
   conditions: {
     mobile: {},
     tablet: { '@media': 'screen and (min-width: 768px)' },
