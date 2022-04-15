@@ -1,24 +1,24 @@
 export function extractSprinklesFromProps(
   props: Record<string, any>,
-  systemProperties: Set<string>,
+  configProperties: Set<string>,
 ) {
-  const systemProps: Record<string, unknown> = {};
+  const sprinkles: Record<string, unknown> = {};
   const otherProps: Record<string, unknown> = {};
 
   for (const key in props) {
-    if (systemProperties.has(key)) {
-      systemProps[key] = props[key];
+    if (configProperties.has(key)) {
+      sprinkles[key] = props[key];
     } else {
       otherProps[key] = props[key];
     }
   }
 
-  return { systemProps, otherProps };
+  return { sprinkles, otherProps };
 }
 
 export function factoryExtractSprinklesFromProps(
-  systemProperties: Set<string>,
+  configProperties: Set<string>,
 ) {
   return (props: Record<string, any>) =>
-    extractSprinklesFromProps(props, systemProperties);
+    extractSprinklesFromProps(props, configProperties);
 }

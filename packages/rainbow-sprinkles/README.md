@@ -43,11 +43,9 @@ const vars = {
 };
 
 export const {
-  createSystemPropCss,
   getBoxProps,
-  createSystemPropType,
-  properties,
-  config,
+  createRainbowSprinklesCss,
+  extractSprinklesFromProps,
 } = createRainbowSprinkles({
   conditions: {
     mobile: {},
@@ -89,33 +87,36 @@ export const {
   },
 });
 
-export type SystemProps = Parameters<typeof createSystemPropType>[0];
+export type Sprinkles = Parameters<typeof getBoxProps>[1];
 ```
 
 Then set-up in your "host" component (in this case, a Box component):
 
 ```typescript
 // Box.css.ts
-import { createSystemPropCss } from './rainbow-sprinkles';
+import { createRainbowSprinklesCss } from './rainbow-sprinkles';
 
-export const systemPropStyles = createSystemPropCss();
+export const rainbowSprinklesCss = createRainbowSprinklesCss();
 ```
 
 ```tsx
 // Box.tsx
-import { systemPropStyles } from './Box.css';
-import { getBoxProps, properties, SystemProps } from './rainbow-sprinkles';
-import { extractAtomsFromProps } from 'rainbow-sprinkles';
+import {
+  getBoxProps,
+  extractSprinklesFromProps,
+  Sprinkles,
+} from './rainbow-sprinkles';
+import { rainbowSprinklesCss } from './Box.css';
 
-interface BoxProps extends SystemProps {
+interface BoxProps extends Sprinkles {
   children?: React.ReactNode;
 }
 
 export const Box = ({ children, ...props }: BoxProps) => {
-  const { systemProps, otherProps } = extractAtomsFromProps(props, properties);
+  const { sprinkles, otherProps } = extractSprinklesFromProps(props);
 
   return (
-    <div {...getBoxProps(systemPropStyles, systemProps)} {...otherProps}>
+    <div {...getBoxProps(rainbowSprinklesCss, sprinkles)} {...otherProps}>
       {children}
     </div>
   );

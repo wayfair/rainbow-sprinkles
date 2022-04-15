@@ -74,7 +74,7 @@ export function createRainbowSprinkles<
   /**
    * The possible values for any configured dynamic property, if it has a scale or not
    */
-  type DynamicSystemPropValue<Property extends keyof DynamicProperties> =
+  type DynamicSprinklesValue<Property extends keyof DynamicProperties> =
     Property extends keyof CSSProperties
       ? // Property set to an obj
         Property extends keyof DynamicPropertiesWithScale
@@ -94,7 +94,7 @@ export function createRainbowSprinkles<
     keyof DynamicProperties
   >;
 
-  type SystemProps =
+  type SprinklesProps =
     // Dynamic properties
     {
       [Key in keyof Pick<
@@ -102,8 +102,9 @@ export function createRainbowSprinkles<
         keyof DynamicProperties extends keyof CSSProperties
           ? keyof DynamicProperties
           : never
-      >]?: DynamicSystemPropValue<Key>;
-    } & { // Static properties
+      >]?: DynamicSprinklesValue<Key>;
+    } & {
+      // Static properties
       [Key in keyof Pick<
         CSSProperties,
         keyof ExclusivelyStaticProperties extends keyof CSSProperties
@@ -112,13 +113,14 @@ export function createRainbowSprinkles<
       >]?: StaticProperties[Key] extends string[]
         ? ValueOrConditionObject<StaticProperties[Key][number]>
         : ValueOrConditionObject<keyof StaticProperties[Key]>;
-    } & { // Shorthands
+    } & {
+      // Shorthands
       [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof CSSProperties
-        ? DynamicSystemPropValue<Shorthands[Key][0]>
+        ? DynamicSprinklesValue<Shorthands[Key][0]>
         : never;
     };
 
-  function createSystemPropCss(): Record<
+  function createRainbowSprinklesCss(): Record<
     string,
     CreateStylesOutput<Conditions, keyof CSSProperties>[]
   > {
@@ -195,10 +197,10 @@ export function createRainbowSprinkles<
   }
 
   function getBoxProps(
-    /** styles returned by createSystemPropCss */
-    sprinklesCssConfig: ReturnType<typeof createSystemPropCss>,
-    /** System props and their values as configured */
-    props: SystemProps,
+    /** styles returned by createRainbowSprinklesCss */
+    sprinklesCssConfig: ReturnType<typeof createRainbowSprinklesCss>,
+    /** Sprinkles props and their values as configured */
+    props: SprinklesProps,
   ) {
     const style: Record<string, string> = {};
     const className: string[] = [];
@@ -241,7 +243,7 @@ export function createRainbowSprinkles<
 
   return {
     getBoxProps,
-    createSystemPropCss,
+    createRainbowSprinklesCss,
     extractSprinklesFromProps: factoryExtractSprinklesFromProps(propertySet),
   };
 }

@@ -1,4 +1,4 @@
-import createRainbowSprinkles from 'rainbow-sprinkles';
+import { createRainbowSprinkles } from 'rainbow-sprinkles';
 import { vars } from './vars.css';
 
 export const { getBoxProps, createSystemPropCss, extractSprinklesFromProps } =

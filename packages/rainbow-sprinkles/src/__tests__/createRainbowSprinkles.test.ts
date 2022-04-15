@@ -30,7 +30,7 @@ const vars = {
 };
 
 describe('dynamic properties only', () => {
-  const { createSystemPropCss, getBoxProps, extractSprinklesFromProps } =
+  const { createRainbowSprinklesCss, getBoxProps, extractSprinklesFromProps } =
     createRainbowSprinkles({
       conditions: {
         mobile: {},
@@ -73,8 +73,8 @@ describe('dynamic properties only', () => {
       },
     });
 
-  it('createSystemPropCss', () => {
-    const result = createSystemPropCss();
+  it('createRainbowSprinklesCss', () => {
+    const result = createRainbowSprinklesCss();
     expect(result.color).toMatchObject([
       {
         classes: {
@@ -145,7 +145,7 @@ describe('dynamic properties only', () => {
   });
 
   test('getBoxProps', () => {
-    const classes = createSystemPropCss();
+    const classes = createRainbowSprinklesCss();
 
     expect(getBoxProps(classes, { color: 'gray-50', padding: '40' })).toEqual({
       className: 'color-mobile padding-mobile',
@@ -204,7 +204,7 @@ describe('dynamic properties only', () => {
 });
 
 describe('static and dynamic properties', () => {
-  const { createSystemPropCss, getBoxProps } = createRainbowSprinkles({
+  const { createRainbowSprinklesCss, getBoxProps } = createRainbowSprinkles({
     dynamicProperties: {
       display: true,
     },
@@ -220,8 +220,8 @@ describe('static and dynamic properties', () => {
     defaultCondition: 'mobile',
   });
 
-  it('createSystemPropCss', () => {
-    const result = createSystemPropCss();
+  it('createRainbowSprinklesCss', () => {
+    const result = createRainbowSprinklesCss();
     const someClass = expect.stringContaining('');
     expect(result.display).toMatchObject([
       {
@@ -265,7 +265,7 @@ describe('static and dynamic properties', () => {
   });
 
   describe('getBoxProps', () => {
-    const classes = createSystemPropCss();
+    const classes = createRainbowSprinklesCss();
 
     test('props with static and dynamic values', () => {
       expect(getBoxProps(classes, { display: 'block' })).toEqual({
@@ -336,7 +336,7 @@ describe('static and dynamic properties', () => {
 });
 
 describe('static and dynamic properties and shorthands', () => {
-  const { createSystemPropCss, getBoxProps } = createRainbowSprinkles({
+  const { createRainbowSprinklesCss, getBoxProps } = createRainbowSprinkles({
     dynamicProperties: {
       backgroundColor: true,
       marginLeft: true,
@@ -359,8 +359,8 @@ describe('static and dynamic properties and shorthands', () => {
     defaultCondition: 'mobile',
   });
 
-  it('createSystemPropCss', () => {
-    const result = createSystemPropCss();
+  it('createRainbowSprinklesCss', () => {
+    const result = createRainbowSprinklesCss();
     expect(result.mx).toMatchObject([
       ...result.marginLeft,
       ...result.marginRight,
@@ -368,7 +368,7 @@ describe('static and dynamic properties and shorthands', () => {
   });
 
   test('getBoxProps', () => {
-    const classes = createSystemPropCss();
+    const classes = createRainbowSprinklesCss();
 
     expect(
       getBoxProps(classes, {
