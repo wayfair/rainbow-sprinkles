@@ -46,7 +46,6 @@ importers:
 
   example:
     specifiers:
-      'rainbow-sprinkles': workspace:*
       '@types/node': ^17.0.24
       '@types/react': ^17.0.44
       '@types/react-dom': ^17.0.15
@@ -58,17 +57,18 @@ importers:
       eslint-config-next: 12.1.5
       next: 12.1.5
       polished: ^4.2.2
+      rainbow-sprinkles: workspace:*
       react: ^17.0.2
       react-dom: ^17.0.2
       typescript: ^4.6.3
       webpack: ^5.72.0
     dependencies:
-      'rainbow-sprinkles': link:../packages/rainbow-sprinkles
       '@vanilla-extract/babel-plugin': 1.1.5
       '@vanilla-extract/css': 1.7.0
       '@vanilla-extract/dynamic': 2.0.2
       '@vanilla-extract/next-plugin': 2.0.2_next@12.1.5+webpack@5.72.0
       next: 12.1.5_f370f735164a03a12cea0cc89593cbee
+      rainbow-sprinkles: link:../packages/rainbow-sprinkles
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       webpack: 5.72.0
