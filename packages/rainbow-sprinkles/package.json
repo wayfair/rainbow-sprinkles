@@ -38,5 +38,8 @@
     "@vanilla-extract/dynamic": "^2.0.2",
     "csstype": "^3.0.11",
     "lodash.merge": "^4.6.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
