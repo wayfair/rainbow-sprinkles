@@ -47,10 +47,6 @@ export const {
     bottom: vars.space,
     verticalAlign: true,
     animation: true,
-    border: {
-      little: '1px',
-      big: '3px',
-    },
   },
   staticProperties: {
     display: ['block', 'flex', 'inline-block', 'inline-flex'],
@@ -59,6 +55,11 @@ export const {
     marginLeft: vars.space,
     marginRight: vars.space,
     marginTop: vars.space,
+    border: {
+      '1x': '1px',
+      '2x': '2px',
+      '3x': '3px',
+    },
   },
   shorthands: {
     p: ['padding'],

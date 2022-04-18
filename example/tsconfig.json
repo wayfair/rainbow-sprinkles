@@ -1,12 +1,16 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
     "allowJs": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
     "strict": false,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "target": "ES5",
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

@@ -6,10 +6,6 @@ import {
   extractSprinklesFromProps,
 } from '../rainbow-sprinkles';
 
-const foo: Sprinkles = {
-  color: '',
-};
-
 export type BoxProps<C extends ElementType> = Sprinkles &
   Omit<ComponentPropsWithoutRef<C>, keyof Sprinkles | 'is'> & {
     is?: C;
