@@ -2,6 +2,14 @@ import { BaseConditions, CSSProperties } from './types';
 import { CreateStylesOutput } from './createStyles';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 
+const VALUE_REGEX = /^\$(\w*)/;
+
+function parseValue(scale: CreateStylesOutput<any>['scale'], rawValue: string) {
+  const match = rawValue.match(VALUE_REGEX);
+  const value = match?.[1] || rawValue;
+  return scale?.[value] || value;
+}
+
 function _assignInlineVars<Conditions extends BaseConditions>(
   propertyConfig: CreateStylesOutput<Conditions>,
   defaultCondition: keyof Conditions,
@@ -17,7 +25,7 @@ function _assignInlineVars<Conditions extends BaseConditions>(
       return {};
     }
     return assignInlineVars({
-      [vars[defaultCondition]]: scale?.[propValue] || propValue,
+      [vars[defaultCondition]]: parseValue(scale, propValue),
     });
   }
 
@@ -38,7 +46,7 @@ function _assignInlineVars<Conditions extends BaseConditions>(
           return acc;
         }
         hasProperty = true;
-        acc[vars[bp]] = scale?.[value] || value;
+        acc[vars[bp]] = parseValue(scale, value);
       }
       return acc;
     },

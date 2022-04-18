@@ -62,6 +62,8 @@ export function createRainbowSprinkles<
 
   type ValueOrConditionObject<T> = T | Partial<Record<keyof Conditions, T>>;
 
+  type PrefixValue<T> = T/* `$${(string | number) & T}`; */
+
   /**
    * properties with provided scale (e.g., not `true`)
    */
@@ -79,7 +81,8 @@ export function createRainbowSprinkles<
       ? // Property set to an obj
         Property extends keyof DynamicPropertiesWithScale
         ? ValueOrConditionObject<
-            CSSProperties[Property] | keyof DynamicProperties[Property]
+            | CSSProperties[Property]
+            | PrefixValue<keyof DynamicProperties[Property]>
           >
         : // Property set to `true` (no alias to values, just any accepted CSS value)
           ValueOrConditionObject<CSSProperties[Property]>
@@ -103,22 +106,23 @@ export function createRainbowSprinkles<
           ? keyof DynamicProperties
           : never
       >]?: DynamicSprinklesValue<Key>;
-    } & {
-      // Static properties
-      [Key in keyof Pick<
-        CSSProperties,
-        keyof ExclusivelyStaticProperties extends keyof CSSProperties
-          ? keyof ExclusivelyStaticProperties
-          : never
-      >]?: StaticProperties[Key] extends string[]
-        ? ValueOrConditionObject<StaticProperties[Key][number]>
-        : ValueOrConditionObject<keyof StaticProperties[Key]>;
-    } & {
-      // Shorthands
-      [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof CSSProperties
-        ? DynamicSprinklesValue<Shorthands[Key][0]>
-        : never;
     };
+  // & {
+  //     // Static properties
+  //     [Key in keyof Pick<
+  //       CSSProperties,
+  //       keyof ExclusivelyStaticProperties extends keyof CSSProperties
+  //         ? keyof ExclusivelyStaticProperties
+  //         : never
+  //     >]?: StaticProperties[Key] extends string[]
+  //       ? ValueOrConditionObject<StaticProperties[Key][number]>
+  //       : ValueOrConditionObject<PrefixValue<keyof StaticProperties[Key]>>;
+  //   } & {
+  //     // Shorthands
+  //     [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof CSSProperties
+  //       ? DynamicSprinklesValue<Shorthands[Key][0]>
+  //       : never;
+  //   };
 
   function createRainbowSprinklesCss(): Record<
     string,

@@ -1,24 +1,26 @@
 import type { CreateStaticStylesOutput } from './createStaticStyles';
 import type { CreateStylesOutput } from './createStyles';
 import type { BaseConditions } from './types';
+import { parseValue } from './parseValue';
 
 export function assignClasses<Conditions extends BaseConditions>(
   propertyConfig: CreateStylesOutput<Conditions> &
     CreateStaticStylesOutput<Conditions>,
   defaultCondition: keyof Conditions,
-  prop: unknown,
+  propValue: unknown,
 ): string {
-  if (!prop) {
+  if (!propValue) {
     return '';
   }
 
   const { classes, name: propName } = propertyConfig;
 
   // Value is a string or number, ie not responsive
-  if (typeof prop === 'string') {
+  if (typeof propValue === 'string') {
+    const value = parseValue(propValue);
     // Check for static value first
-    if (classes[prop]) {
-      return classes[prop][defaultCondition];
+    if (classes[value]) {
+      return classes[propValue][defaultCondition];
     }
     if (classes.dynamic) {
       return classes.dynamic[defaultCondition];
@@ -31,12 +33,12 @@ export function assignClasses<Conditions extends BaseConditions>(
         classes,
       )
         .map((className) => `"${className}"`)
-        .join(', ')}. Received: ${JSON.stringify(prop)}.`,
+        .join(', ')}. Received: ${JSON.stringify(propValue)}.`,
     );
     return '';
   }
 
-  const propObj = prop as { [k in keyof Conditions]: string };
+  const propObj = propValue as { [k in keyof Conditions]: string };
   const keys = Object.keys(propObj);
 
   // If no entries, exit gracefully
@@ -46,7 +48,8 @@ export function assignClasses<Conditions extends BaseConditions>(
 
   const className = keys
     .map((bp) => {
-      const valueAtBp = propObj[bp];
+      const rawValueAtBp = propObj[bp];
+    const valueAtBp = parseValue(rawValueAtBp)
       // Check for static value first
       if (classes[valueAtBp]) {
         return classes[valueAtBp][bp];
