@@ -102,23 +102,26 @@ export function createRainbowSprinkles<
         keyof DynamicProperties extends keyof CSSProperties
           ? keyof DynamicProperties
           : never
-      >]?: DynamicSprinklesValue<Key>;
-    } & {
-      // Static properties
-      [Key in keyof Pick<
-        CSSProperties,
-        keyof ExclusivelyStaticProperties extends keyof CSSProperties
-          ? keyof ExclusivelyStaticProperties
-          : never
-      >]?: StaticProperties[Key] extends string[]
-        ? ValueOrConditionObject<StaticProperties[Key][number]>
-        : ValueOrConditionObject<keyof StaticProperties[Key]>;
-    } & {
-      // Shorthands
-      [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof CSSProperties
-        ? DynamicSprinklesValue<Shorthands[Key][0]>
-        : never;
+      > /* DynamicSprinklesValue<Key>; */]?: DynamicProperties[Key] extends string[]
+        ? DynamicProperties[Key][number]
+        : keyof DynamicProperties[Key];
     };
+  // & {
+  //     // Static properties
+  //     [Key in keyof Pick<
+  //       CSSProperties,
+  //       keyof ExclusivelyStaticProperties extends keyof CSSProperties
+  //         ? keyof ExclusivelyStaticProperties
+  //         : never
+  //     >]?: StaticProperties[Key] extends string[]
+  //       ? ValueOrConditionObject<StaticProperties[Key][number]>
+  //       : ValueOrConditionObject<keyof StaticProperties[Key]>;
+  //   } & {
+  //     // Shorthands
+  //     [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof CSSProperties
+  //       ? DynamicSprinklesValue<Shorthands[Key][0]>
+  //       : never;
+  //   };
 
   function createRainbowSprinklesCss(): Record<
     string,

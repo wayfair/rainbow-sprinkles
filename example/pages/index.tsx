@@ -10,7 +10,6 @@ export default function App() {
       width="100vw"
       display="flex"
       placeItems="center"
-      padding="3500"
     >
       <Box
         bg="core10"

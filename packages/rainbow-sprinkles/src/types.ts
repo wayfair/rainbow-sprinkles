@@ -10,15 +10,16 @@ interface Condition {
 
 export type ConfigStaticProperties = {
   [k in keyof CSSProperties]?:
-    | CSSProperties[k][]
+    | ReadonlyArray<CSSProperties[k]>
     | Record<string, CSSProperties[k]>;
 };
 
 export type ConfigDynamicProperties = {
   [k in keyof CSSProperties]?:
-    | CSSProperties[k][]
+    | ReadonlyArray<CSSProperties[k]>
     | Record<string, CSSProperties[k]>
     | true;
 };
+
 
 export type BaseConditions = { [conditionName: string]: Condition };
