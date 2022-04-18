@@ -33,10 +33,12 @@
     "@types/jest": "^27.4.0",
     "jest": "^27.4.7"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@vanilla-extract/css": "^1.7.0",
-    "@vanilla-extract/dynamic": "^2.0.2",
-    "csstype": "^3.0.11",
+    "@vanilla-extract/dynamic": "^2.0.2"
+  },
+  "dependencies": {
+    "csstype": "^3",
     "lodash.merge": "^4.6.2"
   },
   "publishConfig": {

@@ -8,6 +8,7 @@ import type {
   CSSProperties,
   ConfigStaticProperties,
   ConfigDynamicProperties,
+  SprinklesFn,
 } from './types';
 import { assignClasses } from './assignClasses';
 import { assignInlineVars } from './assignInlineVars';
@@ -203,7 +204,12 @@ export function createRainbowSprinkles<
     /** styles returned by createRainbowSprinklesCss */
     sprinklesCssConfig: ReturnType<typeof createRainbowSprinklesCss>,
     /** Sprinkles props and their values as configured */
-    props: SprinklesProps,
+    props: SprinklesFn<
+      DynamicProperties,
+      StaticProperties,
+      Shorthands,
+      Conditions
+    >,
   ) {
     const style: Record<string, string> = {};
     const className: string[] = [];
