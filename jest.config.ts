@@ -3,9 +3,6 @@ import type { Config } from '@jest/types';
 const config: Config.InitialOptions = {
   setupFilesAfterEnv: ['./jest.setup.ts'],
   preset: 'ts-jest',
-  // testEnvironment: 'node',
-  // verbose: true,
-  // automock: true,
   testMatch: ['**/?(*.)+(test).[jt]s?(x)'],
   transform: {
     '\\.tsx?$': ['babel-jest', { configFile: './babel-jest.config.js' }],

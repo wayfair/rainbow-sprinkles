@@ -1,6 +1,9 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { style } from '@vanilla-extract/css';
-import type { BaseConditions, CSSProperties } from './types';
+import type {
+  BaseConditions,
+  ConfigStaticProperties,
+  CSSProperties,
+} from './types';
 import merge from 'lodash.merge';
 
 export type BaseConditionMap<Conditions extends BaseConditions> = {
@@ -34,9 +37,7 @@ export function createStaticStyles<
   CSSProperty extends keyof CSSProperties = keyof CSSProperties,
 >(
   property: CSSProperty,
-  scale:
-    | CSSProperties[CSSProperty][]
-    | Record<string, CSSProperties[CSSProperty]>,
+  scale: ConfigStaticProperties[CSSProperty],
   conditions: Conditions,
 ): CreateStaticStylesOutput<Conditions> {
   type ConditionMap = Partial<BaseConditionMap<Conditions>>;
@@ -58,7 +59,10 @@ export function createStaticStyles<
       if (Object.keys(conditions[conditionName]).length < 1) {
         merge(config, {
           [conditionName]: style(
-            generateRules(property, propertyOptions[propertyOption]),
+            generateRules(
+              property,
+              propertyOptions[propertyOption] as unknown as string,
+            ),
           ),
         });
         continue;
@@ -68,10 +72,11 @@ export function createStaticStyles<
         if (typeof condition === 'string') {
           merge(config, {
             [conditionName]: style(
-              generateRules(property, propertyOptions[propertyOption], [
-                conditionType,
-                condition,
-              ]),
+              generateRules(
+                property,
+                propertyOptions[propertyOption] as unknown as string,
+                [conditionType, condition],
+              ),
             ),
           });
         }

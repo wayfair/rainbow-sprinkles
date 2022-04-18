@@ -1,4 +1,11 @@
 {
+  "exclude": ["node_modules", "**/dist/**"],
+  "include": [
+    "./jest.setup.ts",
+    "./jest.config.ts",
+    "packages/**/*",
+    "example/*"
+  ],
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",

@@ -1,8 +1,6 @@
-import type { PropertiesFallback, Properties } from 'csstype';
+import type { PropertiesFallback } from 'csstype';
 
-export type CSSProperties = Properties<number | (string & {})>;
-
-export type CSSPropertyNames = keyof Properties<number | string & {});
+export type CSSProperties = PropertiesFallback<number | (string & {})>;
 
 interface Condition {
   '@media'?: string;

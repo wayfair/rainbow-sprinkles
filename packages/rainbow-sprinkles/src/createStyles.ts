@@ -36,12 +36,12 @@ function generateRules(
 
 export function createStyles<
   Conditions extends BaseConditions,
-  Property extends keyof CSSProperties = keyof CSSProperties,
+  CSSProperty extends keyof CSSProperties = keyof CSSProperties,
 >(
-  property: Property,
-  scale: ConfigDynamicProperties[Property],
+  property: CSSProperty,
+  scale: ConfigDynamicProperties[CSSProperty],
   conditions: Conditions,
-): CreateStylesOutput<Conditions, Property> {
+): CreateStylesOutput<Conditions, CSSProperty> {
   type ConditionMap = Partial<BaseConditionMap<Conditions>>;
 
   const partialVars: ConditionMap = {};
