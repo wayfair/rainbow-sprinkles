@@ -18,10 +18,4 @@ globalKeyframes('pinwheelSpin', {
   '100%': {
     transform: 'rotate(720deg)',
   },
-  // '80%': {
-  //   transform: 'rotate(540deg)',
-  // },
-  // '100%': {
-  //   transform: 'rotate(720deg)',
-  // },
 });
