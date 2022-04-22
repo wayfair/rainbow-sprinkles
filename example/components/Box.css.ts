@@ -1,3 +1,3 @@
-import { createSystemPropCss } from '../rainbow-sprinkles';
+import { createRainbowSprinklesCss } from '../rainbow-sprinkles';
 
-export const systemPropClasses = createSystemPropCss();
+export const sprinklesConfig = createRainbowSprinklesCss();

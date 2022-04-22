@@ -9,9 +9,9 @@ const vars = {
   },
   color: {
     white: '#fff',
-    'gray-50': '#efefef',
-    'gray-100': '#fefefe',
-    'gray-200': '#333333',
+    gray50: '#efefef',
+    gray100: '#fefefe',
+    gray200: '#333333',
   },
   borderRadius: {
     '0x': '0px',
@@ -86,9 +86,9 @@ describe('dynamic properties only', () => {
         },
         name: 'color',
         scale: {
-          'gray-100': '#fefefe',
-          'gray-200': '#333333',
-          'gray-50': '#efefef',
+          gray100: '#fefefe',
+          gray200: '#333333',
+          gray50: '#efefef',
           white: '#fff',
         },
         vars: {
@@ -147,15 +147,15 @@ describe('dynamic properties only', () => {
   test('getBoxProps', () => {
     const classes = createRainbowSprinklesCss();
 
-    expect(getBoxProps(classes, { color: 'gray-50', padding: '40' })).toEqual({
+    expect(getBoxProps(classes, { color: '$gray50', padding: '40' })).toEqual({
       className: 'color-mobile padding-mobile',
       style: {
-        '--color-mobile': vars.color['gray-50'],
+        '--color-mobile': vars.color['gray50'],
         '--padding-mobile': '40',
       },
     });
 
-    expect(getBoxProps(classes, { px: '1x' })).toEqual({
+    expect(getBoxProps(classes, { px: '$1x' })).toEqual({
       className: 'paddingLeft-mobile paddingRight-mobile',
       style: {
         '--paddingLeft-mobile': vars.space['1x'],
@@ -165,8 +165,8 @@ describe('dynamic properties only', () => {
 
     expect(
       getBoxProps(classes, {
-        px: { mobile: '1x', tablet: '2x' },
-        fontSize: { mobile: '1x', desktop: '2x' },
+        px: { mobile: '$1x', tablet: '$2x' },
+        fontSize: { mobile: '$1x', desktop: '$2x' },
       }),
     ).toEqual({
       className:
@@ -386,10 +386,10 @@ describe('static and dynamic properties and shorthands', () => {
 
     expect(
       getBoxProps(classes, {
-        bg: { mobile: 'gray-50', tablet: 'seagreen' },
-        mx: { mobile: '2x', desktop: '50px' },
+        bg: { mobile: '$gray50', tablet: 'seagreen' },
+        mx: { mobile: '$2x', desktop: '50px' },
       }),
-    ).toEqual({
+    ).toMatchObject({
       className:
         'static-backgroundColor-#efefef backgroundColor-tablet static-marginLeft-10px marginLeft-desktop static-marginRight-10px marginRight-desktop',
       style: {

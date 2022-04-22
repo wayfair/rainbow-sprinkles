@@ -8,6 +8,7 @@ import type {
   CSSProperties,
   ConfigStaticProperties,
   ConfigDynamicProperties,
+  PrefixValue,
 } from './types';
 import { assignClasses } from './assignClasses';
 import { assignInlineVars } from './assignInlineVars';
@@ -63,29 +64,6 @@ export function createRainbowSprinkles<
   type ValueOrConditionObject<T> = T | Partial<Record<keyof Conditions, T>>;
 
   /**
-   * properties with provided scale (e.g., not `true`)
-   */
-  type DynamicPropertiesWithScale = {
-    [k in keyof DynamicProperties]: DynamicProperties[k] extends boolean
-      ? never
-      : DynamicProperties[k];
-  };
-
-  /**
-   * The possible values for any configured dynamic property, if it has a scale or not
-   */
-  type DynamicSprinklesValue<Property extends keyof DynamicProperties> =
-    Property extends keyof CSSProperties
-      ? // Property set to an obj
-        Property extends keyof DynamicPropertiesWithScale
-        ? ValueOrConditionObject<
-            CSSProperties[Property] | keyof DynamicProperties[Property]
-          >
-        : // Property set to `true` (no alias to values, just any accepted CSS value)
-          ValueOrConditionObject<CSSProperties[Property]>
-      : never;
-
-  /**
    * Properties that are `staticProperties` only, and not
    * also configured in `dynamicProperties`
    */
@@ -94,31 +72,53 @@ export function createRainbowSprinkles<
     keyof DynamicProperties
   >;
 
-  type SprinklesProps =
+  type BaseSprinklesProps =
     // Dynamic properties
     {
-      [Key in keyof Pick<
+      [Property in keyof Pick<
         CSSProperties,
         keyof DynamicProperties extends keyof CSSProperties
           ? keyof DynamicProperties
           : never
-      >]?: DynamicSprinklesValue<Key>;
+      >]?: DynamicProperties[Property] extends boolean // Property set to `true` (no alias to values, just any accepted CSS value)
+        ? // If the same property does have a scale set in static properties...
+          Property extends keyof StaticProperties
+          ? // ...and if the scale is an array (so not alias/theme values)
+            StaticProperties[Property] extends string[]
+            ? // ...just show the regular CSS Properties. We don't do anything special for the types here, since there's no unique values.
+              ValueOrConditionObject<CSSProperties[Property]>
+            : // Otherwise, we want to merge both the CSSProperties types and the theme/alias values provided in the config
+              ValueOrConditionObject<
+                | CSSProperties[Property]
+                | PrefixValue<keyof StaticProperties[Property]>
+              >
+          : ValueOrConditionObject<CSSProperties[Property]>
+        : // Property has an object scale, therefore merge the alias/theme values with CSS property values
+          ValueOrConditionObject<
+            | CSSProperties[Property]
+            | PrefixValue<keyof DynamicProperties[Property]>
+          >;
     } & {
       // Static properties
-      [Key in keyof Pick<
+      [Property in keyof Pick<
         CSSProperties,
         keyof ExclusivelyStaticProperties extends keyof CSSProperties
           ? keyof ExclusivelyStaticProperties
           : never
-      >]?: StaticProperties[Key] extends string[]
-        ? ValueOrConditionObject<StaticProperties[Key][number]>
-        : ValueOrConditionObject<keyof StaticProperties[Key]>;
-    } & {
-      // Shorthands
-      [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof CSSProperties
-        ? DynamicSprinklesValue<Shorthands[Key][0]>
-        : never;
+      >]?: StaticProperties[Property] extends string[]
+        ? // Scale is an array of CSS values
+          // e.g. {display: ['block', 'flex']}
+          ValueOrConditionObject<StaticProperties[Property][number]>
+        : // Scale is an object of alias to CSS values
+          // usually means the use of CSS vars
+          ValueOrConditionObject<PrefixValue<keyof StaticProperties[Property]>>;
     };
+
+  type SprinklesProps = BaseSprinklesProps & {
+    [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof BaseSprinklesProps
+      ? BaseSprinklesProps[Shorthands[Key][0]]
+      : never;
+  };
 
   function createRainbowSprinklesCss(): Record<
     string,
