@@ -24,7 +24,7 @@ export default function App() {
           gap={{ mobile: '$2000', desktop: '$2500' }}
         >
           <Box
-            animation="1.2s pinwheelSpin ease-in-out infinite"
+            animation="5s pinwheelSpin ease-in-out infinite"
             size={{ mobile: '60px', tablet: '75px', desktop: '100px' }}
             aria-hidden="true"
           >
