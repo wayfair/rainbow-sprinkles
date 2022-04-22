@@ -1,7 +1,7 @@
 import type { CreateStaticStylesOutput } from './createStaticStyles';
 import type { CreateStylesOutput } from './createStyles';
 import type { BaseConditions } from './types';
-import { parseValue } from './parseValue';
+import { parseValue } from './utils';
 
 export function assignClasses<Conditions extends BaseConditions>(
   propertyConfig: CreateStylesOutput<Conditions> &

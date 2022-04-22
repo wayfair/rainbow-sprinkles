@@ -32,12 +32,12 @@ const vars = {
     // etc.
   },
   colors: {
-    'blue-50': '#eff6ff',
-    'blue-100': '#dbeafe',
-    'blue-200': '#bfdbfe',
-    'gray-700': '#374151',
-    'gray-800': '#1f2937',
-    'gray-900': '#111827',
+    blue50: '#eff6ff',
+    blue100: '#dbeafe',
+    blue200: '#bfdbfe',
+    gray700: '#374151',
+    gray800: '#1f2937',
+    gray900: '#111827',
     // etc.
   },
 };
@@ -131,7 +131,7 @@ import { Box } from './Box';
 function App() {
   return (
     // Use pre-defined values
-    <Box backgroundColor="blue-50" m="large">
+    <Box backgroundColor="$blue50" m="$large">
       {/* Or any valid CSS value */}
       <Box textAlign="center">Hello world!</Box>
     </Box>

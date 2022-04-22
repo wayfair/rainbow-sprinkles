@@ -1,7 +1,7 @@
 import { BaseConditions, CSSProperties } from './types';
 import { CreateStylesOutput } from './createStyles';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { parseValue } from './parseValue';
+import { parseValue } from './utils';
 
 function _assignInlineVars<Conditions extends BaseConditions>(
   propertyConfig: CreateStylesOutput<Conditions>,
