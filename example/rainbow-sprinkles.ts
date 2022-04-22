@@ -1,8 +1,6 @@
 import { createRainbowSprinkles } from 'rainbow-sprinkles';
 import { vars } from './vars.css';
 
-type Foo = keyof typeof vars.color;
-
 export const {
   getBoxProps,
   createRainbowSprinklesCss,

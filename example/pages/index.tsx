@@ -8,7 +8,7 @@ export default function App() {
       bg="$core60"
       height="100vh"
       width="100vw"
-      display="block"
+      display="flex"
       placeItems="center"
       padding="$3500"
     >

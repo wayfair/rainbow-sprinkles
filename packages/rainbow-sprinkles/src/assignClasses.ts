@@ -49,7 +49,7 @@ export function assignClasses<Conditions extends BaseConditions>(
   const className = keys
     .map((bp) => {
       const rawValueAtBp = propObj[bp];
-    const valueAtBp = parseValue(rawValueAtBp)
+      const valueAtBp = parseValue(rawValueAtBp);
       // Check for static value first
       if (classes[valueAtBp]) {
         return classes[valueAtBp][bp];
