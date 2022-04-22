@@ -1,5 +1,5 @@
-import { BaseConditions, CSSProperties } from './types';
-import { CreateStylesOutput } from './createStyles';
+import { BaseConditions } from '../types';
+import { CreateStylesOutput } from '../createStyles';
 import { assignInlineVars } from '../assignInlineVars';
 
 interface Conditions extends BaseConditions {
@@ -16,11 +16,72 @@ const makeConfig = (classes): CreateStylesOutput<Conditions> => ({
   scale: true,
 });
 
-test('something', () => {
+type Params = Parameters<typeof assignInlineVars>;
+
+function run(config: Params[0], value: Params[2]) {
+  return assignInlineVars(config, DEFAULT_CONDITION, value);
+}
+
+test('dynamic', () => {
   const config = makeConfig({
     dynamic: { mobile: 'a', tablet: 'b', desktop: 'c' },
   });
-  expect(assignInlineVars(config, DEFAULT_CONDITION, 'foo')).toMatchObject({
+
+  expect(run(config, 'foo')).toMatchObject({
     '--mobile': 'foo',
   });
+  expect(run(config, { mobile: 'foo', tablet: 'bar' })).toMatchObject({
+    '--mobile': 'foo',
+    '--tablet': 'bar',
+  });
+});
+
+test('static', () => {
+  const config = makeConfig({
+    block: {
+      mobile: 'a',
+      tablet: 'b',
+      desktop: 'c',
+    },
+    flex: {
+      mobile: 'x',
+      tablet: 'y',
+      desktop: 'z',
+    },
+  });
+
+  expect(
+    run(config, {
+      mobile: 'block',
+      tablet: 'flex',
+    }),
+  ).toMatchObject({});
+
+  expect(run(config, 'block')).toMatchObject({});
+});
+
+test('static and dynamic', () => {
+  const config = makeConfig({
+    dynamic: {
+      mobile: '1',
+      tablet: '2',
+      desktop: '3',
+    },
+    block: {
+      mobile: 'a',
+      tablet: 'b',
+      desktop: 'c',
+    },
+    flex: {
+      mobile: 'x',
+      tablet: 'y',
+      desktop: 'z',
+    },
+  });
+  expect(
+    run(config, {
+      mobile: 'foo',
+      tablet: 'flex',
+    }),
+  ).toMatchObject({ '--mobile': 'foo' });
 });

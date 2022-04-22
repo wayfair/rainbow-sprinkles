@@ -7,17 +7,17 @@ import {
 } from '../rainbow-sprinkles';
 
 export type BoxProps<C extends ElementType> = Sprinkles &
-  Omit<ComponentPropsWithoutRef<C>, keyof Sprinkles | 'is'> & {
-    is?: C;
+  ComponentPropsWithoutRef<C> & {
+    as?: C;
   };
 
 export const Box = <C extends ElementType = 'div'>({
-  is,
+  as,
   children,
   ...props
 }: BoxProps<C>) => {
   const { sprinkles, otherProps } = extractSprinklesFromProps(props);
-  const Component = is || 'div';
+  const Component = as || 'div';
 
   return (
     <Component

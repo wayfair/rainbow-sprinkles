@@ -31,7 +31,7 @@ export default function App() {
             <Pinwheel label="Wayfair Pinwheel" />
           </Box>
           <Box
-            is="h1"
+            as="h1"
             fontFamily="$body"
             color="$black80"
             typeSize={{ mobile: '$1000', desktop: '$1000' }}

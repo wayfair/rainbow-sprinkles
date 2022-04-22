@@ -5,7 +5,7 @@ export const Pinwheel = ({
   ...props
 }: { label: string } & BoxProps<'svg'>) => (
   <Box
-    is="svg"
+    as="svg"
     focusable="false"
     viewBox="0 0 28 28"
     verticalAlign="middle"
