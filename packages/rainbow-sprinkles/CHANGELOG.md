@@ -1,11 +1,17 @@
 # rainbow-sprinkles
 
+## 0.8.1
+
+### Patch Changes
+
+- ce2f0ce: Update readme
+
 ## 0.8.0
 
 ### Minor Changes
 
 - abbd196: Refactor of the CSS creation logic to improve readability and types
-- f327cba: Refactored and improved types, so sprinkles props are now fully accurate. Additionally, all values that are provided with an alias (e.g., when using `vars`) will require a '$' prefix
+- f327cba: Refactored and improved types, so sprinkles props are now fully accurate. Additionally, all values that are provided with an alias (e.g., when using `vars`) will require a '\$' prefix
 
 ## 0.7.0
 
