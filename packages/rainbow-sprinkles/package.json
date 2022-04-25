@@ -27,7 +27,7 @@
     "dist/"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "pnpm -w test"
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",
