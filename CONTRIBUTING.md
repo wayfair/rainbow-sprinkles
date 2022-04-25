@@ -11,16 +11,6 @@ Please note that all of your interactions in the project are subject to our [Cod
 includes creation of issues or pull requests, commenting on issues or pull requests, and extends to all interactions in
 any real-time space (eg. Slack, Discord, etc).
 
-## Project Setup
-
-Clone the repo and install dependencies.
-
-```bash
-git clone https://github.com/wayfair-incubator/rainbow-sprinkles.git
-
-pnpm install
-```
-
 ## Reporting Issues
 
 Before reporting a new issue, please ensure that the issue was not already reported or fixed by searching through our
@@ -39,6 +29,28 @@ has been discussed in the past, or if the change was already implemented but not
 
 We expect new pull requests to include tests for any affected behavior, and, as we follow semantic versioning, we may
 reserve breaking changes until the next major version release.
+
+### Project Setup
+
+#### Prerequisites
+
+- [Node.js](https://nodejs.org) >= v16
+- [PNPM](https://pnpm.io)
+
+#### Install
+
+Clone the repo, install dependencies, and run initial build.
+
+```bash
+git clone https://github.com/wayfair-incubator/rainbow-sprinkles.git
+pnpm install
+pnpm build
+```
+
+Then the following scripts are available:
+
+- _pnpm start_: Begins watching `packages/rainbow-sprinkles` and starts the example application
+- _pnpm test_: Run unit tests
 
 ## Other Ways to Contribute
 

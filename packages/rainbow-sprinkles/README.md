@@ -169,10 +169,17 @@ createRainbowSprinkles({
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**. For detailed contributing guidelines, please see [CONTRIBUTING.md](CONTRIBUTING.md)
 
+## Thanks
+
+- [Vanilla Extract](https://vanilla-extract.style) for creating an inovative and configurable CSS preprocessor
+- [Styled System](https://styled-system.com) for inventing theme-driven style props
+- Homebase, Wayfair's design system, for providing interesting problems to solve
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
+The Homebase Engineering Team - [email](mailto:homebase-eng@wayfair.com)
 Rogin Farrer - [@roginfarrer](https://twitter.com/roginfarrer)
