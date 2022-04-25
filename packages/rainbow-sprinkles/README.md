@@ -1,12 +1,17 @@
 # Rainbow Sprinkles 🧁
 
-Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).
+> Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).
+
+[![Release](https://img.shields.io/github/v/release/wayfair-incubator/rainbow-sprinkles?display_name=tag)](CHANGELOG.md)
+[![Validate](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
+[![Maintainer](https://img.shields.io/badge/Maintainer-Wayfair-7F187F)](https://wayfair.github.io)
 
 Rainbow sprinkles works similarly to `@vanilla-extract/sprinkles`. Like sprinkles, it generates custom CSS utility classes at build time. While sprinkles requires a pre-defined list of available values, Rainbow Sprinkles uses CSS custom properties to allow dynamic values using inline style variable assignments.
 
 Compared to sprinkles:
 
-- **Rainbow sprinkles ships 85% less CSS.** For each property, Sprinkles produces CSS that's a factor of `pre-defined values * possible conditions`. Rainbow sprinkles produces CSS that only scales with the number of conditions.
+- **Rainbow sprinkles ships a fraction of the CSS.** For each property, Sprinkles produces CSS that's a factor of `pre-defined values * possible conditions`. Rainbow sprinkles produces CSS that only scales with the number of conditions.
 - **Supports dynamic values.** Rainbow Sprinkles uses dynamic inline style assignments to set the value of each property. You still get the TypeScript editor suggestions, but the ability to use any valid CSS value for that property.
 - **Cannot be used in `.css.ts` files.** Rainbow Sprinkles derives its values from inline style property assignments, which means it needs to be configured with a "host" element (see setup for details).
 
@@ -137,6 +142,27 @@ function App() {
     </Box>
   );
 }
+```
+
+### `dynamicProperties` vs `staticProperties`
+
+One trade off that's made for supporting dynamic values is that we have to increase the size of the document. Instead of just appending a single class to an element to add a style, both a utility class and an inline style assignment is added to an element. While this setup will still produce an overall smaller bundle in many cases, some large applications may observe frequent recurrence of specific combinations of CSS properties and values. In these cases, those combinations can be set-up in `staticProperties` in the initial configuration. `staticProperties` will produce typical CSS utility classes. The runtime portion of Rainbow Sprinkles will defer to the CSS classes created by `staticProperties` and not apply any inline style assignments.
+
+Here's an example scenario in which this property could be valuable. Your organization sets up Rainbow Sprinkles and sees widespread adoption. Your metrics reveal that the most frequently used prop/value combinations is `display="flex"` and `margin` with the application's theme variables. You can run an experiment to evaluate whether making these property/values combination static improves the bundle size.
+
+```tsx
+createRainbowSprinkles({
+  dynamicProperties: {
+    // Still support arbitrary values
+    display: true,
+    margin: true,
+  },
+  staticProperties: {
+    // Also produce fixed CSS classes
+    display: ['flex'],
+    margin: vars.space,
+  },
+});
 ```
 
 ## Contributing
