@@ -28,6 +28,7 @@ Create a `rainbow-sprinkles.css.ts` file, then export your configuration methods
 ```typescript
 import { createRainbowSprinkles } from 'rainbow-sprinkles';
 
+// or import a theme (e.g. `createTheme`, `createThemeContract`)
 const vars = {
   space: {
     none: 0,
@@ -99,7 +100,7 @@ Then set-up in your "host" component (in this case, a Box component):
 
 ```typescript
 // Box.css.ts
-import { createRainbowSprinklesCss } from './rainbow-sprinkles';
+import { createRainbowSprinklesCss } from './rainbow-sprinkles.css';
 
 export const rainbowSprinklesCss = createRainbowSprinklesCss();
 ```
@@ -110,7 +111,7 @@ import {
   getBoxProps,
   extractSprinklesFromProps,
   Sprinkles,
-} from './rainbow-sprinkles';
+} from './rainbow-sprinkles.css';
 import { rainbowSprinklesCss } from './Box.css';
 
 interface BoxProps extends Sprinkles {
