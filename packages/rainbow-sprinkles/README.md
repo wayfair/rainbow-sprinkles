@@ -2,8 +2,8 @@
 
 > Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).
 
-[![Release](https://img.shields.io/github/v/release/wayfair-incubator/rainbow-sprinkles?display_name=tag)](CHANGELOG.md)
-[![Validate](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml)
+[![Release](https://img.shields.io/github/v/release/wayfair-incubator/rainbow-sprinkles?display_name=tag)](packages/rainbow-sprinkles/CHANGELOG.md)
+[![CI](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Wayfair-7F187F)](https://wayfair.github.io)
 
