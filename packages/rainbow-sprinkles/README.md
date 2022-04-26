@@ -23,7 +23,7 @@ Install Rainbow Sprinkles.
 npm install rainbow-sprinkles
 ```
 
-Create a `rainbow-sprinkles.css.ts` file, then export your configuration methods:
+Create a `rainbow-sprinkles.ts` file, then export your configuration methods:
 
 ```typescript
 import { createRainbowSprinkles } from 'rainbow-sprinkles';
@@ -100,7 +100,7 @@ Then set-up in your "host" component (in this case, a Box component):
 
 ```typescript
 // Box.css.ts
-import { createRainbowSprinklesCss } from './rainbow-sprinkles.css';
+import { createRainbowSprinklesCss } from './rainbow-sprinkles';
 
 export const rainbowSprinklesCss = createRainbowSprinklesCss();
 ```
@@ -111,7 +111,7 @@ import {
   getBoxProps,
   extractSprinklesFromProps,
   Sprinkles,
-} from './rainbow-sprinkles.css';
+} from './rainbow-sprinkles';
 import { rainbowSprinklesCss } from './Box.css';
 
 interface BoxProps extends Sprinkles {
