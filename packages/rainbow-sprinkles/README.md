@@ -15,6 +15,12 @@ Compared to sprinkles:
 - **Supports dynamic values.** Rainbow Sprinkles uses dynamic inline style assignments to set the value of each property. You still get the TypeScript editor suggestions, but the ability to use any valid CSS value for that property.
 - **Cannot be used in `.css.ts` files.** Rainbow Sprinkles derives its values from inline style property assignments, which means it needs to be configured with a "host" element (see setup for details).
 
+<hr />
+
+[See a codesandbox demo here](https://codesandbox.io/s/crazy-cookies-i87ddj)
+
+<hr />
+
 ## Setup
 
 Install Rainbow Sprinkles.
