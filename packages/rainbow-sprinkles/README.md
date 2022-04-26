@@ -23,11 +23,12 @@ Install Rainbow Sprinkles.
 npm install rainbow-sprinkles
 ```
 
-Create a `rainbow-sprinkles.css.ts` file, then export your configuration methods:
+Create a `rainbow-sprinkles.ts` file, then export your configuration methods:
 
 ```typescript
 import { createRainbowSprinkles } from 'rainbow-sprinkles';
 
+// or import a theme (e.g. `createTheme`, `createThemeContract`)
 const vars = {
   space: {
     none: 0,
