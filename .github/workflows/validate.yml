@@ -20,13 +20,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@main
 
-      # Run before install deps so we don't lint node_modules
-      - name: Lint Markdown files
-        uses: avto-dev/markdown-lint@v1
-        with:
-          config: '.markdownlint.json'
-          args: '**/*.md .github/**/*.md'
-
       - name: Setup Node.js
         uses: actions/setup-node@main
         with:
