@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.9.1
+
+### Patch Changes
+
+- b1a10d9: Move vanilla-extract dependencies to peer dependencies
+
 ## 0.9.0
 
 ### Minor Changes
