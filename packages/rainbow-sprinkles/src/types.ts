@@ -1,6 +1,6 @@
-import type { PropertiesFallback } from 'csstype';
+import type { Properties } from './css';
 
-export type CSSProperties = PropertiesFallback<number | (string & {})>;
+export interface CSSProperties extends Properties {}
 
 interface Condition {
   '@media'?: string;

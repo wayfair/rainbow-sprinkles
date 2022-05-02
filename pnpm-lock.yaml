@@ -86,15 +86,13 @@ importers:
   packages/rainbow-sprinkles:
     specifiers:
       '@types/jest': ^27.4.0
-      '@vanilla-extract/css': ^1.7.0
-      '@vanilla-extract/dynamic': ^2.0.2
-      csstype: ^3.0.11
+      '@vanilla-extract/css': ^1.7
+      '@vanilla-extract/dynamic': ^2
       jest: ^27.4.7
       lodash.merge: ^4.6.2
     dependencies:
       '@vanilla-extract/css': 1.7.0
       '@vanilla-extract/dynamic': 2.0.2
-      csstype: 3.0.11
       lodash.merge: 4.6.2
     devDependencies:
       '@types/jest': 27.4.1
