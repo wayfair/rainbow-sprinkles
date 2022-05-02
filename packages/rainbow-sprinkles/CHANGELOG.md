@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.9.0
+
+### Minor Changes
+
+- 4440ab3: Replaced csstype with internal fork
+
 ## 0.8.1
 
 ### Patch Changes
