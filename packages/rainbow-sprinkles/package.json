@@ -30,6 +30,8 @@
     "test": "pnpm -w test"
   },
   "devDependencies": {
+    "@vanilla-extract/css": "^1.7",
+    "@vanilla-extract/dynamic": "^2",
     "@types/jest": "^27.4.0",
     "jest": "^27.4.7"
   },
