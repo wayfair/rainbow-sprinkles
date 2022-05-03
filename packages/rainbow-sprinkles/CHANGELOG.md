@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.9.2
+
+### Patch Changes
+
+- 643499a: Add CSSVarFunction as value to dynamicProperties and staticProperties
+
 ## 0.9.1
 
 ### Patch Changes
