@@ -18,7 +18,9 @@ export type ConfigStaticProperties = {
 };
 
 export type ConfigDynamicProperties = {
-  [k in keyof CSSProperties]?: Record<string, CSSProperties[k]> | true;
+  [k in keyof CSSProperties]?:
+    | Record<string, CSSProperties[k] | CSSVarFunction>
+    | true;
 };
 
 export type BaseConditions = { [conditionName: string]: Condition };
