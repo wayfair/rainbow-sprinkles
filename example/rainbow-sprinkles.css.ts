@@ -1,11 +1,7 @@
 import { createRainbowSprinkles } from 'rainbow-sprinkles';
 import { vars } from './vars.css';
 
-export const {
-  getBoxProps,
-  createRainbowSprinklesCss,
-  extractSprinklesFromProps,
-} = createRainbowSprinkles({
+export const config = createRainbowSprinkles({
   conditions: {
     mobile: {},
     tablet: { '@media': 'screen and (min-width: 768px)' },
@@ -85,4 +81,4 @@ export const {
   },
 });
 
-export type Sprinkles = Parameters<typeof getBoxProps>[1];
+export type Sprinkles = Parameters<typeof config>[0];

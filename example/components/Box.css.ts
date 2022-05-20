@@ -1,3 +1,3 @@
-import { createRainbowSprinklesCss } from '../rainbow-sprinkles';
+// import { createRainbowSprinklesCss } from '../rainbow-sprinkles';
 
-export const sprinklesConfig = createRainbowSprinklesCss();
+// export const sprinklesConfig = createRainbowSprinklesCss();

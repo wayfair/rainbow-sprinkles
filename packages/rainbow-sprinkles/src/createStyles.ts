@@ -3,21 +3,22 @@ import type {
   BaseConditions,
   CSSProperties,
   ConfigDynamicProperties,
+  CreateStylesOutput,
 } from './types';
 
 export type BaseConditionMap<Conditions extends BaseConditions> = {
   [k in keyof Conditions]: string;
 };
 
-export type CreateStylesOutput<
-  Conditions extends BaseConditions,
-  Property extends keyof CSSProperties = keyof CSSProperties,
-> = {
-  classes: { dynamic: BaseConditionMap<Conditions> };
-  vars: BaseConditionMap<Conditions>;
-  name: Property;
-  scale: ConfigDynamicProperties[Property];
-};
+// export type CreateStylesOutput<
+//   Conditions extends BaseConditions,
+//   Property extends keyof CSSProperties = keyof CSSProperties,
+// > = {
+//   classes: { dynamic: BaseConditionMap<Conditions> };
+//   vars: BaseConditionMap<Conditions>;
+//   name: Property;
+//   scale: ConfigDynamicProperties[Property];
+// };
 
 function generateRules(
   property: string,

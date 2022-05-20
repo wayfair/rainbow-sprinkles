@@ -4,6 +4,7 @@ import type {
   BaseConditions,
   CSSProperties,
   ConfigStaticProperties,
+  CreateStylesOutput,
 } from './types';
 import merge from 'lodash.merge';
 
@@ -13,10 +14,10 @@ export type BaseConditionMap<Conditions extends BaseConditions> = {
   };
 };
 
-export type CreateStaticStylesOutput<Conditions extends BaseConditions> = {
-  classes: BaseConditionMap<Conditions>;
-  name: string;
-};
+// export type CreateStaticStylesOutput<Conditions extends BaseConditions> = {
+//   classes: BaseConditionMap<Conditions>;
+//   name: string;
+// };
 
 function generateRules(
   property: string,
@@ -40,7 +41,7 @@ export function createStaticStyles<
   property: CSSProperty,
   scale: ConfigStaticProperties[CSSProperty],
   conditions: Conditions,
-): CreateStaticStylesOutput<Conditions> {
+): CreateStylesOutput<Conditions> {
   type ConditionMap = Partial<BaseConditionMap<Conditions>>;
 
   const partialClasses: ConditionMap = {};

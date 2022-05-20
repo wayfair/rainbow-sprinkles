@@ -1,10 +1,11 @@
 import { ElementType, ComponentPropsWithoutRef } from 'react';
-import * as styles from './Box.css';
-import {
-  Sprinkles,
-  getBoxProps,
-  extractSprinklesFromProps,
-} from '../rainbow-sprinkles';
+import { config, Sprinkles } from '../rainbow-sprinkles.css';
+// import * as styles from './Box.css';
+// import {
+//   Sprinkles,
+//   getBoxProps,
+//   extractSprinklesFromProps,
+// } from '../rainbow-sprinkles';
 
 export type BoxProps<C extends ElementType> = Sprinkles &
   ComponentPropsWithoutRef<C> & {
@@ -16,15 +17,8 @@ export const Box = <C extends ElementType = 'div'>({
   children,
   ...props
 }: BoxProps<C>) => {
-  const { sprinkles, otherProps } = extractSprinklesFromProps(props);
+  // const { sprinkles, otherProps } = extractSprinklesFromProps(props);
   const Component = as || 'div';
 
-  return (
-    <Component
-      {...getBoxProps(styles.sprinklesConfig, sprinkles)}
-      {...otherProps}
-    >
-      {children}
-    </Component>
-  );
+  return <Component {...config(props)}>{children}</Component>;
 };

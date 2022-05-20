@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/wayfair-incubator/rainbow-sprinkles#readme",
   "files": [
-    "dist/"
+    "/dist",
+    "/createRuntimeRainbowSprinkles"
   ],
   "scripts": {
     "test": "pnpm -w test"
@@ -44,5 +45,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "preconstruct": {
+    "entrypoints": [
+      "index.ts",
+      "createRuntimeRainbowSprinkles.ts"
+    ]
   }
 }

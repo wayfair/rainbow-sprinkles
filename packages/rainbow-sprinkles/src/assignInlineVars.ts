@@ -10,6 +10,8 @@ function _assignInlineVars<Conditions extends BaseConditions>(
 ): CSSProperties | null {
   const { vars, scale } = propertyConfig;
 
+  console.log(propertyConfig, defaultCondition, propValue);
+
   // Value is a string, ie not responsive
   if (typeof propValue === 'string') {
     // If the propValue matches a static value,
