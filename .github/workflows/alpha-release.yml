@@ -3,7 +3,7 @@ name: Alpha Release
 on:
   pull_request:
     branches:
-      - [main]
+      - 'main'
 
 jobs:
   release:
