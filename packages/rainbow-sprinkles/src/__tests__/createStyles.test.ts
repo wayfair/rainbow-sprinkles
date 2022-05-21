@@ -20,62 +20,101 @@ it('returns expected configuration with vars scale', () => {
   const style = jest.spyOn(VE, 'style');
   const result = createStyles('backgroundColor', scale, conditions);
 
-  expect(style).toHaveBeenCalledWith({
-    backgroundColor: '--backgroundColor-mobile',
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [TABLET]: { backgroundColor: '--backgroundColor-tablet' } },
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [DESKTOP]: { backgroundColor: '--backgroundColor-desktop' } },
-  });
+  const calledArgs = style.mock.calls;
 
-  expect(result).toMatchObject({
-    classes: {
-      dynamic: {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+  expect(calledArgs[0][0]).toMatchInlineSnapshot(`
+    Object {
+      "backgroundColor": "--backgroundColor-mobile",
+    }
+  `);
+  expect(calledArgs[1][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 768px)": Object {
+          "backgroundColor": "--backgroundColor-tablet",
+        },
       },
-    },
-    name: 'backgroundColor',
-    vars: {
-      mobile: expect.stringContaining(''),
-      tablet: expect.stringContaining(''),
-      desktop: expect.stringContaining(''),
-    },
-    scale,
-  });
+    }
+  `);
+  expect(calledArgs[2][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 1024px)": Object {
+          "backgroundColor": "--backgroundColor-desktop",
+        },
+      },
+    }
+  `);
+
+  expect(result).toMatchInlineSnapshot(`
+    Object {
+      "classes": Object {
+        "dynamic": Object {
+          "desktop": "backgroundColor-desktop",
+          "mobile": "backgroundColor-mobile",
+          "tablet": "backgroundColor-tablet",
+        },
+      },
+      "name": "backgroundColor",
+      "scale": Object {
+        "primary": "primary-color",
+        "secondary": "secondary-color",
+      },
+      "vars": Object {
+        "desktop": "--backgroundColor-desktop",
+        "mobile": "--backgroundColor-mobile",
+        "tablet": "--backgroundColor-tablet",
+      },
+    }
+  `);
 });
 
 it('returns expected configuration with scale: true', () => {
   const style = jest.spyOn(VE, 'style');
   const result = createStyles('backgroundColor', true, conditions);
 
-  expect(style).toHaveBeenCalledWith({
-    backgroundColor: '--backgroundColor-mobile',
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [TABLET]: { backgroundColor: '--backgroundColor-tablet' } },
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [DESKTOP]: { backgroundColor: '--backgroundColor-desktop' } },
-  });
+  const calledArgs = style.mock.calls;
 
-  expect(result).toMatchObject({
-    classes: {
-      dynamic: {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+  expect(calledArgs[0][0]).toMatchInlineSnapshot(`
+    Object {
+      "backgroundColor": "--backgroundColor-mobile",
+    }
+  `);
+  expect(calledArgs[1][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 768px)": Object {
+          "backgroundColor": "--backgroundColor-tablet",
+        },
       },
-    },
-    name: 'backgroundColor',
-    vars: {
-      mobile: expect.stringContaining(''),
-      tablet: expect.stringContaining(''),
-      desktop: expect.stringContaining(''),
-    },
-    scale: true,
-  });
+    }
+  `);
+  expect(calledArgs[2][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 1024px)": Object {
+          "backgroundColor": "--backgroundColor-desktop",
+        },
+      },
+    }
+  `);
+
+  expect(result).toMatchInlineSnapshot(`
+    Object {
+      "classes": Object {
+        "dynamic": Object {
+          "desktop": "backgroundColor-desktop",
+          "mobile": "backgroundColor-mobile",
+          "tablet": "backgroundColor-tablet",
+        },
+      },
+      "name": "backgroundColor",
+      "scale": true,
+      "vars": Object {
+        "desktop": "--backgroundColor-desktop",
+        "mobile": "--backgroundColor-mobile",
+        "tablet": "--backgroundColor-tablet",
+      },
+    }
+  `);
 });

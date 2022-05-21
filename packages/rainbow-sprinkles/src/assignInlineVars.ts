@@ -1,5 +1,4 @@
-import { BaseConditions, CSSProperties } from './types';
-import { CreateStylesOutput } from './createStyles';
+import { BaseConditions, CSSProperties, CreateStylesOutput } from './types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { parseValue } from './utils';
 

@@ -24,8 +24,20 @@
   },
   "homepage": "https://github.com/wayfair-incubator/rainbow-sprinkles#readme",
   "files": [
-    "dist/"
+    "/dist",
+    "/createRuntimeRainbowSprinkles"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "module": "./dist/rainbow-sprinkles.esm.js",
+      "default": "./dist/rainbow-sprinkles.cjs.js"
+    },
+    "./createRuntimeRainbowSprinkles": {
+      "module": "./createRuntimeRainbowSprinkles/dist/rainbow-sprinkles-createRuntimeRainbowSprinkles.esm.js",
+      "default": "./createRuntimeRainbowSprinkles/dist/rainbow-sprinkles-createRuntimeRainbowSprinkles.cjs.js"
+    }
+  },
   "scripts": {
     "test": "pnpm -w test"
   },
@@ -36,7 +48,7 @@
     "jest": "^27.4.7"
   },
   "peerDependencies": {
-    "@vanilla-extract/css": "^1.7",
+    "@vanilla-extract/css": "^1",
     "@vanilla-extract/dynamic": "^2"
   },
   "dependencies": {
@@ -44,5 +56,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "preconstruct": {
+    "entrypoints": [
+      "index.ts",
+      "createRuntimeRainbowSprinkles.ts"
+    ]
   }
 }

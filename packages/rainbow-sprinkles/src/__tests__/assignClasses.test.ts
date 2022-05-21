@@ -1,6 +1,4 @@
-import type { CreateStaticStylesOutput } from '../createStaticStyles';
-import type { CreateStylesOutput } from '../createStyles';
-import type { BaseConditions } from '../types';
+import type { BaseConditions, CreateStylesOutput } from '../types';
 import { assignClasses } from '../assignClasses';
 
 interface Conditions extends BaseConditions {
@@ -10,9 +8,7 @@ interface Conditions extends BaseConditions {
 }
 const DEFAULT_CONDITION: keyof Conditions = 'mobile';
 
-const makeConfig = (
-  classes,
-): CreateStylesOutput<Conditions> & CreateStaticStylesOutput<Conditions> => ({
+const makeConfig = (classes): CreateStylesOutput<Conditions> => ({
   classes,
   name: 'display',
   vars: { mobile: 'a', tablet: 'b', desktop: 'c' },

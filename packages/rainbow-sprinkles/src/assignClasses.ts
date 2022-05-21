@@ -1,11 +1,8 @@
-import type { CreateStaticStylesOutput } from './createStaticStyles';
-import type { CreateStylesOutput } from './createStyles';
-import type { BaseConditions } from './types';
+import type { BaseConditions, CreateStylesOutput } from './types';
 import { parseValue } from './utils';
 
 export function assignClasses<Conditions extends BaseConditions>(
-  propertyConfig: CreateStylesOutput<Conditions> &
-    CreateStaticStylesOutput<Conditions>,
+  propertyConfig: CreateStylesOutput<Conditions>,
   defaultCondition: keyof Conditions,
   propValue: unknown,
 ): string {
@@ -29,7 +26,7 @@ export function assignClasses<Conditions extends BaseConditions>(
     // Quietly warn
     // eslint-disable-next-line no-console
     console.error(
-      `Homebase: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
+      `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
         classes,
       )
         .map((className) => `"${className}"`)
@@ -61,7 +58,7 @@ export function assignClasses<Conditions extends BaseConditions>(
       // Quietly warn
       // eslint-disable-next-line no-console
       console.error(
-        `Homebase: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
+        `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
           classes,
         )
           .map((className) => `"${className}"`)

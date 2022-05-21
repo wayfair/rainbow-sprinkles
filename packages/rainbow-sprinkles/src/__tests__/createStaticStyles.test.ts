@@ -19,36 +19,75 @@ it('returns expected configuration given array scale', () => {
     conditions,
   );
 
-  expect(style).toHaveBeenCalledWith({ display: 'block' });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [TABLET]: { display: 'block' } },
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [DESKTOP]: { display: 'block' } },
-  });
-  expect(style).toHaveBeenCalledWith({ display: 'inline-block' });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [TABLET]: { display: 'inline-block' } },
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [DESKTOP]: { display: 'inline-block' } },
-  });
+  const calledArgs = style.mock.calls;
 
-  expect(result).toMatchObject({
-    classes: {
-      'inline-block': {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+  expect(calledArgs.length).toBe(6);
+  expect(calledArgs[0][0]).toMatchInlineSnapshot(`
+    Object {
+      "display": "block",
+    }
+  `);
+  expect(calledArgs[1][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 768px)": Object {
+          "display": "block",
+        },
       },
-      block: {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+    }
+  `);
+  expect(calledArgs[2][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 1024px)": Object {
+          "display": "block",
+        },
       },
-    },
-    name: 'display',
-  });
+    }
+  `);
+  expect(calledArgs[3][0]).toMatchInlineSnapshot(`
+    Object {
+      "display": "inline-block",
+    }
+  `);
+  expect(calledArgs[4][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 768px)": Object {
+          "display": "inline-block",
+        },
+      },
+    }
+  `);
+  expect(calledArgs[5][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 1024px)": Object {
+          "display": "inline-block",
+        },
+      },
+    }
+  `);
+
+  expect(result).toMatchInlineSnapshot(`
+    Object {
+      "classes": Object {
+        "block": Object {
+          "desktop": "display-block-desktop",
+          "mobile": "display-block-mobile",
+          "tablet": "display-block-tablet",
+        },
+        "inline-block": Object {
+          "desktop": "display-inline-block-desktop",
+          "mobile": "display-inline-block-mobile",
+          "tablet": "display-inline-block-tablet",
+        },
+      },
+      "name": "display",
+    }
+  `);
+
+  style.mockRestore();
 });
 
 it('returns expected config given object scale', () => {
@@ -59,34 +98,73 @@ it('returns expected config given object scale', () => {
     conditions,
   );
 
-  expect(style).toHaveBeenCalledWith({ color: '#aaa' });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [TABLET]: { color: '#aaa' } },
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [DESKTOP]: { color: '#aaa' } },
-  });
-  expect(style).toHaveBeenCalledWith({ color: '#bbb' });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [TABLET]: { color: '#bbb' } },
-  });
-  expect(style).toHaveBeenCalledWith({
-    '@media': { [DESKTOP]: { color: '#bbb' } },
-  });
+  const calledArgs = style.mock.calls;
 
-  expect(result).toMatchObject({
-    classes: {
-      primary: {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+  expect(calledArgs.length).toBe(6);
+  expect(calledArgs[0][0]).toMatchInlineSnapshot(`
+    Object {
+      "color": "#aaa",
+    }
+  `);
+  expect(calledArgs[1][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 768px)": Object {
+          "color": "#aaa",
+        },
       },
-      secondary: {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+    }
+  `);
+  expect(calledArgs[2][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 1024px)": Object {
+          "color": "#aaa",
+        },
       },
-    },
-    name: 'color',
-  });
+    }
+  `);
+  expect(calledArgs[3][0]).toMatchInlineSnapshot(`
+    Object {
+      "color": "#bbb",
+    }
+  `);
+  expect(calledArgs[4][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 768px)": Object {
+          "color": "#bbb",
+        },
+      },
+    }
+  `);
+  expect(calledArgs[5][0]).toMatchInlineSnapshot(`
+    Object {
+      "@media": Object {
+        "screen and (min-width: 1024px)": Object {
+          "color": "#bbb",
+        },
+      },
+    }
+  `);
+
+  expect(result).toMatchInlineSnapshot(`
+    Object {
+      "classes": Object {
+        "primary": Object {
+          "desktop": undefined,
+          "mobile": undefined,
+          "tablet": undefined,
+        },
+        "secondary": Object {
+          "desktop": undefined,
+          "mobile": undefined,
+          "tablet": undefined,
+        },
+      },
+      "name": "color",
+    }
+  `);
+
+  style.mockRestore();
 });

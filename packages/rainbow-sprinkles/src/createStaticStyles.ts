@@ -4,6 +4,7 @@ import type {
   BaseConditions,
   CSSProperties,
   ConfigStaticProperties,
+  CreateStylesOutput,
 } from './types';
 import merge from 'lodash.merge';
 
@@ -11,11 +12,6 @@ export type BaseConditionMap<Conditions extends BaseConditions> = {
   [Prop: string]: {
     [k in keyof Conditions]: string;
   };
-};
-
-export type CreateStaticStylesOutput<Conditions extends BaseConditions> = {
-  classes: BaseConditionMap<Conditions>;
-  name: string;
 };
 
 function generateRules(
@@ -40,7 +36,7 @@ export function createStaticStyles<
   property: CSSProperty,
   scale: ConfigStaticProperties[CSSProperty],
   conditions: Conditions,
-): CreateStaticStylesOutput<Conditions> {
+): CreateStylesOutput<Conditions> {
   type ConditionMap = Partial<BaseConditionMap<Conditions>>;
 
   const partialClasses: ConditionMap = {};
@@ -64,6 +60,9 @@ export function createStaticStyles<
               property,
               propertyOptions[propertyOption] as unknown as string,
             ),
+            process.env.NODE_ENV === 'test'
+              ? `${property}-${propertyOption}-${conditionName}`
+              : undefined,
           ),
         });
         continue;
@@ -78,6 +77,9 @@ export function createStaticStyles<
                 propertyOptions[propertyOption] as unknown as string,
                 [conditionType, condition],
               ),
+              process.env.NODE_ENV === 'test'
+                ? `${property}-${propertyOption}-${conditionName}`
+                : undefined,
             ),
           });
         }
