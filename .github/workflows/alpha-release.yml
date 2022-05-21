@@ -5,7 +5,7 @@ on:
 
 jobs:
   release:
-    if: github.ref_name == 'changeset-release/main'
+    if: github.ref == 'refs/heads/changeset-release/main'
     name: Publish Alpha Version
     runs-on: ubuntu-latest
     env:
