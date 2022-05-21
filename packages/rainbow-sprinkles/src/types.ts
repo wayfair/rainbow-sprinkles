@@ -3,6 +3,8 @@ import { createVar } from '@vanilla-extract/css';
 
 export interface CSSProperties extends Properties {}
 
+// Configuration
+
 interface Condition {
   '@media'?: string;
   '@supports'?: string;
@@ -68,7 +70,7 @@ export type CreateStylesOutput<
   scale?: ConfigDynamicProperties[Property];
 };
 
-export type CreateCssReturn<Conditions extends BaseConditions> = Record<
+export type CssConfig<Conditions extends BaseConditions> = Record<
   string,
   CreateStylesOutput<Conditions, keyof CSSProperties>[]
 >;
@@ -143,8 +145,9 @@ export type RainbowSprinklesProps<
 // Runtime Function
 
 type RuntimeFnReturn = {
-  style?: Record<string, string>;
+  style: Record<string, string>;
   className: string;
+  otherProps: Record<string, any>;
 };
 
 export type RuntimeFn<

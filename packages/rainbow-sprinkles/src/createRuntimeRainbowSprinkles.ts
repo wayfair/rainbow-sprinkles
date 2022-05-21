@@ -7,7 +7,7 @@ import type {
   ConfigDynamicProperties,
   ConfigStaticProperties,
   BaseShorthand,
-  CreateCssReturn,
+  CssConfig,
 } from './types';
 
 /**
@@ -24,16 +24,18 @@ export function createRuntimeRainbowSprinkles<
   properties,
   defaultCondition,
 }: {
-  config: CreateCssReturn<Conditions>;
+  config: CssConfig<Conditions>;
   properties: string[];
   defaultCondition: string;
 }): RuntimeFn<DynamicProperties, StaticProperties, Conditions, Shorthands> {
   return (props: Record<string, unknown>) => {
     const style: Record<string, string> = {};
     const className: string[] = [];
+    const otherProps: Record<string, any> = {};
 
     for (const property of Object.keys(props)) {
       if (!properties.includes(property)) {
+        otherProps[property] = props[property];
         continue;
       }
 
@@ -54,7 +56,8 @@ export function createRuntimeRainbowSprinkles<
 
     return {
       className: className.join(' ').trim(),
-      ...(Object.keys(style).length > 0 ? { style } : {}),
+      style,
+      otherProps,
     };
   };
 }

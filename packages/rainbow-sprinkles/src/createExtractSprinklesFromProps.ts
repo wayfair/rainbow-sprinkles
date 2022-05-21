@@ -16,9 +16,7 @@ export function extractSprinklesFromProps(
   return { sprinkles, otherProps };
 }
 
-export function factoryExtractSprinklesFromProps(
-  configProperties: Set<string>,
-) {
+export function createExtractSprinklesFromProps(configProperties: Set<string>) {
   return (props: Record<string, any>) =>
     extractSprinklesFromProps(props, configProperties);
 }
