@@ -1,12 +1,13 @@
 name: Alpha Release
 
 on:
-  push:
+  pull_request:
     branches:
-      - changeset-release/main
+      - [main]
 
 jobs:
   release:
+    if: github.head_ref == 'changeset-release/main'
     name: Publish Alpha Version
     runs-on: ubuntu-latest
     env:
