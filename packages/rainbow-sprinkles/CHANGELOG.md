@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.10.1
+
+### Patch Changes
+
+- 357ff4b: Fix latest tag
+
 ## 0.10.0
 
 ### Minor Changes
