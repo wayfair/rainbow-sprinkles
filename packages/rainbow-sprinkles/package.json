@@ -27,6 +27,17 @@
     "/dist",
     "/createRuntimeRainbowSprinkles"
   ],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "module": "./dist/rainbow-sprinkles.esm.js",
+      "default": "./dist/rainbow-sprinkles.cjs.js"
+    },
+    "./createRuntimeRainbowSprinkles": {
+      "module": "./createRuntimeRainbowSprinkles/dist/rainbow-sprinkles-createRuntimeRainbowSprinkles.esm.js",
+      "default": "./createRuntimeRainbowSprinkles/dist/rainbow-sprinkles-createRuntimeRainbowSprinkles.cjs.js"
+    }
+  },
   "scripts": {
     "test": "pnpm -w test"
   },
