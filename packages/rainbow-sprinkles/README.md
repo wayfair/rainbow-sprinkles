@@ -17,6 +17,22 @@ Compared to sprinkles:
 
 <hr />
 
+```tsx
+function App() {
+  return (
+    // Use pre-defined values
+    <Box bg="$blue50" margin="$large">
+      {/* Or any valid CSS value */}
+      <Box textAlign="center" fontSize="30px">
+        Hello world!
+      </Box>
+    </Box>
+  );
+}
+```
+
+<hr />
+
 [See a codesandbox demo here](https://codesandbox.io/s/crazy-cookies-i87ddj)
 
 <hr />
@@ -29,9 +45,10 @@ Install Rainbow Sprinkles.
 npm install rainbow-sprinkles
 ```
 
-Create a `rainbow-sprinkles.ts` file, then export your configuration methods:
+Create a `rainbow-sprinkles.css.ts` file, then create and export your `rainbowSprinkles` function:
 
 ```typescript
+// rainbow-sprinkles.css.ts
 import { createRainbowSprinkles } from 'rainbow-sprinkles';
 
 // or import a theme (e.g. `createTheme`, `createThemeContract`)
@@ -54,11 +71,7 @@ const vars = {
   },
 };
 
-export const {
-  getBoxProps,
-  createRainbowSprinklesCss,
-  extractSprinklesFromProps,
-} = createRainbowSprinkles({
+export const rainbowSprinkles = createRainbowSprinkles({
   conditions: {
     mobile: {},
     tablet: { '@media': 'screen and (min-width: 768px)' },
@@ -99,45 +112,34 @@ export const {
   },
 });
 
-export type Sprinkles = Parameters<typeof getBoxProps>[1];
+export type Sprinkles = Parameters<typeof rainbowSprinkles>[0];
 ```
 
 Then set-up in your "host" component (in this case, a Box component):
 
-```typescript
-// Box.css.ts
-import { createRainbowSprinklesCss } from './rainbow-sprinkles';
-
-export const rainbowSprinklesCss = createRainbowSprinklesCss();
-```
-
 ```tsx
 // Box.tsx
-import {
-  getBoxProps,
-  extractSprinklesFromProps,
-  Sprinkles,
-} from './rainbow-sprinkles';
-import { rainbowSprinklesCss } from './Box.css';
+import { rainbowSprinkles Sprinkles } from './rainbow-sprinkles';
 
 interface BoxProps extends Sprinkles {
   children?: React.ReactNode;
 }
 
 export const Box = ({ children, ...props }: BoxProps) => {
-  const { sprinkles, otherProps } = extractSprinklesFromProps(props);
+  const { className, style, otherProps } = rainbowSprinkles(props);
 
   return (
-    <div {...getBoxProps(rainbowSprinklesCss, sprinkles)} {...otherProps}>
+    <div className={className} style={style} {...otherProps}>
       {children}
     </div>
   );
 };
 ```
 
-Good to go!
+🎉 Good to go!
 
 ```tsx
+// App.js
 import { Box } from './Box';
 
 function App() {
