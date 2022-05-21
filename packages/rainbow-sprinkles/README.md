@@ -1,10 +1,6 @@
 <h1 align="center">Rainbow Sprinkles 🧁</h1>
 
-<p align="center"><i>
-
-Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).
-
-</i></p>
+<p align="center"><i>Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).</i></p>
 
 <div align="center">
 
