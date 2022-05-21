@@ -38,12 +38,12 @@ jobs:
       - name: Enter Pre-release Mode
         run: pnpm changeset pre enter alpha
 
-      - name: Create release PR or publish to npm
+      - name: Version and Publish
         uses: changesets/action@v1
+        id: publish
         with:
           version: pnpm run version
-          publish: |
-            pnpm release | tee output.txt
+          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -54,13 +54,25 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Post version to PR'
-        uses: EliLillyCo/github-actions-post-to-pr@main
+        uses: actions/github-script@v5
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          post_to_pr_definition: |
-            [
-              {
-                "message_file": "./output.txt",
-                "title": "Published Alpha"
-              }
-            ]
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'New published packages: ${{ steps.publish.outputs.publishedPackages }}'
+            })
+
+      # - name: 'Post version to PR'
+      #   uses: EliLillyCo/github-actions-post-to-pr@main
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     post_to_pr_definition: |
+      #       [
+      #         {
+      #           "message_file": "./output.txt",
+      #           "title": "Published Alpha"
+      #         }
+      #       ]
