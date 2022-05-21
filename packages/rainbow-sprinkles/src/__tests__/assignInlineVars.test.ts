@@ -36,6 +36,15 @@ test('dynamic', () => {
   });
 });
 
+test('ignores null and undefined prop values', () => {
+  const config = makeConfig({
+    dynamic: { mobile: 'a', tablet: 'b', desktop: 'c' },
+  });
+
+  expect(run(config, null)).toMatchObject({});
+  expect(run(config, undefined)).toMatchObject({});
+});
+
 test('static', () => {
   const config = makeConfig({
     block: {
