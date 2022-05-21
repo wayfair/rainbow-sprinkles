@@ -25,7 +25,7 @@ function _assignInlineVars<Conditions extends BaseConditions>(
   const bps = propValue as { [k in keyof Conditions]?: string };
 
   // If no entries, exit gracefully
-  if (bps && Object.keys(bps).length < 1) {
+  if ((bps && Object.keys(bps).length < 1) || bps == null) {
     return {};
   }
 
