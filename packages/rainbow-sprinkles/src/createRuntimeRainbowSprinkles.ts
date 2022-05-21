@@ -10,10 +10,6 @@ import type {
   CssConfig,
 } from './types';
 
-/**
- * Takes the Rainbow Sprinkles config produced by createRainbowSprinklesCss
- * and the sprinkles props during runtime to output the inline styles and classes
- */
 export function createRuntimeRainbowSprinkles<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,

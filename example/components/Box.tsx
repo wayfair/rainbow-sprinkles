@@ -1,5 +1,5 @@
 import { ElementType, ComponentPropsWithoutRef } from 'react';
-import { config, Sprinkles } from '../rainbow-sprinkles.css';
+import { rainbowSprinkles, Sprinkles } from './rainbow-sprinkles.css';
 
 export type BoxProps<C extends ElementType> = Sprinkles &
   ComponentPropsWithoutRef<C> & {
@@ -12,7 +12,7 @@ export const Box = <C extends ElementType = 'div'>({
   ...props
 }: BoxProps<C>) => {
   const Component = as || 'div';
-  const { className, style, otherProps } = config(props);
+  const { className, style, otherProps } = rainbowSprinkles(props);
 
   return (
     <Component className={className} style={style} {...otherProps}>
