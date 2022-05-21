@@ -119,7 +119,7 @@ Then set-up in your "host" component (in this case, a Box component):
 
 ```tsx
 // Box.tsx
-import { rainbowSprinkles Sprinkles } from './rainbow-sprinkles';
+import { rainbowSprinkles, Sprinkles } from './rainbow-sprinkles.css';
 
 interface BoxProps extends Sprinkles {
   children?: React.ReactNode;
@@ -139,7 +139,7 @@ export const Box = ({ children, ...props }: BoxProps) => {
 🎉 Good to go!
 
 ```tsx
-// App.js
+// App.tsx
 import { Box } from './Box';
 
 function App() {
