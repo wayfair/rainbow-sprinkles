@@ -1,5 +1,4 @@
-import { BaseConditions, CSSProperties } from './types';
-import { CreateStylesOutput } from './createStyles';
+import { BaseConditions, CSSProperties, CreateStylesOutput } from './types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
 import { parseValue } from './utils';
 
@@ -9,8 +8,6 @@ function _assignInlineVars<Conditions extends BaseConditions>(
   propValue: unknown,
 ): CSSProperties | null {
   const { vars, scale } = propertyConfig;
-
-  console.log(propertyConfig, defaultCondition, propValue);
 
   // Value is a string, ie not responsive
   if (typeof propValue === 'string') {

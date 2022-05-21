@@ -4,19 +4,20 @@ function createVar(args) {
   return `--${args}`;
 }
 
-function style(styleObject) {
-  function find(obj) {
-    for (const key in obj) {
-      if (typeof obj[key] === 'string') {
-        const value = obj[key];
-        return value.startsWith('--') ? value : `static-${key}-${obj[key]}`;
-      } else {
-        return style(obj[key]);
-      }
-    }
-  }
-  const result = find(styleObject);
-  return result.startsWith('--') ? result.slice(2) : result;
+function style(styleObject, debugId) {
+  // function find(obj) {
+  //   for (const key in obj) {
+  //     if (typeof obj[key] === 'string') {
+  //       const value = obj[key];
+  //       return value.startsWith('--') ? value : `static-${key}-${obj[key]}`;
+  //     } else {
+  //       return style(obj[key]);
+  //     }
+  //   }
+  // }
+  // const result = find(styleObject);
+  // return result.startsWith('--') ? result.slice(2) : result;
+  return debugId;
 }
 
 module.exports = {

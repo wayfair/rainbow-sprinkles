@@ -1,11 +1,8 @@
-import type { CreateStaticStylesOutput } from './createStaticStyles';
-import type { CreateStylesOutput } from './createStyles';
-import type { BaseConditions } from './types';
+import type { BaseConditions, CreateStylesOutput } from './types';
 import { parseValue } from './utils';
 
 export function assignClasses<Conditions extends BaseConditions>(
-  propertyConfig: CreateStylesOutput<Conditions> &
-    CreateStaticStylesOutput<Conditions>,
+  propertyConfig: CreateStylesOutput<Conditions>,
   defaultCondition: keyof Conditions,
   propValue: unknown,
 ): string {

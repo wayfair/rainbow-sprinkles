@@ -1,5 +1,4 @@
-import { BaseConditions } from '../types';
-import { CreateStylesOutput } from '../createStyles';
+import { BaseConditions, CreateStylesOutput } from '../types';
 import { assignInlineVars } from '../assignInlineVars';
 
 interface Conditions extends BaseConditions {

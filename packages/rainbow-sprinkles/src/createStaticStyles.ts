@@ -14,11 +14,6 @@ export type BaseConditionMap<Conditions extends BaseConditions> = {
   };
 };
 
-// export type CreateStaticStylesOutput<Conditions extends BaseConditions> = {
-//   classes: BaseConditionMap<Conditions>;
-//   name: string;
-// };
-
 function generateRules(
   property: string,
   value: string,
@@ -65,6 +60,9 @@ export function createStaticStyles<
               property,
               propertyOptions[propertyOption] as unknown as string,
             ),
+            process.env.NODE_ENV === 'test'
+              ? `${property}-${propertyOption}-${conditionName}`
+              : undefined,
           ),
         });
         continue;
@@ -79,6 +77,9 @@ export function createStaticStyles<
                 propertyOptions[propertyOption] as unknown as string,
                 [conditionType, condition],
               ),
+              process.env.NODE_ENV === 'test'
+                ? `${property}-${propertyOption}-${conditionName}`
+                : undefined,
             ),
           });
         }

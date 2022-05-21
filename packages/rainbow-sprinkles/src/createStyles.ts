@@ -10,16 +10,6 @@ export type BaseConditionMap<Conditions extends BaseConditions> = {
   [k in keyof Conditions]: string;
 };
 
-// export type CreateStylesOutput<
-//   Conditions extends BaseConditions,
-//   Property extends keyof CSSProperties = keyof CSSProperties,
-// > = {
-//   classes: { dynamic: BaseConditionMap<Conditions> };
-//   vars: BaseConditionMap<Conditions>;
-//   name: Property;
-//   scale: ConfigDynamicProperties[Property];
-// };
-
 function generateRules(
   property: string,
   cssVariable: string,
@@ -61,6 +51,9 @@ export function createStyles<
       Object.assign(partialClasses, {
         [conditionName]: style(
           generateRules(property, vars[conditionName] as string),
+          process.env.NODE_ENV === 'test'
+            ? `${property}-${conditionName}`
+            : undefined,
         ),
       });
       continue;
@@ -74,6 +67,9 @@ export function createStyles<
               conditionType,
               condition,
             ]),
+            process.env.NODE_ENV === 'test'
+              ? `${property}-${conditionName}`
+              : undefined,
           ),
         });
       }

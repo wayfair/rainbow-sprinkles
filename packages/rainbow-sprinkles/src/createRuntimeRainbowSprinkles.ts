@@ -4,9 +4,6 @@ import { assignClasses } from './assignClasses';
 import type {
   RuntimeFn,
   BaseConditions,
-  CSSProperties,
-  RainbowSprinklesConfig,
-  RainbowSprinklesProps,
   ConfigDynamicProperties,
   ConfigStaticProperties,
   BaseShorthand,
@@ -24,17 +21,22 @@ export function createRuntimeRainbowSprinkles<
   Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
 >({
   config,
-  // properties,
+  properties,
   defaultCondition,
 }: {
   config: CreateCssReturn<Conditions>;
+  properties: string[];
   defaultCondition: string;
 }): RuntimeFn<DynamicProperties, StaticProperties, Conditions, Shorthands> {
   return (props: Record<string, unknown>) => {
     const style: Record<string, string> = {};
     const className: string[] = [];
 
-    Object.keys(props).forEach((property) => {
+    for (const property of Object.keys(props)) {
+      if (!properties.includes(property)) {
+        continue;
+      }
+
       const propertyConfigs = config[property];
       const propValue = props[property];
       if (propertyConfigs) {
@@ -48,7 +50,7 @@ export function createRuntimeRainbowSprinkles<
           );
         });
       }
-    });
+    }
 
     return {
       className: className.join(' ').trim(),

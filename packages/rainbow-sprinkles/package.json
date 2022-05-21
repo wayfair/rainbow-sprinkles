@@ -37,7 +37,7 @@
     "jest": "^27.4.7"
   },
   "peerDependencies": {
-    "@vanilla-extract/css": "^1.7",
+    "@vanilla-extract/css": "^1",
     "@vanilla-extract/dynamic": "^2"
   },
   "dependencies": {

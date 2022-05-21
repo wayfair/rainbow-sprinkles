@@ -54,24 +54,25 @@ export function createRainbowSprinkles<
   const allConfiguredProps = merge(normalProps, staticProps);
 
   const shorthandProps = mapValues(shorthands, (properties) =>
-    // @ts-ignore
+    // @ts-expect-error
     properties.map((property) => allConfiguredProps[property]),
   );
 
-  const cssOutput = {
+  const cssConfig = {
     ...mapValues(allConfiguredProps, (config) => [config]),
     ...shorthandProps,
   };
 
-  // const propertySet = new Set([
-  //   ...Object.keys(dynamicProperties),
-  //   ...(staticProperties ? Object.keys(staticProperties) : []),
-  //   ...(shorthands ? Object.keys(shorthands) : []),
-  // ]);
+  const properties = [
+    ...Object.keys(dynamicProperties),
+    ...(staticProperties ? Object.keys(staticProperties) : []),
+    ...(shorthands ? Object.keys(shorthands) : []),
+  ];
 
   const config = {
-    config: cssOutput,
+    config: cssConfig,
     defaultCondition: defaultCondition as string,
+    properties,
   };
 
   return addFunctionSerializer(createRuntimeRainbowSprinkles(config), {
