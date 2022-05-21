@@ -72,7 +72,7 @@ describe('dynamic properties only', () => {
     },
   });
 
-  test('getBoxProps', () => {
+  test('rainbowSprinkles', () => {
     expect(rainbowSprinkles({ color: '$gray50', padding: '40px' }))
       .toMatchInlineSnapshot(`
       Object {
@@ -134,7 +134,7 @@ describe('dynamic properties only', () => {
       defaultCondition: 'mobile',
     });
 
-    describe('getBoxProps', () => {
+    describe('rainbowSprinkles', () => {
       test('props with static and dynamic values', () => {
         expect(rainbowSprinkles({ display: 'block' })).toMatchInlineSnapshot(`
           Object {
@@ -260,7 +260,7 @@ describe('dynamic properties only', () => {
       defaultCondition: 'mobile',
     });
 
-    test('getBoxProps', () => {
+    test('rainbowSprinkles', () => {
       expect(
         rainbowSprinkles({
           bg: 'seagreen',

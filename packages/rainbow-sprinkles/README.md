@@ -1,19 +1,26 @@
-# Rainbow Sprinkles 🧁
+<h1 align="center">Rainbow Sprinkles 🧁</h1>
 
-> Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).
+<p align="center"><i>
 
-[![Release](https://img.shields.io/github/v/release/wayfair-incubator/rainbow-sprinkles?display_name=tag)](packages/rainbow-sprinkles/CHANGELOG.md)
-[![CI](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/wayfair-incubator/rainbow-sprinkles/actions/workflows/validate.yml)
+Dynamic, theme-driven, style props for [vanilla-extract](https://vanilla-extract.style).
+
+</i></p>
+
+<div align="center">
+
+[![Release](https://img.shields.io/github/v/release/wayfair/rainbow-sprinkles?display_name=tag)](packages/rainbow-sprinkles/CHANGELOG.md)
+[![license: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Wayfair-7F187F)](https://wayfair.github.io)
+
+</div>
 
 Rainbow sprinkles works similarly to `@vanilla-extract/sprinkles`. Like sprinkles, it generates custom CSS utility classes at build time. While sprinkles requires a pre-defined list of available values, Rainbow Sprinkles uses CSS custom properties to allow dynamic values using inline style variable assignments.
 
 Compared to sprinkles:
 
-- **Rainbow sprinkles ships a fraction of the CSS.** For each property, Sprinkles produces CSS that's a factor of `pre-defined values * possible conditions`. Rainbow sprinkles produces CSS that only scales with the number of conditions.
+- **Rainbow sprinkles ships a fraction of the CSS.** For each property, Sprinkles produces CSS that's a factor of `[pre-defined values] * [possible conditions]`. Rainbow sprinkles produces CSS that only scales with the number of conditions.
 - **Supports dynamic values.** Rainbow Sprinkles uses dynamic inline style assignments to set the value of each property. You still get the TypeScript editor suggestions, but the ability to use any valid CSS value for that property.
-- **Cannot be used in `.css.ts` files.** Rainbow Sprinkles derives its values from inline style property assignments, which means it needs to be configured with a "host" element (see setup for details).
 
 <hr />
 
@@ -145,9 +152,11 @@ import { Box } from './Box';
 function App() {
   return (
     // Use pre-defined values
-    <Box backgroundColor="$blue50" m="$large">
+    <Box bg="$blue50" margin="$large">
       {/* Or any valid CSS value */}
-      <Box textAlign="center">Hello world!</Box>
+      <Box textAlign="center" fontSize="30px">
+        Hello world!
+      </Box>
     </Box>
   );
 }
@@ -190,5 +199,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-The Homebase Engineering Team - [email](mailto:homebase-eng@wayfair.com)
-Rogin Farrer - [@roginfarrer](https://twitter.com/roginfarrer)
+- The Homebase Engineering Team - [email](mailto:homebase-eng@wayfair.com)
+- Rogin Farrer - [@roginfarrer](https://twitter.com/roginfarrer)
