@@ -42,7 +42,8 @@ jobs:
         uses: changesets/action@v1
         with:
           version: pnpm run version
-          publish: pnpm release | tee output.txt
+          publish: |
+            pnpm release | tee output.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
