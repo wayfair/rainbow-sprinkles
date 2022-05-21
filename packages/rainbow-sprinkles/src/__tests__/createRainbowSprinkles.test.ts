@@ -77,6 +77,7 @@ describe('dynamic properties only', () => {
       .toMatchInlineSnapshot(`
       Object {
         "className": "color-mobile padding-mobile",
+        "otherProps": Object {},
         "style": Object {
           "--color-mobile": "#efefef",
           "--padding-mobile": "40px",
@@ -87,6 +88,7 @@ describe('dynamic properties only', () => {
     expect(rainbowSprinkles({ px: '$1x' })).toMatchInlineSnapshot(`
       Object {
         "className": "paddingLeft-mobile paddingRight-mobile",
+        "otherProps": Object {},
         "style": Object {
           "--paddingLeft-mobile": "5px",
           "--paddingRight-mobile": "5px",
@@ -102,6 +104,7 @@ describe('dynamic properties only', () => {
     ).toMatchInlineSnapshot(`
       Object {
         "className": "paddingLeft-mobile paddingLeft-tablet paddingRight-mobile paddingRight-tablet fontSize-mobile fontSize-desktop",
+        "otherProps": Object {},
         "style": Object {
           "--fontSize-desktop": "20px",
           "--fontSize-mobile": "15px",
@@ -136,12 +139,15 @@ describe('dynamic properties only', () => {
         expect(rainbowSprinkles({ display: 'block' })).toMatchInlineSnapshot(`
           Object {
             "className": "display-block-mobile",
+            "otherProps": Object {},
+            "style": Object {},
           }
         `);
 
         expect(rainbowSprinkles({ display: 'flex' })).toMatchInlineSnapshot(`
           Object {
             "className": "display-mobile",
+            "otherProps": Object {},
             "style": Object {
               "--display-mobile": "flex",
             },
@@ -159,6 +165,7 @@ describe('dynamic properties only', () => {
         ).toMatchInlineSnapshot(`
           Object {
             "className": "display-block-mobile display-tablet display-inline-block-desktop",
+            "otherProps": Object {},
             "style": Object {
               "--display-tablet": "flex",
             },
@@ -172,6 +179,8 @@ describe('dynamic properties only', () => {
         ).toMatchInlineSnapshot(`
           Object {
             "className": "display-block-mobile display-inline-block-tablet",
+            "otherProps": Object {},
+            "style": Object {},
           }
         `);
 
@@ -182,6 +191,8 @@ describe('dynamic properties only', () => {
         ).toMatchInlineSnapshot(`
           Object {
             "className": "display-block-mobile display-inline-block-tablet",
+            "otherProps": Object {},
+            "style": Object {},
           }
         `);
       });
@@ -194,23 +205,27 @@ describe('dynamic properties only', () => {
         expect(rainbowSprinkles({ textAlign: 'left' })).toMatchInlineSnapshot(`
           Object {
             "className": "textAlign-left-mobile",
+            "otherProps": Object {},
+            "style": Object {},
           }
         `);
-        // @ts-expect-error
         expect(rainbowSprinkles({ textAlign: 'center' }))
           .toMatchInlineSnapshot(`
           Object {
             "className": "",
+            "otherProps": Object {},
+            "style": Object {},
           }
         `);
         expect(
-          // @ts-expect-error
           rainbowSprinkles({
             textAlign: { mobile: 'left', tablet: 'center' },
           }),
         ).toMatchInlineSnapshot(`
           Object {
             "className": "textAlign-left-mobile",
+            "otherProps": Object {},
+            "style": Object {},
           }
         `);
 
@@ -254,6 +269,7 @@ describe('dynamic properties only', () => {
       ).toMatchInlineSnapshot(`
         Object {
           "className": "backgroundColor-mobile marginLeft-mobile marginRight-mobile",
+          "otherProps": Object {},
           "style": Object {
             "--backgroundColor-mobile": "seagreen",
             "--marginLeft-mobile": "24px",
@@ -270,6 +286,7 @@ describe('dynamic properties only', () => {
       ).toMatchInlineSnapshot(`
         Object {
           "className": "backgroundColor-gray50-mobile backgroundColor-tablet marginLeft-2x-mobile marginLeft-desktop marginRight-2x-mobile marginRight-desktop",
+          "otherProps": Object {},
           "style": Object {
             "--backgroundColor-mobile": "gray50",
             "--backgroundColor-tablet": "seagreen",
