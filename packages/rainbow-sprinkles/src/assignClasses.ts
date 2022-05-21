@@ -29,7 +29,7 @@ export function assignClasses<Conditions extends BaseConditions>(
     // Quietly warn
     // eslint-disable-next-line no-console
     console.error(
-      `[Rainbow Sprinkles]: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
+      `Homebase: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
         classes,
       )
         .map((className) => `"${className}"`)
@@ -61,7 +61,7 @@ export function assignClasses<Conditions extends BaseConditions>(
       // Quietly warn
       // eslint-disable-next-line no-console
       console.error(
-        `[Rainbow Sprinkles]: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
+        `Homebase: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
           classes,
         )
           .map((className) => `"${className}"`)
