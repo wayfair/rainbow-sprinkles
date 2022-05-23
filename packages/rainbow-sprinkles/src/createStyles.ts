@@ -76,9 +76,17 @@ export function createStyles<
     }
   }
 
-  const classes = partialClasses as BaseConditionMap<Conditions>;
+  const result: CreateStylesOutput<Conditions, Property> = {
+    classes: { dynamic: partialClasses as BaseConditionMap<Conditions> },
+    name: property,
+    vars,
+  };
 
-  return { classes: { dynamic: classes }, name: property, vars, scale };
+  if (typeof scale === 'object') {
+    result.scale = scale;
+  }
+
+  return result;
 }
 
 export type CreateStyles = typeof createStyles;

@@ -90,7 +90,7 @@ export function createStaticStyles<
 
   const classes = partialClasses as BaseConditionMap<Conditions>;
 
-  return { classes, name: property };
+  return { classes, name: property, scale };
 }
 
 export type CreateStaticStyles = typeof createStaticStyles;

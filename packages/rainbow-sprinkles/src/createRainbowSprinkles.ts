@@ -51,7 +51,7 @@ export function createRainbowSprinkles<
     ),
   );
 
-  const allConfiguredProps = merge(normalProps, staticProps);
+  const allConfiguredProps = merge(staticProps, normalProps);
 
   const shorthandProps = mapValues(shorthands, (properties) =>
     // @ts-expect-error

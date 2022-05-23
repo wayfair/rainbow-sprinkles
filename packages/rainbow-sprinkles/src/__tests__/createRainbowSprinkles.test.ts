@@ -72,19 +72,19 @@ describe('dynamic properties only', () => {
     },
   });
 
-  test('rainbowSprinkles', () => {
+  test('passes through tokens and arbitrary values', () => {
     expect(rainbowSprinkles({ color: '$gray50', padding: '40px' }))
-      .toMatchInlineSnapshot(`
-      Object {
+      .toMatchObject({
         "className": "color-mobile padding-mobile",
-        "otherProps": Object {},
-        "style": Object {
+        "otherProps":  {},
+        "style":  {
           "--color-mobile": "#efefef",
           "--padding-mobile": "40px",
         },
-      }
-    `);
+    );
+  });
 
+  test('shorthands', () => {
     expect(rainbowSprinkles({ px: '$1x' })).toMatchInlineSnapshot(`
       Object {
         "className": "paddingLeft-mobile paddingRight-mobile",
@@ -95,7 +95,9 @@ describe('dynamic properties only', () => {
         },
       }
     `);
+  });
 
+  test('conditional values', () => {
     expect(
       rainbowSprinkles({
         px: { mobile: '$1x', tablet: '$2x' },
@@ -112,6 +114,25 @@ describe('dynamic properties only', () => {
           "--paddingLeft-tablet": "10px",
           "--paddingRight-mobile": "5px",
           "--paddingRight-tablet": "10px",
+        },
+      }
+    `);
+  });
+
+  test('token values without $ prefix fail', () => {
+    expect(
+      rainbowSprinkles({
+        fontSize: { mobile: '1x', desktop: '2x' },
+        color: 'gray50',
+      }),
+    ).toMatchInlineSnapshot(`
+      Object {
+        "className": "fontSize-mobile fontSize-desktop color-mobile",
+        "otherProps": Object {},
+        "style": Object {
+          "--color-mobile": "gray50",
+          "--fontSize-desktop": "2x",
+          "--fontSize-mobile": "1x",
         },
       }
     `);

@@ -1,9 +1,14 @@
 const VALUE_REGEX = /^\$(\w*)/;
 
-export function parseValue(rawValue: string, scale?: {}) {
+export function parseValue(rawValue: string, scale?: {} | boolean) {
+  if (typeof scale === 'boolean' || !scale) {
+    return rawValue;
+  }
+
   const matches = rawValue.match(VALUE_REGEX);
-  const value = matches?.[1] || rawValue;
-  return scale?.[value] || value;
+  const foundValue = matches?.[1];
+  console.log({ rawValue, foundValue, scale, finalValue: scale?.[foundValue] });
+  return scale?.[foundValue] ?? rawValue;
 }
 
 export function mapValues<

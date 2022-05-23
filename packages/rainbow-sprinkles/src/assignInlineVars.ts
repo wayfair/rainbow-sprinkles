@@ -13,7 +13,11 @@ function _assignInlineVars<Conditions extends BaseConditions>(
   if (typeof propValue === 'string') {
     // If the propValue matches a static value,
     // don't assign any variables
-    if (propertyConfig.classes[propValue] || !propertyConfig.classes.dynamic) {
+    if (
+      propertyConfig.classes[propValue] ||
+      propertyConfig.scale[propValue] ||
+      !propertyConfig.classes.dynamic
+    ) {
       return {};
     }
     return assignInlineVars({
@@ -33,6 +37,7 @@ function _assignInlineVars<Conditions extends BaseConditions>(
   const variableAssignments = Object.entries(bps).reduce(
     (acc: Record<string, string>, [bp, value]) => {
       if (value) {
+        console.log({ value, scale });
         if (propertyConfig.classes[value] || !propertyConfig.classes.dynamic) {
           // If value has a static class, don't assign any variables
           return acc;
