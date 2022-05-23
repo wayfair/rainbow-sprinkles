@@ -5,19 +5,6 @@ export function trim$(rawValue: string): string | undefined {
   return matches?.[1];
 }
 
-export function parseValue(rawValue: string, scale?: {} | boolean) {
-  if (typeof scale === 'boolean' || !scale) {
-    return rawValue;
-  }
-
-  const tokenName = trim$(rawValue);
-  if (tokenName) {
-    return scale?.[tokenName];
-  }
-
-  return rawValue;
-}
-
 export function mapValues<
   Value,
   Obj extends Record<string, Value>,
