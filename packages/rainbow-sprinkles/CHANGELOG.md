@@ -1,5 +1,12 @@
 # rainbow-sprinkles
 
+## 0.10.2
+
+### Patch Changes
+
+- 4d0158a: - Prevents scale values that do not have a `# rainbow-sprinkles prefix from evaluating to scale values.
+  - Fixes the case where a configured CSS property had a defined scale for staticProperties, and allowed arbitrary values through dynamicProperties, and the incorrect classes were being generated
+
 ## 0.10.1
 
 ### Patch Changes
