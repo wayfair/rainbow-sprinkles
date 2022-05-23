@@ -1,9 +1,8 @@
 const VALUE_REGEX = /^\$(\w*)/;
 
-export function parseValue(rawValue: string, scale?: {}) {
+export function trim$(rawValue: string): string | undefined {
   const matches = rawValue.match(VALUE_REGEX);
-  const value = matches?.[1] || rawValue;
-  return scale?.[value] || value;
+  return matches?.[1];
 }
 
 export function mapValues<

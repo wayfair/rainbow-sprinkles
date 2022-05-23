@@ -1,5 +1,5 @@
 import type { BaseConditions, CreateStylesOutput } from './types';
-import { parseValue } from './utils';
+import { trim$ } from './utils';
 
 export function assignClasses<Conditions extends BaseConditions>(
   propertyConfig: CreateStylesOutput<Conditions>,
@@ -14,10 +14,10 @@ export function assignClasses<Conditions extends BaseConditions>(
 
   // Value is a string or number, ie not responsive
   if (typeof propValue === 'string') {
-    const value = parseValue(propValue);
+    const value = trim$(propValue) ?? propValue;
     // Check for static value first
     if (classes[value]) {
-      return classes[propValue][defaultCondition];
+      return classes[value][defaultCondition];
     }
     if (classes.dynamic) {
       return classes.dynamic[defaultCondition];
@@ -46,7 +46,8 @@ export function assignClasses<Conditions extends BaseConditions>(
   const className = keys
     .map((bp) => {
       const rawValueAtBp = propObj[bp];
-      const valueAtBp = parseValue(rawValueAtBp);
+      const valueAtBp = trim$(rawValueAtBp) ?? rawValueAtBp;
+
       // Check for static value first
       if (classes[valueAtBp]) {
         return classes[valueAtBp][bp];

@@ -13,7 +13,7 @@ export default function App() {
       padding="$3500"
     >
       <Box
-        bg="core10"
+        bg="$core10"
         borderRadius={{ mobile: '$4x', desktop: '$5x' }}
         padding={{ mobile: '$2500', desktop: '$3000' }}
       >

@@ -16,9 +16,13 @@ const makeConfig = (classes): CreateStylesOutput<Conditions> => ({
 });
 
 test('dynamic', () => {
-  const config = makeConfig({
-    dynamic: { mobile: 'a', tablet: 'b', desktop: 'c' },
-  });
+  const config: CreateStylesOutput<Conditions> = {
+    classes: {
+      dynamic: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    },
+    name: 'display',
+    vars: { mobile: 'a', tablet: 'b', desktop: 'c' },
+  };
 
   expect(
     assignClasses<Conditions>(config, DEFAULT_CONDITION, {
@@ -31,18 +35,21 @@ test('dynamic', () => {
 });
 
 test('static', () => {
-  const config = makeConfig({
-    block: {
-      mobile: 'a',
-      tablet: 'b',
-      desktop: 'c',
+  const config: CreateStylesOutput<Conditions> = {
+    classes: {
+      block: {
+        mobile: 'a',
+        tablet: 'b',
+        desktop: 'c',
+      },
+      flex: {
+        mobile: 'x',
+        tablet: 'y',
+        desktop: 'z',
+      },
     },
-    flex: {
-      mobile: 'x',
-      tablet: 'y',
-      desktop: 'z',
-    },
-  });
+    name: 'display',
+  };
 
   expect(
     assignClasses<Conditions>(config, DEFAULT_CONDITION, {
@@ -57,27 +64,37 @@ test('static', () => {
 });
 
 test('static and dynamic', () => {
-  const config = makeConfig({
-    dynamic: {
-      mobile: '1',
-      tablet: '2',
-      desktop: '3',
+  const config: CreateStylesOutput<Conditions> = {
+    vars: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    classes: {
+      dynamic: {
+        mobile: '1',
+        tablet: '2',
+        desktop: '3',
+      },
+      primary: {
+        mobile: 'a',
+        tablet: 'b',
+        desktop: 'c',
+      },
+      secondary: {
+        mobile: 'x',
+        tablet: 'y',
+        desktop: 'z',
+      },
     },
-    block: {
-      mobile: 'a',
-      tablet: 'b',
-      desktop: 'c',
+    name: 'color',
+    scale: {
+      primary: 'color1',
+      secondary: 'color2',
     },
-    flex: {
-      mobile: 'x',
-      tablet: 'y',
-      desktop: 'z',
-    },
-  });
+  };
+
   expect(
     assignClasses<Conditions>(config, DEFAULT_CONDITION, {
       mobile: 'foo',
-      tablet: 'flex',
+      tablet: 'primary',
+      desktop: 'secondary',
     }),
-  ).toBe('1 y');
+  ).toBe('1 b z');
 });

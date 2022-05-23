@@ -11,6 +11,53 @@ const conditions: BaseConditions = {
   desktop: { '@media': DESKTOP },
 };
 
+it('returns expected config given object scale', () => {
+  const style = jest.spyOn(VE, 'style');
+
+  const result = createStaticStyles(
+    'color',
+    { primary: '#aaa', secondary: '#bbb' },
+    conditions,
+  );
+
+  const calledArgs = style.mock.calls;
+
+  expect(calledArgs.length).toBe(6);
+
+  expect(calledArgs[0][0]).toMatchObject({ color: '#aaa' });
+  expect(calledArgs[1][0]).toMatchObject({
+    '@media': { [TABLET]: { color: '#aaa' } },
+  });
+  expect(calledArgs[2][0]).toMatchObject({
+    '@media': { [DESKTOP]: { color: '#aaa' } },
+  });
+  expect(calledArgs[3][0]).toMatchObject({ color: '#bbb' });
+  expect(calledArgs[4][0]).toMatchObject({
+    '@media': { [TABLET]: { color: '#bbb' } },
+  });
+  expect(calledArgs[5][0]).toMatchObject({
+    '@media': { [DESKTOP]: { color: '#bbb' } },
+  });
+
+  expect(result).toMatchObject({
+    classes: {
+      primary: {
+        mobile: 'color-primary-mobile',
+        tablet: 'color-primary-tablet',
+        desktop: 'color-primary-desktop',
+      },
+      secondary: {
+        mobile: 'color-secondary-mobile',
+        tablet: 'color-secondary-tablet',
+        desktop: 'color-secondary-desktop',
+      },
+    },
+    name: 'color',
+  });
+
+  style.mockClear();
+});
+
 it('returns expected configuration given array scale', () => {
   const style = jest.spyOn(VE, 'style');
   const result = createStaticStyles(
@@ -22,149 +69,37 @@ it('returns expected configuration given array scale', () => {
   const calledArgs = style.mock.calls;
 
   expect(calledArgs.length).toBe(6);
-  expect(calledArgs[0][0]).toMatchInlineSnapshot(`
-    Object {
-      "display": "block",
-    }
-  `);
-  expect(calledArgs[1][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 768px)": Object {
-          "display": "block",
-        },
-      },
-    }
-  `);
-  expect(calledArgs[2][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 1024px)": Object {
-          "display": "block",
-        },
-      },
-    }
-  `);
-  expect(calledArgs[3][0]).toMatchInlineSnapshot(`
-    Object {
-      "display": "inline-block",
-    }
-  `);
-  expect(calledArgs[4][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 768px)": Object {
-          "display": "inline-block",
-        },
-      },
-    }
-  `);
-  expect(calledArgs[5][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 1024px)": Object {
-          "display": "inline-block",
-        },
-      },
-    }
-  `);
 
-  expect(result).toMatchInlineSnapshot(`
-    Object {
-      "classes": Object {
-        "block": Object {
-          "desktop": "display-block-desktop",
-          "mobile": "display-block-mobile",
-          "tablet": "display-block-tablet",
-        },
-        "inline-block": Object {
-          "desktop": "display-inline-block-desktop",
-          "mobile": "display-inline-block-mobile",
-          "tablet": "display-inline-block-tablet",
-        },
-      },
-      "name": "display",
-    }
-  `);
+  expect(calledArgs[0][0]).toMatchObject({ display: 'block' });
+  expect(calledArgs[1][0]).toMatchObject({
+    '@media': { [TABLET]: { display: 'block' } },
+  });
+  expect(calledArgs[2][0]).toMatchObject({
+    '@media': { [DESKTOP]: { display: 'block' } },
+  });
+  expect(calledArgs[3][0]).toMatchObject({ display: 'inline-block' });
+  expect(calledArgs[4][0]).toMatchObject({
+    '@media': { [TABLET]: { display: 'inline-block' } },
+  });
+  expect(calledArgs[5][0]).toMatchObject({
+    '@media': { [DESKTOP]: { display: 'inline-block' } },
+  });
 
-  style.mockRestore();
-});
-
-it('returns expected config given object scale', () => {
-  const style = jest.spyOn(VE, 'style');
-  const result = createStaticStyles(
-    'color',
-    { primary: '#aaa', secondary: '#bbb' },
-    conditions,
-  );
-
-  const calledArgs = style.mock.calls;
-
-  expect(calledArgs.length).toBe(6);
-  expect(calledArgs[0][0]).toMatchInlineSnapshot(`
-    Object {
-      "color": "#aaa",
-    }
-  `);
-  expect(calledArgs[1][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 768px)": Object {
-          "color": "#aaa",
-        },
+  expect(result).toMatchObject({
+    classes: {
+      block: {
+        desktop: 'display-block-desktop',
+        mobile: 'display-block-mobile',
+        tablet: 'display-block-tablet',
       },
-    }
-  `);
-  expect(calledArgs[2][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 1024px)": Object {
-          "color": "#aaa",
-        },
+      'inline-block': {
+        desktop: 'display-inline-block-desktop',
+        mobile: 'display-inline-block-mobile',
+        tablet: 'display-inline-block-tablet',
       },
-    }
-  `);
-  expect(calledArgs[3][0]).toMatchInlineSnapshot(`
-    Object {
-      "color": "#bbb",
-    }
-  `);
-  expect(calledArgs[4][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 768px)": Object {
-          "color": "#bbb",
-        },
-      },
-    }
-  `);
-  expect(calledArgs[5][0]).toMatchInlineSnapshot(`
-    Object {
-      "@media": Object {
-        "screen and (min-width: 1024px)": Object {
-          "color": "#bbb",
-        },
-      },
-    }
-  `);
+    },
+    name: 'display',
+  });
 
-  expect(result).toMatchInlineSnapshot(`
-    Object {
-      "classes": Object {
-        "primary": Object {
-          "desktop": undefined,
-          "mobile": undefined,
-          "tablet": undefined,
-        },
-        "secondary": Object {
-          "desktop": undefined,
-          "mobile": undefined,
-          "tablet": undefined,
-        },
-      },
-      "name": "color",
-    }
-  `);
-
-  style.mockRestore();
+  style.mockClear();
 });
