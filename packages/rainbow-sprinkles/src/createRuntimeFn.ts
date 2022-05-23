@@ -10,7 +10,7 @@ import type {
   CssConfig,
 } from './types';
 
-export function createRuntimeRainbowSprinkles<
+export function createRuntimeFn<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,
   Conditions extends BaseConditions,

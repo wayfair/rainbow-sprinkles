@@ -11,7 +11,7 @@ import type {
   BaseShorthand,
 } from './types';
 import { mapValues } from './utils';
-import { createRuntimeRainbowSprinkles } from './createRuntimeRainbowSprinkles';
+import { createRuntimeFn } from './createRuntimeFn';
 import merge from 'lodash.merge';
 
 export function createRainbowSprinkles<
@@ -75,9 +75,9 @@ export function createRainbowSprinkles<
     properties,
   };
 
-  return addFunctionSerializer(createRuntimeRainbowSprinkles(config), {
-    importPath: 'rainbow-sprinkles/createRuntimeRainbowSprinkles',
-    importName: 'createRuntimeRainbowSprinkles',
+  return addFunctionSerializer(createRuntimeFn(config), {
+    importPath: 'rainbow-sprinkles/createRuntimeFn',
+    importName: 'createRuntimeFn',
     args: [config],
   });
 }
