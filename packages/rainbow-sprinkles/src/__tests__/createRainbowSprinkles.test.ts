@@ -72,109 +72,86 @@ describe('dynamic properties only', () => {
     },
   });
 
-  test('passes through tokens and arbitrary values', () => {
-    expect(rainbowSprinkles({ color: '$gray50', padding: '40px' }))
-      .toMatchObject({
-        "className": "color-mobile padding-mobile",
-        "otherProps":  {},
-        "style":  {
-          "--color-mobile": "#efefef",
-          "--padding-mobile": "40px",
+  describe('rainbowSprinkles', () => {
+    it('handles scale values and non-scale values', () => {
+      expect(
+        rainbowSprinkles({ color: '$gray50', padding: '40px' }),
+      ).toMatchObject({
+        className: 'color-mobile padding-mobile',
+        style: {
+          '--color-mobile': vars.color['gray50'],
+          '--padding-mobile': '40px',
         },
-    );
-  });
-
-  test('shorthands', () => {
-    expect(rainbowSprinkles({ px: '$1x' })).toMatchInlineSnapshot(`
-      Object {
-        "className": "paddingLeft-mobile paddingRight-mobile",
-        "otherProps": Object {},
-        "style": Object {
-          "--paddingLeft-mobile": "5px",
-          "--paddingRight-mobile": "5px",
-        },
-      }
-    `);
-  });
-
-  test('conditional values', () => {
-    expect(
-      rainbowSprinkles({
-        px: { mobile: '$1x', tablet: '$2x' },
-        fontSize: { mobile: '$1x', desktop: '$2x' },
-      }),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "className": "paddingLeft-mobile paddingLeft-tablet paddingRight-mobile paddingRight-tablet fontSize-mobile fontSize-desktop",
-        "otherProps": Object {},
-        "style": Object {
-          "--fontSize-desktop": "20px",
-          "--fontSize-mobile": "15px",
-          "--paddingLeft-mobile": "5px",
-          "--paddingLeft-tablet": "10px",
-          "--paddingRight-mobile": "5px",
-          "--paddingRight-tablet": "10px",
-        },
-      }
-    `);
-  });
-
-  test('token values without $ prefix fail', () => {
-    expect(
-      rainbowSprinkles({
-        fontSize: { mobile: '1x', desktop: '2x' },
-        color: 'gray50',
-      }),
-    ).toMatchInlineSnapshot(`
-      Object {
-        "className": "fontSize-mobile fontSize-desktop color-mobile",
-        "otherProps": Object {},
-        "style": Object {
-          "--color-mobile": "gray50",
-          "--fontSize-desktop": "2x",
-          "--fontSize-mobile": "1x",
-        },
-      }
-    `);
-  });
-
-  describe('static and dynamic properties', () => {
-    const rainbowSprinkles = createRainbowSprinkles({
-      dynamicProperties: {
-        display: true,
-      },
-      staticProperties: {
-        display: ['block', 'inline-block'],
-        textAlign: ['left', 'right'],
-      },
-      conditions: {
-        mobile: {},
-        tablet: { '@media': 'screen and (min-width: 768px)' },
-        desktop: { '@media': 'screen and (min-width: 1024px)' },
-      },
-      defaultCondition: 'mobile',
+      });
     });
 
-    describe('rainbowSprinkles', () => {
-      test('props with static and dynamic values', () => {
-        expect(rainbowSprinkles({ display: 'block' })).toMatchInlineSnapshot(`
-          Object {
-            "className": "display-block-mobile",
-            "otherProps": Object {},
-            "style": Object {},
-          }
-        `);
+    it('handles shorthands', () => {
+      expect(rainbowSprinkles({ px: '$1x' })).toMatchObject({
+        className: 'paddingLeft-mobile paddingRight-mobile',
+        style: {
+          '--paddingLeft-mobile': vars.space['1x'],
+          '--paddingRight-mobile': vars.space['1x'],
+        },
+      });
+    });
 
-        expect(rainbowSprinkles({ display: 'flex' })).toMatchInlineSnapshot(`
-          Object {
-            "className": "display-mobile",
-            "otherProps": Object {},
-            "style": Object {
-              "--display-mobile": "flex",
-            },
-          }
-        `);
+    it('handles conditionals', () => {
+      expect(
+        rainbowSprinkles({
+          px: { mobile: '$1x', tablet: '$2x' },
+          fontSize: { mobile: '$1x', desktop: '$2x' },
+        }),
+      ).toMatchObject({
+        className:
+          'paddingLeft-mobile paddingLeft-tablet paddingRight-mobile paddingRight-tablet fontSize-mobile fontSize-desktop',
+        style: {
+          '--paddingLeft-mobile': vars.space['1x'],
+          '--paddingRight-mobile': vars.space['1x'],
+          '--paddingLeft-tablet': vars.space['2x'],
+          '--paddingRight-tablet': vars.space['2x'],
+          '--fontSize-mobile': vars.fontSize['1x'],
+          '--fontSize-desktop': vars.fontSize['2x'],
+        },
+      });
+    });
+  });
+});
 
+describe('static and dynamic properties', () => {
+  const rainbowSprinkles = createRainbowSprinkles({
+    dynamicProperties: {
+      display: true,
+    },
+    staticProperties: {
+      display: ['block', 'inline-block'],
+      textAlign: ['left', 'right'],
+    },
+    conditions: {
+      mobile: {},
+      tablet: { '@media': 'screen and (min-width: 768px)' },
+      desktop: { '@media': 'screen and (min-width: 1024px)' },
+    },
+    defaultCondition: 'mobile',
+  });
+
+  describe('rainbowSprinkles', () => {
+    describe('props with static and dynamic values', () => {
+      it('creates just static classes', () => {
+        expect(rainbowSprinkles({ display: 'block' })).toMatchObject({
+          className: 'display-block-mobile',
+        });
+      });
+
+      it('creates class and var for dynamic value', () => {
+        expect(rainbowSprinkles({ display: 'flex' })).toMatchObject({
+          className: 'display-mobile',
+          style: {
+            '--display-mobile': 'flex',
+          },
+        });
+      });
+
+      it('handles static and dynamic values within conditional object', () => {
         expect(
           rainbowSprinkles({
             display: {
@@ -183,141 +160,113 @@ describe('dynamic properties only', () => {
               desktop: 'inline-block',
             },
           }),
-        ).toMatchInlineSnapshot(`
-          Object {
-            "className": "display-block-mobile display-tablet display-inline-block-desktop",
-            "otherProps": Object {},
-            "style": Object {
-              "--display-tablet": "flex",
-            },
-          }
-        `);
+        ).toMatchObject({
+          className:
+            'display-block-mobile display-tablet display-inline-block-desktop',
+          style: {
+            '--display-tablet': 'flex',
+          },
+        });
+      });
 
+      it('handles just static values in a conditional object', () => {
         expect(
           rainbowSprinkles({
             display: { mobile: 'block', tablet: 'inline-block' },
           }),
-        ).toMatchInlineSnapshot(`
-          Object {
-            "className": "display-block-mobile display-inline-block-tablet",
-            "otherProps": Object {},
-            "style": Object {},
-          }
-        `);
-
-        expect(
-          rainbowSprinkles({
-            display: { mobile: 'block', tablet: 'inline-block' },
-          }),
-        ).toMatchInlineSnapshot(`
-          Object {
-            "className": "display-block-mobile display-inline-block-tablet",
-            "otherProps": Object {},
-            "style": Object {},
-          }
-        `);
-      });
-
-      test('props with just static values', () => {
-        const consoleError = jest
-          .spyOn(console, 'error')
-          .mockImplementation(() => {});
-
-        expect(rainbowSprinkles({ textAlign: 'left' })).toMatchInlineSnapshot(`
-          Object {
-            "className": "textAlign-left-mobile",
-            "otherProps": Object {},
-            "style": Object {},
-          }
-        `);
-        expect(rainbowSprinkles({ textAlign: 'center' }))
-          .toMatchInlineSnapshot(`
-          Object {
-            "className": "",
-            "otherProps": Object {},
-            "style": Object {},
-          }
-        `);
-        expect(
-          rainbowSprinkles({
-            textAlign: { mobile: 'left', tablet: 'center' },
-          }),
-        ).toMatchInlineSnapshot(`
-          Object {
-            "className": "textAlign-left-mobile",
-            "otherProps": Object {},
-            "style": Object {},
-          }
-        `);
-
-        expect(consoleError).toHaveBeenCalledTimes(2);
-
-        consoleError.mockRestore();
+        ).toMatchObject({
+          className: 'display-block-mobile display-inline-block-tablet',
+        });
       });
     });
-  });
 
-  describe('static and dynamic properties and shorthands', () => {
-    const rainbowSprinkles = createRainbowSprinkles({
-      dynamicProperties: {
-        backgroundColor: true,
-        marginLeft: true,
-        marginRight: true,
-      },
-      staticProperties: {
-        backgroundColor: vars.color,
-        marginLeft: vars.space,
-        marginRight: vars.space,
-      },
-      shorthands: {
-        mx: ['marginLeft', 'marginRight'],
-        bg: ['backgroundColor'],
-      },
-      conditions: {
-        mobile: {},
-        tablet: { '@media': 'screen and (min-width: 768px)' },
-        desktop: { '@media': 'screen and (min-width: 1024px)' },
-      },
-      defaultCondition: 'mobile',
-    });
+    describe('props with just static values', () => {
+      const consoleError = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
 
-    test('rainbowSprinkles', () => {
+      expect(rainbowSprinkles({ textAlign: 'left' })).toMatchObject({
+        className: 'textAlign-left-mobile',
+        otherProps: {},
+        style: {},
+      });
+      // @ts-expect-error
+      expect(rainbowSprinkles({ textAlign: 'center' })).toMatchObject({
+        className: '',
+        otherProps: {},
+        style: {},
+      });
       expect(
         rainbowSprinkles({
-          bg: 'seagreen',
+          // @ts-expect-error
+          textAlign: { mobile: 'left', tablet: 'center' },
+        }),
+      ).toMatchObject({
+        className: 'textAlign-left-mobile',
+      });
+      expect(console.error).toHaveBeenCalledTimes(2);
+
+      consoleError.mockRestore();
+    });
+  });
+});
+
+describe('static and dynamic properties and shorthands', () => {
+  const rainbowSprinkles = createRainbowSprinkles({
+    dynamicProperties: {
+      backgroundColor: true,
+      marginLeft: true,
+      marginRight: true,
+    },
+    staticProperties: {
+      backgroundColor: vars.color,
+      marginLeft: vars.space,
+      marginRight: vars.space,
+    },
+    shorthands: {
+      mx: ['marginLeft', 'marginRight'],
+      bg: ['backgroundColor'],
+    },
+    conditions: {
+      mobile: {},
+      tablet: { '@media': 'screen and (min-width: 768px)' },
+      desktop: { '@media': 'screen and (min-width: 1024px)' },
+    },
+    defaultCondition: 'mobile',
+  });
+
+  describe('rainbowSprinkles', () => {
+    it('handles shorthands', () => {
+      expect(
+        rainbowSprinkles({
+          bg: '$gray50',
           mx: '24px',
         }),
-      ).toMatchInlineSnapshot(`
-        Object {
-          "className": "backgroundColor-mobile marginLeft-mobile marginRight-mobile",
-          "otherProps": Object {},
-          "style": Object {
-            "--backgroundColor-mobile": "seagreen",
-            "--marginLeft-mobile": "24px",
-            "--marginRight-mobile": "24px",
-          },
-        }
-      `);
+      ).toMatchObject({
+        className:
+          'backgroundColor-gray50-mobile marginLeft-mobile marginRight-mobile',
+        style: {
+          '--marginLeft-mobile': '24px',
+          '--marginRight-mobile': '24px',
+        },
+      });
+    });
 
+    it('handles responsive shorthands', () => {
       expect(
         rainbowSprinkles({
           bg: { mobile: '$gray50', tablet: 'seagreen' },
           mx: { mobile: '$2x', desktop: '50px' },
         }),
-      ).toMatchInlineSnapshot(`
-        Object {
-          "className": "backgroundColor-gray50-mobile backgroundColor-tablet marginLeft-2x-mobile marginLeft-desktop marginRight-2x-mobile marginRight-desktop",
-          "otherProps": Object {},
-          "style": Object {
-            "--backgroundColor-mobile": "gray50",
-            "--backgroundColor-tablet": "seagreen",
-            "--marginLeft-desktop": "50px",
-            "--marginLeft-mobile": "2x",
-            "--marginRight-desktop": "50px",
-            "--marginRight-mobile": "2x",
-          },
-        }
-      `);
+      ).toMatchObject({
+        className:
+          'backgroundColor-gray50-mobile backgroundColor-tablet marginLeft-2x-mobile marginLeft-desktop marginRight-2x-mobile marginRight-desktop',
+        style: {
+          '--backgroundColor-tablet': 'seagreen',
+          '--marginLeft-desktop': '50px',
+          '--marginRight-desktop': '50px',
+        },
+      });
     });
   });
 });

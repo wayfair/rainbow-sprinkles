@@ -1,14 +1,21 @@
 const VALUE_REGEX = /^\$(\w*)/;
 
+export function trim$(rawValue: string): string | undefined {
+  const matches = rawValue.match(VALUE_REGEX);
+  return matches?.[1];
+}
+
 export function parseValue(rawValue: string, scale?: {} | boolean) {
   if (typeof scale === 'boolean' || !scale) {
     return rawValue;
   }
 
-  const matches = rawValue.match(VALUE_REGEX);
-  const foundValue = matches?.[1];
-  console.log({ rawValue, foundValue, scale, finalValue: scale?.[foundValue] });
-  return scale?.[foundValue] ?? rawValue;
+  const tokenName = trim$(rawValue);
+  if (tokenName) {
+    return scale?.[tokenName];
+  }
+
+  return rawValue;
 }
 
 export function mapValues<

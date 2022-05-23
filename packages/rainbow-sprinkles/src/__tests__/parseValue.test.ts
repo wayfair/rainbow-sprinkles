@@ -24,6 +24,7 @@ it('returns original value if not in scale', () => {
   expect(parseValue('foo', scale)).toBe('foo');
 
   // Other symbols don't pass the parsing
+  expect(parseValue('gray100', scale)).toBe('gray100');
   expect(parseValue('_gray100', scale)).toBe('_gray100');
   expect(parseValue('@gray100', scale)).toBe('@gray100');
 });

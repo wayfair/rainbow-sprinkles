@@ -37,7 +37,6 @@ function _assignInlineVars<Conditions extends BaseConditions>(
   const variableAssignments = Object.entries(bps).reduce(
     (acc: Record<string, string>, [bp, value]) => {
       if (value) {
-        console.log({ value, scale });
         if (propertyConfig.classes[value] || !propertyConfig.classes.dynamic) {
           // If value has a static class, don't assign any variables
           return acc;
