@@ -1,0 +1,4 @@
+{
+  "main": "dist/rainbow-sprinkles-createRuntimeFn.cjs.js",
+  "module": "dist/rainbow-sprinkles-createRuntimeFn.esm.js"
+}

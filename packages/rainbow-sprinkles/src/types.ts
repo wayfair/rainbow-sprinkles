@@ -15,14 +15,12 @@ type CSSVarFunction = ReturnType<typeof createVar>;
 
 export type ConfigStaticProperties = {
   [k in keyof CSSProperties]?:
-    | Array<CSSProperties[k] | CSSVarFunction>
-    | Record<string, CSSProperties[k] | CSSVarFunction>;
+    | ReadonlyArray<CSSProperties[k]>
+    | Record<string, CSSProperties[k]>;
 };
 
 export type ConfigDynamicProperties = {
-  [k in keyof CSSProperties]?:
-    | Record<string, CSSProperties[k] | CSSVarFunction>
-    | true;
+  [k in keyof CSSProperties]?: Record<string, CSSProperties[k]> | true;
 };
 
 export type BaseConditions = { [conditionName: string]: Condition };
@@ -43,37 +41,96 @@ export type ShorthandOptions<
   shorthands?: Shorthands;
 };
 
-export type RainbowSprinklesOptions<
+export type RainbowSprinklesOptionsDynamic<
+  DynamicProperties extends ConfigDynamicProperties,
+  Conditions extends BaseConditions,
+  Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
+> = {
+  dynamicProperties: DynamicProperties;
+  conditions: Conditions;
+  defaultCondition: keyof Conditions;
+  shorthands?: Shorthands;
+};
+export type RainbowSprinklesOptionsStatic<
+  StaticProperties extends ConfigStaticProperties,
+  Conditions extends BaseConditions,
+  Shorthands extends { [k: string]: Array<keyof StaticProperties> },
+> = {
+  staticProperties: StaticProperties;
+  conditions: Conditions;
+  defaultCondition: keyof Conditions;
+  shorthands?: Shorthands;
+};
+export type RainbowSprinklesOptionsBoth<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,
   Conditions extends BaseConditions,
   Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
 > = {
   dynamicProperties: DynamicProperties;
-  staticProperties?: StaticProperties;
+  staticProperties: StaticProperties;
   conditions: Conditions;
   defaultCondition: keyof Conditions;
   shorthands?: Shorthands;
 };
 
 export type BaseConditionMap<Conditions extends BaseConditions> = {
-  [k in keyof Conditions]: string;
+  [k in keyof Conditions | 'default']: string;
 };
 
 export type CreateStylesOutput<
   Conditions extends BaseConditions,
   Property extends keyof CSSProperties = keyof CSSProperties,
 > = {
-  classes: { [k: string | 'dynamic']: BaseConditionMap<Conditions> };
+  dynamic?: BaseConditionMap<Conditions>;
+  values?: { [k: string]: BaseConditionMap<Conditions> };
   name: Property;
   vars?: BaseConditionMap<Conditions>;
-  scale?: ConfigDynamicProperties[Property];
+  scale: ConfigDynamicProperties[Property];
 };
 
-export type CssConfig<Conditions extends BaseConditions> = Record<
-  string,
-  CreateStylesOutput<Conditions, keyof CSSProperties>[]
->;
+export type BaseCssConfig<
+  DynamicProperties extends ConfigDynamicProperties,
+  StaticProperties extends ConfigStaticProperties,
+  Conditions extends BaseConditions,
+> = {
+  [K in
+    | keyof DynamicProperties
+    | keyof StaticProperties]: K extends keyof CSSProperties
+    ? CreateStylesOutput<Conditions, K>
+    : never;
+};
+
+export type CssConfig<
+  DynamicProperties extends ConfigDynamicProperties,
+  StaticProperties extends ConfigStaticProperties,
+  Conditions extends BaseConditions,
+  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
+  Config = BaseCssConfig<DynamicProperties, StaticProperties, Conditions>,
+> = Config & {
+  [K in keyof Shorthands]: Shorthands[K][0] extends keyof Config
+    ? Config[Shorthands[K][0]]
+    : never;
+};
+
+export type CreateReturn<
+  DynamicProperties extends ConfigDynamicProperties,
+  StaticProperties extends ConfigStaticProperties,
+  Conditions extends BaseConditions,
+  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
+> = {
+  config: CssConfig<
+    DynamicProperties,
+    StaticProperties,
+    Conditions,
+    Shorthands
+  >;
+  defaultCondition: keyof Conditions;
+  properties:
+    | keyof DynamicProperties
+    | keyof StaticProperties
+    | keyof Shorthands;
+};
 
 // Props
 
@@ -144,7 +201,7 @@ export type RainbowSprinklesProps<
 
 // Runtime Function
 
-type RuntimeFnReturn = {
+export type RuntimeFnReturn = {
   style: Record<string, string>;
   className: string;
   otherProps: Record<string, any>;

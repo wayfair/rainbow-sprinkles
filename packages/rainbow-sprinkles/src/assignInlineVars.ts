@@ -4,24 +4,20 @@ import { trim$ } from './utils';
 
 function _assignInlineVars<Conditions extends BaseConditions>(
   propertyConfig: CreateStylesOutput<Conditions>,
-  defaultCondition: keyof Conditions,
   propValue: unknown,
 ): CSSProperties | null {
-  const { vars, scale } = propertyConfig;
+  const { vars, scale, values, dynamic } = propertyConfig;
 
   // Value is a string, ie not responsive
   if (typeof propValue === 'string') {
     const parsedValue = trim$(propValue) ?? propValue;
     // If the propValue matches a static value,
     // don't assign any variables
-    if (
-      propertyConfig.classes[parsedValue] ||
-      !propertyConfig.classes.dynamic
-    ) {
+    if (values?.[parsedValue] || !dynamic) {
       return {};
     }
     return assignInlineVars({
-      [vars[defaultCondition]]: scale?.[parsedValue] ?? propValue,
+      [vars.default]: scale?.[parsedValue] ?? propValue,
     });
   }
 
@@ -38,20 +34,19 @@ function _assignInlineVars<Conditions extends BaseConditions>(
     (acc: Record<string, string>, [bp, value]) => {
       if (value) {
         const parsedValue = trim$(value) ?? value;
-        if (
-          propertyConfig.classes[parsedValue] ||
-          !propertyConfig.classes.dynamic
-        ) {
+        if (values?.[parsedValue] || !dynamic) {
           // If value has a static class, don't assign any variables
           return acc;
         }
         hasProperty = true;
-        acc[vars[bp]] = scale?.[parsedValue] ?? value;
+        acc[vars.conditions[bp]] = scale?.[parsedValue] ?? value;
       }
       return acc;
     },
     {},
   );
+
+  // console.log(variableAssignments);
 
   return hasProperty ? assignInlineVars(variableAssignments) : {};
 }

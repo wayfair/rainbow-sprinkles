@@ -5,9 +5,10 @@ import type {
   ConfigDynamicProperties,
   CreateStylesOutput,
 } from './types';
+import { SprinkleProperties } from './exp';
 
 export type BaseConditionMap<Conditions extends BaseConditions> = {
-  [k in keyof Conditions]: string;
+  [k in keyof Conditions | 'default']: string;
 };
 
 function generateRules(
@@ -32,7 +33,8 @@ export function createStyles<
   property: Property,
   scale: ConfigDynamicProperties[Property],
   conditions: Conditions,
-): CreateStylesOutput<Conditions, Property> {
+  defaultCondition: keyof Conditions,
+): SprinkleProperties {
   type ConditionMap = Partial<BaseConditionMap<Conditions>>;
 
   const partialVars: ConditionMap = {};
@@ -77,9 +79,12 @@ export function createStyles<
   }
 
   const result: CreateStylesOutput<Conditions, Property> = {
-    classes: { dynamic: partialClasses as BaseConditionMap<Conditions> },
+    dynamic: {
+      ...partialClasses,
+      default: partialClasses[defaultCondition],
+    } as BaseConditionMap<Conditions>,
     name: property,
-    vars,
+    vars: { conditions: vars, default: vars[defaultCondition] },
   };
 
   if (typeof scale === 'object') {

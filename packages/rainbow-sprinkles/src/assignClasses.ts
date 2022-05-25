@@ -3,31 +3,30 @@ import { trim$ } from './utils';
 
 export function assignClasses<Conditions extends BaseConditions>(
   propertyConfig: CreateStylesOutput<Conditions>,
-  defaultCondition: keyof Conditions,
   propValue: unknown,
 ): string {
   if (!propValue) {
     return '';
   }
 
-  const { classes, name: propName } = propertyConfig;
+  const { dynamic, values, name: propName } = propertyConfig;
 
   // Value is a string or number, ie not responsive
   if (typeof propValue === 'string') {
     const value = trim$(propValue) ?? propValue;
     // Check for static value first
-    if (classes[value]) {
-      return classes[value][defaultCondition];
+    if (values?.[value]) {
+      return values[value].default;
     }
-    if (classes.dynamic) {
-      return classes.dynamic[defaultCondition];
+    if (dynamic) {
+      return dynamic.default;
     }
     // If the property is not dynamic, and unrecognized value is provided
     // Quietly warn
     // eslint-disable-next-line no-console
     console.error(
       `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
-        classes,
+        values,
       )
         .map((className) => `"${className}"`)
         .join(', ')}. Received: ${JSON.stringify(propValue)}.`,
@@ -49,18 +48,18 @@ export function assignClasses<Conditions extends BaseConditions>(
       const valueAtBp = trim$(rawValueAtBp) ?? rawValueAtBp;
 
       // Check for static value first
-      if (classes[valueAtBp]) {
-        return classes[valueAtBp][bp];
+      if (values?.[valueAtBp]) {
+        return values[valueAtBp][bp];
       }
-      if (classes.dynamic) {
-        return classes.dynamic[bp];
+      if (dynamic) {
+        return dynamic[bp];
       }
       // If the property is not dynamic, and unrecognized value is provided
       // Quietly warn
       // eslint-disable-next-line no-console
       console.error(
         `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
-          classes,
+          values,
         )
           .map((className) => `"${className}"`)
           .join(', ')}. Received: ${JSON.stringify(valueAtBp)}.`,

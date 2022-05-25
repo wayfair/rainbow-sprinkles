@@ -10,7 +10,7 @@ import merge from 'lodash.merge';
 
 export type BaseConditionMap<Conditions extends BaseConditions> = {
   [Prop: string]: {
-    [k in keyof Conditions]: string;
+    [k in keyof Conditions | 'default']: string;
   };
 };
 
@@ -36,10 +36,9 @@ export function createStaticStyles<
   property: CSSProperty,
   scale: ConfigStaticProperties[CSSProperty],
   conditions: Conditions,
-): CreateStylesOutput<Conditions> {
-  type ConditionMap = Partial<BaseConditionMap<Conditions>>;
-
-  const partialClasses: ConditionMap = {};
+  defaultCondition: keyof Conditions,
+): CreateStylesOutput<Conditions, CSSProperty> {
+  const classes: any = {};
 
   let propertyOptions = scale;
   if (Array.isArray(scale)) {
@@ -51,7 +50,7 @@ export function createStaticStyles<
   }
 
   for (const propertyOption in propertyOptions) {
-    const config = partialClasses[propertyOption] || {};
+    const config = classes[propertyOption] || {};
     for (const conditionName in conditions) {
       if (Object.keys(conditions[conditionName]).length < 1) {
         merge(config, {
@@ -85,12 +84,12 @@ export function createStaticStyles<
         }
       }
     }
-    Object.assign(partialClasses, { [propertyOption]: config });
+    Object.assign(classes, {
+      [propertyOption]: { ...config, default: config[defaultCondition] },
+    });
   }
 
-  const classes = partialClasses as BaseConditionMap<Conditions>;
-
-  return { classes, name: property, scale };
+  return { values: classes, name: property, scale };
 }
 
 export type CreateStaticStyles = typeof createStaticStyles;
