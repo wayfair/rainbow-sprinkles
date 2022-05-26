@@ -1,11 +1,10 @@
 import * as VE from '@vanilla-extract/css';
 import { createStaticStyles } from '../createStaticStyles';
-import { BaseConditions } from '../types';
 
 const TABLET = 'screen and (min-width: 768px)';
 const DESKTOP = 'screen and (min-width: 1024px)';
 
-const conditions: BaseConditions = {
+const conditions = {
   mobile: {},
   tablet: { '@media': TABLET },
   desktop: { '@media': DESKTOP },
@@ -18,6 +17,7 @@ it('returns expected config given object scale', () => {
     'color',
     { primary: '#aaa', secondary: '#bbb' },
     conditions,
+    'mobile',
   );
 
   const calledArgs = style.mock.calls;
@@ -40,16 +40,22 @@ it('returns expected config given object scale', () => {
   });
 
   expect(result).toMatchObject({
-    classes: {
+    values: {
       primary: {
-        mobile: 'color-primary-mobile',
-        tablet: 'color-primary-tablet',
-        desktop: 'color-primary-desktop',
+        default: 'color-primary-mobile',
+        conditions: {
+          mobile: 'color-primary-mobile',
+          tablet: 'color-primary-tablet',
+          desktop: 'color-primary-desktop',
+        },
       },
       secondary: {
-        mobile: 'color-secondary-mobile',
-        tablet: 'color-secondary-tablet',
-        desktop: 'color-secondary-desktop',
+        default: 'color-secondary-mobile',
+        conditions: {
+          mobile: 'color-secondary-mobile',
+          tablet: 'color-secondary-tablet',
+          desktop: 'color-secondary-desktop',
+        },
       },
     },
     name: 'color',
@@ -64,6 +70,7 @@ it('returns expected configuration given array scale', () => {
     'display',
     ['block', 'inline-block'],
     conditions,
+    'mobile',
   );
 
   const calledArgs = style.mock.calls;
@@ -86,16 +93,22 @@ it('returns expected configuration given array scale', () => {
   });
 
   expect(result).toMatchObject({
-    classes: {
+    values: {
       block: {
-        desktop: 'display-block-desktop',
-        mobile: 'display-block-mobile',
-        tablet: 'display-block-tablet',
+        default: 'display-block-mobile',
+        conditions: {
+          desktop: 'display-block-desktop',
+          mobile: 'display-block-mobile',
+          tablet: 'display-block-tablet',
+        },
       },
       'inline-block': {
-        desktop: 'display-inline-block-desktop',
-        mobile: 'display-inline-block-mobile',
-        tablet: 'display-inline-block-tablet',
+        default: 'display-inline-block-mobile',
+        conditions: {
+          desktop: 'display-inline-block-desktop',
+          mobile: 'display-inline-block-mobile',
+          tablet: 'display-inline-block-tablet',
+        },
       },
     },
     name: 'display',

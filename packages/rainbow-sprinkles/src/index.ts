@@ -1,1 +1,2 @@
-export { defineProperties, createRainbowSprinkles } from './defineProperties';
+export { defineProperties } from './defineProperties';
+export { createRainbowSprinkles } from './createRainbowSprinkles';

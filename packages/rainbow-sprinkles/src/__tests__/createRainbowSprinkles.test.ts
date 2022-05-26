@@ -1,4 +1,4 @@
-import { defineProperties, createRainbowSprinkles } from '../defineProperties';
+import { defineProperties, createRainbowSprinkles } from '../';
 
 const vars = {
   space: {

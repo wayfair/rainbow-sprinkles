@@ -1,7 +1,7 @@
-import { createRainbowSprinkles } from 'rainbow-sprinkles';
+import { createRainbowSprinkles, defineProperties } from 'rainbow-sprinkles';
 import { vars } from '../vars.css';
 
-export const rainbowSprinkles = createRainbowSprinkles({
+const responsiveProperties = defineProperties({
   conditions: {
     mobile: {},
     tablet: { '@media': 'screen and (min-width: 768px)' },
@@ -28,11 +28,6 @@ export const rainbowSprinkles = createRainbowSprinkles({
     textAlign: true,
     color: vars.color,
     background: vars.color,
-    margin: true,
-    marginBottom: true,
-    marginLeft: true,
-    marginRight: true,
-    marginTop: true,
     zIndex: true,
     position: true,
     top: vars.space,
@@ -80,5 +75,7 @@ export const rainbowSprinkles = createRainbowSprinkles({
     size: ['height', 'width'],
   },
 });
+
+export const rainbowSprinkles = createRainbowSprinkles(responsiveProperties);
 
 export type Sprinkles = Parameters<typeof rainbowSprinkles>[0];

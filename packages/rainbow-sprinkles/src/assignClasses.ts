@@ -1,8 +1,8 @@
-import type { BaseConditions, CreateStylesOutput } from './types';
+import type { CreateStylesOutput } from './types';
 import { trim$ } from './utils';
 
-export function assignClasses<Conditions extends BaseConditions>(
-  propertyConfig: CreateStylesOutput<Conditions>,
+export function assignClasses(
+  propertyConfig: CreateStylesOutput,
   propValue: unknown,
 ): string {
   if (!propValue) {
@@ -34,8 +34,7 @@ export function assignClasses<Conditions extends BaseConditions>(
     return '';
   }
 
-  const propObj = propValue as { [k in keyof Conditions]: string };
-  const keys = Object.keys(propObj);
+  const keys = Object.keys(propValue);
 
   // If no entries, exit gracefully
   if (keys.length < 1) {
@@ -44,15 +43,15 @@ export function assignClasses<Conditions extends BaseConditions>(
 
   const className = keys
     .map((bp) => {
-      const rawValueAtBp = propObj[bp];
+      const rawValueAtBp = propValue[bp];
       const valueAtBp = trim$(rawValueAtBp) ?? rawValueAtBp;
 
       // Check for static value first
       if (values?.[valueAtBp]) {
-        return values[valueAtBp][bp];
+        return values[valueAtBp].conditions[bp];
       }
       if (dynamic) {
-        return dynamic[bp];
+        return dynamic.conditions[bp];
       }
       // If the property is not dynamic, and unrecognized value is provided
       // Quietly warn

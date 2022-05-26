@@ -1,97 +1,51 @@
 import { createVar, style } from '@vanilla-extract/css';
-import type {
-  BaseConditions,
-  CSSProperties,
-  ConfigDynamicProperties,
-  CreateStylesOutput,
-} from './types';
-import { SprinkleProperties } from './exp';
+import type { CreateStylesOutput } from './types';
+import { mapValues } from './utils';
 
-export type BaseConditionMap<Conditions extends BaseConditions> = {
-  [k in keyof Conditions | 'default']: string;
-};
-
-function generateRules(
+export function createStyles(
   property: string,
-  cssVariable: string,
-  conditions?: [string, string],
-) {
-  const [conditionType, condition] = conditions || [];
-  if (condition && conditionType) {
-    return {
-      [conditionType]: { [condition]: { [property]: cssVariable } },
-    };
-  } else {
-    return { [property]: cssVariable };
-  }
-}
+  scale: true | Record<string, string>,
+  conditions: Record<string, Record<string, string>>,
+  defaultCondition: string,
+): CreateStylesOutput {
+  const vars = mapValues(conditions, (_, conditionName) =>
+    createVar(`${property}-${conditionName}`),
+  );
 
-export function createStyles<
-  Conditions extends BaseConditions,
-  Property extends keyof CSSProperties = keyof CSSProperties,
->(
-  property: Property,
-  scale: ConfigDynamicProperties[Property],
-  conditions: Conditions,
-  defaultCondition: keyof Conditions,
-): SprinkleProperties {
-  type ConditionMap = Partial<BaseConditionMap<Conditions>>;
+  const classes = mapValues(conditions, (conditionValue, conditionName) => {
+    let styleValue = { [property]: vars[conditionName] };
 
-  const partialVars: ConditionMap = {};
-  for (const conditionName in conditions) {
-    Object.assign(partialVars, {
-      [conditionName]: createVar(`${property}-${conditionName}`),
-    });
-  }
-
-  const vars = partialVars as BaseConditionMap<Conditions>;
-
-  const partialClasses: ConditionMap = {};
-
-  for (const conditionName in conditions) {
-    if (Object.keys(conditions[conditionName]).length < 1) {
-      Object.assign(partialClasses, {
-        [conditionName]: style(
-          generateRules(property, vars[conditionName] as string),
-          process.env.NODE_ENV === 'test'
-            ? `${property}-${conditionName}`
-            : undefined,
-        ),
-      });
-      continue;
+    if (conditionValue['@media']) {
+      styleValue = {
+        '@media': {
+          [conditionValue['@media']]: styleValue,
+        },
+      };
     }
-    for (const conditionType in conditions[conditionName]) {
-      const condition = conditions[conditionName][conditionType];
-      if (typeof condition === 'string') {
-        Object.assign(partialClasses, {
-          [conditionName]: style(
-            generateRules(property, vars[conditionName] as string, [
-              conditionType,
-              condition,
-            ]),
-            process.env.NODE_ENV === 'test'
-              ? `${property}-${conditionName}`
-              : undefined,
-          ),
-        });
-      }
+    if (conditionValue['@supports']) {
+      styleValue = {
+        '@supports': {
+          [conditionValue['@supports']]: styleValue,
+        },
+      };
     }
-  }
+    if (conditionValue['selector']) {
+      styleValue = {
+        selector: {
+          [conditionValue['selector']]: styleValue,
+        },
+      };
+    }
 
-  const result: CreateStylesOutput<Conditions, Property> = {
-    dynamic: {
-      ...partialClasses,
-      default: partialClasses[defaultCondition],
-    } as BaseConditionMap<Conditions>,
+    return style(styleValue, `${property}-${conditionName}`);
+  });
+
+  return {
+    dynamic: { default: classes[defaultCondition], conditions: classes },
     name: property,
     vars: { conditions: vars, default: vars[defaultCondition] },
+    dynamicScale: scale,
   };
-
-  if (typeof scale === 'object') {
-    result.scale = scale;
-  }
-
-  return result;
 }
 
 export type CreateStyles = typeof createStyles;
