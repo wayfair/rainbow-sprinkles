@@ -26,8 +26,6 @@ const responsiveProperties = defineProperties({
     fontSize: vars.fontSize,
     lineHeight: vars.lineHeight,
     textAlign: true,
-    color: vars.color,
-    background: vars.color,
     zIndex: true,
     position: true,
     top: vars.space,
@@ -35,15 +33,14 @@ const responsiveProperties = defineProperties({
     right: vars.space,
     bottom: vars.space,
     verticalAlign: true,
-    animation: true,
-  },
-  staticProperties: {
-    display: ['block', 'flex', 'inline-block', 'inline-flex'],
     margin: vars.space,
     marginBottom: vars.space,
     marginLeft: vars.space,
     marginRight: vars.space,
     marginTop: vars.space,
+  },
+  staticProperties: {
+    display: ['block', 'flex', 'inline-block', 'inline-flex'],
     border: {
       '1x': '1px',
       '2x': '2px',
@@ -60,7 +57,6 @@ const responsiveProperties = defineProperties({
     paddingY: ['paddingTop', 'paddingBottom'],
     px: ['paddingLeft', 'paddingRight'],
     py: ['paddingTop', 'paddingBottom'],
-    bg: ['background'],
     placeItems: ['alignItems', 'justifyContent'],
     typeSize: ['fontSize', 'lineHeight'],
     m: ['margin'],
@@ -76,6 +72,28 @@ const responsiveProperties = defineProperties({
   },
 });
 
-export const rainbowSprinkles = createRainbowSprinkles(responsiveProperties);
+const interactiveProperties = defineProperties({
+  conditions: {
+    base: {},
+    hover: { selector: '&:hover' },
+    active: { selector: '&:active' },
+  },
+  defaultCondition: 'base',
+  dynamicProperties: {
+    color: vars.color,
+    backgroundColor: vars.color,
+    transform: true,
+    transition: true,
+    animation: true,
+  },
+  shorthands: {
+    bg: ['backgroundColor'],
+  },
+});
+
+export const rainbowSprinkles = createRainbowSprinkles(
+  responsiveProperties,
+  interactiveProperties,
+);
 
 export type Sprinkles = Parameters<typeof rainbowSprinkles>[0];

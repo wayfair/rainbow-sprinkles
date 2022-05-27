@@ -1,11 +1,11 @@
 import { createStyles } from './createStyles';
 import { createStaticStyles } from './createStaticStyles';
 import type {
-  BaseConditions,
+  ConfigConditions,
   CSSProperties,
   ConfigStaticProperties,
   ConfigDynamicProperties,
-  BaseShorthand,
+  ConfigShorthands,
 } from './types';
 
 type ConditionalMap<Conditions> = {
@@ -15,7 +15,7 @@ type ConditionalMap<Conditions> = {
 
 type ReturnDynamic<
   DynamicProperties extends ConfigDynamicProperties,
-  Conditions extends BaseConditions,
+  Conditions extends ConfigConditions,
 > = {
   conditions: {
     defaultCondition: keyof Conditions;
@@ -41,7 +41,7 @@ type Values<Property, Result> = {
 
 type ReturnStatic<
   StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
+  Conditions extends ConfigConditions,
 > = {
   conditions: {
     defaultCondition: keyof Conditions;
@@ -68,7 +68,7 @@ type ReturnShorthands<
 
 export type RainbowSprinklesOptionsDynamic<
   DynamicProperties extends ConfigDynamicProperties,
-  Conditions extends BaseConditions,
+  Conditions extends ConfigConditions,
   Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
 > = {
   dynamicProperties: DynamicProperties;
@@ -78,7 +78,7 @@ export type RainbowSprinklesOptionsDynamic<
 };
 export type RainbowSprinklesOptionsStatic<
   StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
+  Conditions extends ConfigConditions,
   Shorthands extends { [k: string]: Array<keyof StaticProperties> },
 > = {
   staticProperties: StaticProperties;
@@ -89,8 +89,8 @@ export type RainbowSprinklesOptionsStatic<
 export type RainbowSprinklesOptionsBoth<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
-  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
+  Conditions extends ConfigConditions,
+  Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
 > = {
   dynamicProperties: DynamicProperties;
   staticProperties: StaticProperties;
@@ -102,7 +102,7 @@ export type RainbowSprinklesOptionsBoth<
 // Dynamic Properties + Shorthands
 export function defineProperties<
   DynamicProperties extends ConfigDynamicProperties,
-  Conditions extends BaseConditions,
+  Conditions extends ConfigConditions,
   Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
 >(
   options: RainbowSprinklesOptionsDynamic<
@@ -114,7 +114,7 @@ export function defineProperties<
 // Static Properties + Shorthands
 export function defineProperties<
   StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
+  Conditions extends ConfigConditions,
   Shorthands extends { [k: string]: Array<keyof StaticProperties> },
 >(
   options: RainbowSprinklesOptionsStatic<
@@ -127,8 +127,8 @@ export function defineProperties<
 export function defineProperties<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
-  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
+  Conditions extends ConfigConditions,
+  Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
 >(
   options: RainbowSprinklesOptionsBoth<
     DynamicProperties,

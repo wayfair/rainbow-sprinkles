@@ -31,7 +31,7 @@ export function createStyles(
     }
     if (conditionValue['selector']) {
       styleValue = {
-        selector: {
+        selectors: {
           [conditionValue['selector']]: styleValue,
         },
       };

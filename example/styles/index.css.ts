@@ -10,10 +10,10 @@ globalKeyframes('pinwheelSpin', {
     transform: 'rotate(0deg)',
   },
   '20%': {
-    transform: 'rotate(30deg)',
+    transform: 'rotate(30deg) scale(1.2)',
   },
   '40%': {
-    transform: 'rotate(-45deg)',
+    transform: 'rotate(-45deg) scale(1.2)',
   },
   '100%': {
     transform: 'rotate(720deg)',

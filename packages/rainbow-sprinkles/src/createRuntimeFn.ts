@@ -1,6 +1,6 @@
 import { assignClasses } from './assignClasses';
 import { assignInlineVars } from './assignInlineVars';
-import { ShorthandProperty, SprinkleProperties } from './exp';
+import { ShorthandProperty, SprinkleProperties } from './types';
 
 export const createRuntimeFn = ({
   cssConfig,

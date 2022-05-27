@@ -2,9 +2,9 @@ import { mapValues as map } from '../utils';
 
 /**
  * Asserts at compile time that the provided type argument's type resolves to the expected boolean literal type.
- * @param expectTrue - True if the passed in type argument resolved to true.
+ * @param _expectTrue - True if the passed in type argument resolved to true.
  */
-function assert<T extends true | false>(expectTrue: T) {}
+function assert<T extends true | false>(_expectTrue: T) {}
 
 type Matches<T, U> = T extends U ? (U extends T ? true : false) : false;
 

@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css';
 import type { CreateStylesOutput } from './types';
-import { mapValues } from 'lodash';
+import { mapValues } from './utils';
 
 export function createStaticStyles(
   property: string,
@@ -36,7 +36,7 @@ export function createStaticStyles(
       }
       if (conditionValue['selector']) {
         styleValue = {
-          selector: {
+          selectors: {
             [conditionValue['selector']]: styleValue,
           },
         };

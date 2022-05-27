@@ -11,6 +11,7 @@ export default function App() {
       display="flex"
       placeItems="center"
       padding="$3500"
+      fontFamily="$body"
     >
       <Box
         bg="$core10"
@@ -24,7 +25,7 @@ export default function App() {
           gap={{ mobile: '$2000', desktop: '$2500' }}
         >
           <Box
-            animation="5s pinwheelSpin ease-in-out infinite"
+            animation={{ hover: '5s pinwheelSpin ease infinite' }}
             size={{ mobile: '60px', tablet: '75px', desktop: '100px' }}
             aria-hidden="true"
           >
@@ -32,7 +33,6 @@ export default function App() {
           </Box>
           <Box
             as="h1"
-            fontFamily="$body"
             color="$black80"
             typeSize={{ mobile: '$1000', desktop: '$1000' }}
           >
