@@ -52,7 +52,7 @@ Create a `rainbow-sprinkles.css.ts` file, then create and export your `rainbowSp
 
 ```typescript
 // rainbow-sprinkles.css.ts
-import { createRainbowSprinkles } from 'rainbow-sprinkles';
+import { defineProperties, createRainbowSprinkles } from 'rainbow-sprinkles';
 
 // or import a theme (e.g. `createTheme`, `createThemeContract`)
 const vars = {
@@ -74,7 +74,7 @@ const vars = {
   },
 };
 
-export const rainbowSprinkles = createRainbowSprinkles({
+const responsiveProperties = defineProperties({
   conditions: {
     mobile: {},
     tablet: { '@media': 'screen and (min-width: 768px)' },
@@ -114,6 +114,8 @@ export const rainbowSprinkles = createRainbowSprinkles({
     my: ['marginTop', 'marginBottom'],
   },
 });
+
+export const rainbowSprinkles(responsiveProperties)
 
 export type Sprinkles = Parameters<typeof rainbowSprinkles>[0];
 ```
