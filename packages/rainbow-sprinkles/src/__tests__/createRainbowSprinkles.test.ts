@@ -1,4 +1,4 @@
-import { createRainbowSprinkles } from '../createRainbowSprinkles';
+import { defineProperties, createRainbowSprinkles } from '../';
 
 const vars = {
   space: {
@@ -30,7 +30,7 @@ const vars = {
 };
 
 describe('dynamic properties only', () => {
-  const rainbowSprinkles = createRainbowSprinkles({
+  const responsiveProps = defineProperties({
     conditions: {
       mobile: {},
       tablet: { '@media': 'screen and (min-width: 768px)' },
@@ -71,6 +71,8 @@ describe('dynamic properties only', () => {
       placeItems: ['alignItems', 'justifyContent'],
     },
   });
+
+  const rainbowSprinkles = createRainbowSprinkles(responsiveProps);
 
   describe('rainbowSprinkles', () => {
     it('handles scale values and non-scale values', () => {
@@ -118,7 +120,7 @@ describe('dynamic properties only', () => {
 });
 
 describe('static and dynamic properties', () => {
-  const rainbowSprinkles = createRainbowSprinkles({
+  const responsiveProps = defineProperties({
     dynamicProperties: {
       display: true,
     },
@@ -133,6 +135,8 @@ describe('static and dynamic properties', () => {
     },
     defaultCondition: 'mobile',
   });
+
+  const rainbowSprinkles = createRainbowSprinkles(responsiveProps);
 
   describe('rainbowSprinkles', () => {
     describe('props with static and dynamic values', () => {
@@ -212,7 +216,7 @@ describe('static and dynamic properties', () => {
 });
 
 describe('static and dynamic properties and shorthands', () => {
-  const rainbowSprinkles = createRainbowSprinkles({
+  const responsiveProps = defineProperties({
     dynamicProperties: {
       backgroundColor: true,
       marginLeft: true,
@@ -235,6 +239,8 @@ describe('static and dynamic properties and shorthands', () => {
     defaultCondition: 'mobile',
   });
 
+  const rainbowSprinkles = createRainbowSprinkles(responsiveProps);
+
   describe('rainbowSprinkles', () => {
     it('handles shorthands', () => {
       expect(
@@ -244,7 +250,7 @@ describe('static and dynamic properties and shorthands', () => {
         }),
       ).toMatchObject({
         className:
-          'backgroundColor-gray50-mobile marginLeft-mobile marginRight-mobile',
+          'marginLeft-mobile marginRight-mobile backgroundColor-gray50-mobile',
         style: {
           '--marginLeft-mobile': '24px',
           '--marginRight-mobile': '24px',
@@ -260,7 +266,7 @@ describe('static and dynamic properties and shorthands', () => {
         }),
       ).toMatchObject({
         className:
-          'backgroundColor-gray50-mobile backgroundColor-tablet marginLeft-2x-mobile marginLeft-desktop marginRight-2x-mobile marginRight-desktop',
+          'marginLeft-2x-mobile marginLeft-desktop marginRight-2x-mobile marginRight-desktop backgroundColor-gray50-mobile backgroundColor-tablet',
         style: {
           '--backgroundColor-tablet': 'seagreen',
           '--marginLeft-desktop': '50px',

@@ -1,83 +1,34 @@
-import { addFunctionSerializer } from '@vanilla-extract/css/functionSerializer';
-import { createStyles } from './createStyles';
-import { createStaticStyles } from './createStaticStyles';
 import type {
-  BaseConditions,
-  CSSProperties,
-  ConfigStaticProperties,
-  ConfigDynamicProperties,
-  RainbowSprinklesOptions,
-  RuntimeFn,
-  BaseShorthand,
+  RuntimeFnReturn,
+  DefinePropertiesReturn,
+  SprinklesProps,
 } from './types';
-import { mapValues } from './utils';
-import { createRuntimeRainbowSprinkles } from './createRuntimeRainbowSprinkles';
-import merge from 'lodash.merge';
+import { addFunctionSerializer } from '@vanilla-extract/css/functionSerializer';
+import { createRuntimeFn } from './createRuntimeFn';
+
+export type SprinklesFn<Args extends ReadonlyArray<DefinePropertiesReturn>> = (
+  props: SprinklesProps<Args>,
+) => RuntimeFnReturn;
 
 export function createRainbowSprinkles<
-  DynamicProperties extends ConfigDynamicProperties,
-  StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
-  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
->(
-  options: RainbowSprinklesOptions<
-    DynamicProperties,
-    StaticProperties,
-    Conditions,
-    Shorthands
-  >,
-): RuntimeFn<DynamicProperties, StaticProperties, Conditions, Shorthands> {
-  const {
-    conditions,
-    dynamicProperties,
-    shorthands,
-    defaultCondition,
-    staticProperties,
-  } = options;
+  Args extends ReadonlyArray<DefinePropertiesReturn>,
+>(...args: Args): SprinklesFn<Args> {
+  const cssConfig = Object.assign({}, ...args.map((a) => a.config));
+  const properties = Object.keys(cssConfig);
 
-  const normalProps = mapValues(dynamicProperties, (scale, property) =>
-    createStyles<Conditions>(
-      property as keyof CSSProperties,
-      scale,
-      conditions,
-    ),
+  const shorthandNames = properties.filter(
+    (property) => 'mappings' in cssConfig[property],
   );
-
-  const staticProps = mapValues(staticProperties, (scale, property) =>
-    createStaticStyles<Conditions>(
-      property as keyof CSSProperties,
-      scale,
-      conditions,
-    ),
-  );
-
-  const allConfiguredProps = merge(staticProps, normalProps);
-
-  const shorthandProps = mapValues(shorthands, (properties) =>
-    // @ts-expect-error
-    properties.map((property) => allConfiguredProps[property]),
-  );
-
-  const cssConfig = {
-    ...mapValues(allConfiguredProps, (config) => [config]),
-    ...shorthandProps,
-  };
-
-  const properties = [
-    ...Object.keys(dynamicProperties),
-    ...(staticProperties ? Object.keys(staticProperties) : []),
-    ...(shorthands ? Object.keys(shorthands) : []),
-  ];
 
   const config = {
-    config: cssConfig,
-    defaultCondition: defaultCondition as string,
+    cssConfig,
+    shorthandNames,
     properties,
   };
 
-  return addFunctionSerializer(createRuntimeRainbowSprinkles(config), {
-    importPath: 'rainbow-sprinkles/createRuntimeRainbowSprinkles',
-    importName: 'createRuntimeRainbowSprinkles',
+  return addFunctionSerializer(createRuntimeFn(config), {
+    importPath: 'rainbow-sprinkles/createRuntimeFn',
+    importName: 'createRuntimeFn',
     args: [config],
   });
 }

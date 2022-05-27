@@ -1,96 +1,59 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { style } from '@vanilla-extract/css';
-import type {
-  BaseConditions,
-  CSSProperties,
-  ConfigStaticProperties,
-  CreateStylesOutput,
-} from './types';
-import merge from 'lodash.merge';
+import type { CreateStylesOutput } from './types';
+import { mapValues } from './utils';
 
-export type BaseConditionMap<Conditions extends BaseConditions> = {
-  [Prop: string]: {
-    [k in keyof Conditions]: string;
-  };
-};
-
-function generateRules(
+export function createStaticStyles(
   property: string,
-  value: string,
-  conditions?: [string, string],
-) {
-  const [conditionType, condition] = conditions || [];
-  if (condition && conditionType) {
+  scale: ReadonlyArray<string> | Record<string, string>,
+  conditions: Record<string, Record<string, string>>,
+  defaultCondition: string,
+): CreateStylesOutput {
+  const scaleObj = Array.isArray(scale)
+    ? Object.assign(
+        {},
+        ...scale.map((s) => ({
+          [s]: s,
+        })),
+      )
+    : scale;
+
+  const values = mapValues(scaleObj, (scaleValue, scaleKey) => {
+    const classes = mapValues(conditions, (conditionValue, conditionName) => {
+      let styleValue = { [property]: scaleValue };
+      if (conditionValue['@media']) {
+        styleValue = {
+          '@media': {
+            [conditionValue['@media']]: styleValue,
+          },
+        };
+      }
+      if (conditionValue['@supports']) {
+        styleValue = {
+          '@supports': {
+            [conditionValue['@supports']]: styleValue,
+          },
+        };
+      }
+      if (conditionValue['selector']) {
+        styleValue = {
+          selectors: {
+            [conditionValue['selector']]: styleValue,
+          },
+        };
+      }
+      return style(styleValue, `${property}-${scaleKey}-${conditionName}`);
+    });
     return {
-      [conditionType]: { [condition]: { [property]: value } },
+      conditions: classes,
+      default: classes[defaultCondition],
     };
-  } else {
-    return { [property]: value };
-  }
-}
+  });
 
-export function createStaticStyles<
-  Conditions extends BaseConditions,
-  CSSProperty extends keyof CSSProperties = keyof CSSProperties,
->(
-  property: CSSProperty,
-  scale: ConfigStaticProperties[CSSProperty],
-  conditions: Conditions,
-): CreateStylesOutput<Conditions> {
-  type ConditionMap = Partial<BaseConditionMap<Conditions>>;
-
-  const partialClasses: ConditionMap = {};
-
-  let propertyOptions = scale;
-  if (Array.isArray(scale)) {
-    propertyOptions = scale.reduce((acc, curr) => {
-      // @ts-ignore
-      acc[curr] = curr;
-      return acc;
-    }, {});
-  }
-
-  for (const propertyOption in propertyOptions) {
-    const config = partialClasses[propertyOption] || {};
-    for (const conditionName in conditions) {
-      if (Object.keys(conditions[conditionName]).length < 1) {
-        merge(config, {
-          [conditionName]: style(
-            generateRules(
-              property,
-              propertyOptions[propertyOption] as unknown as string,
-            ),
-            process.env.NODE_ENV === 'test'
-              ? `${property}-${propertyOption}-${conditionName}`
-              : undefined,
-          ),
-        });
-        continue;
-      }
-      for (const conditionType in conditions[conditionName]) {
-        const condition = conditions[conditionName][conditionType];
-        if (typeof condition === 'string') {
-          merge(config, {
-            [conditionName]: style(
-              generateRules(
-                property,
-                propertyOptions[propertyOption] as unknown as string,
-                [conditionType, condition],
-              ),
-              process.env.NODE_ENV === 'test'
-                ? `${property}-${propertyOption}-${conditionName}`
-                : undefined,
-            ),
-          });
-        }
-      }
-    }
-    Object.assign(partialClasses, { [propertyOption]: config });
-  }
-
-  const classes = partialClasses as BaseConditionMap<Conditions>;
-
-  return { classes, name: property, scale };
+  return {
+    values,
+    name: property,
+    staticScale: scaleObj,
+  };
 }
 
 export type CreateStaticStyles = typeof createStaticStyles;

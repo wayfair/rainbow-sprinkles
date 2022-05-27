@@ -25,7 +25,7 @@
   "homepage": "https://github.com/wayfair-incubator/rainbow-sprinkles#readme",
   "files": [
     "/dist",
-    "/createRuntimeRainbowSprinkles"
+    "/createRuntimeFn"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -33,9 +33,9 @@
       "module": "./dist/rainbow-sprinkles.esm.js",
       "default": "./dist/rainbow-sprinkles.cjs.js"
     },
-    "./createRuntimeRainbowSprinkles": {
-      "module": "./createRuntimeRainbowSprinkles/dist/rainbow-sprinkles-createRuntimeRainbowSprinkles.esm.js",
-      "default": "./createRuntimeRainbowSprinkles/dist/rainbow-sprinkles-createRuntimeRainbowSprinkles.cjs.js"
+    "./createRuntimeFn": {
+      "module": "./createRuntimeFn/dist/rainbow-sprinkles-createRuntimeFn.esm.js",
+      "default": "./createRuntimeFn/dist/rainbow-sprinkles-createRuntimeFn.cjs.js"
     }
   },
   "scripts": {
@@ -51,16 +51,13 @@
     "@vanilla-extract/css": "^1",
     "@vanilla-extract/dynamic": "^2"
   },
-  "dependencies": {
-    "lodash.merge": "^4.6.2"
-  },
   "publishConfig": {
     "access": "public"
   },
   "preconstruct": {
     "entrypoints": [
       "index.ts",
-      "createRuntimeRainbowSprinkles.ts"
+      "createRuntimeFn.ts"
     ]
   }
 }

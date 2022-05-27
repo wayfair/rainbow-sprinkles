@@ -1,169 +1,265 @@
 import type { Properties } from './css';
-import { createVar } from '@vanilla-extract/css';
 
 export interface CSSProperties extends Properties {}
 
+type PropertyCssValue<T> = T extends keyof CSSProperties
+  ? CSSProperties[T]
+  : never;
+
 // Configuration
-
-interface Condition {
-  '@media'?: string;
-  '@supports'?: string;
-  selector?: string;
-}
-
-type CSSVarFunction = ReturnType<typeof createVar>;
 
 export type ConfigStaticProperties = {
   [k in keyof CSSProperties]?:
-    | Array<CSSProperties[k] | CSSVarFunction>
-    | Record<string, CSSProperties[k] | CSSVarFunction>;
+    | ReadonlyArray<CSSProperties[k]>
+    | Record<string, CSSProperties[k]>;
 };
 
 export type ConfigDynamicProperties = {
-  [k in keyof CSSProperties]?:
-    | Record<string, CSSProperties[k] | CSSVarFunction>
-    | true;
+  [k in keyof CSSProperties]?: Record<string, CSSProperties[k]> | true;
 };
 
-export type BaseConditions = { [conditionName: string]: Condition };
+export type ConfigConditions = {
+  [conditionName: string]: {
+    '@media'?: string;
+    '@supports'?: string;
+    selector?: string;
+  };
+};
 
-export type PrefixValue<T> = `$${(string | number) & T}`;
-
-export type BaseShorthand<DynamicProperties, StaticProperties> = {
+export type ConfigShorthands<DynamicProperties, StaticProperties> = {
   [shorthandName: string]: Array<
     keyof DynamicProperties | keyof StaticProperties
   >;
 };
 
-export type ShorthandOptions<
-  DynamicProperties extends ConfigDynamicProperties,
-  StaticProperties extends ConfigStaticProperties,
-  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
-> = {
-  shorthands?: Shorthands;
+export type ConditionalMap = {
+  default: string;
+  conditions: { [condition: string]: string };
 };
 
-export type RainbowSprinklesOptions<
-  DynamicProperties extends ConfigDynamicProperties,
-  StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
-  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
-> = {
-  dynamicProperties: DynamicProperties;
-  staticProperties?: StaticProperties;
-  conditions: Conditions;
-  defaultCondition: keyof Conditions;
-  shorthands?: Shorthands;
+export type DynamicConditionalProperty = {
+  dynamic: ConditionalMap;
+  vars: ConditionalMap;
+  dynamicScale:
+    | {
+        [token: string]: string;
+      }
+    | true;
+  name: string;
 };
 
-export type BaseConditionMap<Conditions extends BaseConditions> = {
-  [k in keyof Conditions]: string;
+export type StaticConditionalPropertyArray = {
+  values: {
+    [value: string]: ConditionalMap;
+  };
+  staticScale: string[];
+  name: string;
 };
 
-export type CreateStylesOutput<
-  Conditions extends BaseConditions,
-  Property extends keyof CSSProperties = keyof CSSProperties,
-> = {
-  classes: { [k: string | 'dynamic']: BaseConditionMap<Conditions> };
-  name: Property;
-  vars?: BaseConditionMap<Conditions>;
-  scale?: ConfigDynamicProperties[Property];
+export type StaticConditionalProperty = {
+  values: {
+    [value: string]: ConditionalMap;
+  };
+  staticScale: {
+    [token: string]: string;
+  };
+  name: string;
 };
 
-export type CssConfig<Conditions extends BaseConditions> = Record<
-  string,
-  CreateStylesOutput<Conditions, keyof CSSProperties>[]
->;
+export type StaticDynamicConditionalPropertyArray = {
+  dynamic: ConditionalMap;
+  values: {
+    [value: string]: ConditionalMap;
+  };
+  name: string;
+  staticScale: string[];
+  dynamicScale: true;
+  vars: ConditionalMap;
+};
+
+export type StaticDynamicConditionalProperty = {
+  dynamic: ConditionalMap;
+  values: {
+    [value: string]: ConditionalMap;
+  };
+  name: string;
+  vars: ConditionalMap;
+  staticScale: {
+    [token: string]: string;
+  };
+  dynamicScale: true;
+};
+
+export type ShorthandProperty = {
+  mappings: string[];
+};
+
+export type SprinkleProperties = {
+  [k: string]:
+    | DynamicConditionalProperty
+    | StaticConditionalProperty
+    | StaticConditionalPropertyArray
+    | StaticDynamicConditionalPropertyArray
+    | StaticDynamicConditionalProperty
+    | ShorthandProperty;
+};
+
+/**
+ * All of the possible permutations of a Sprinkle Property, combined
+ * together and made conditional
+ */
+export type CreateStylesOutput = {
+  dynamic?: {
+    default: string;
+    conditions: { [condition: string]: string };
+  };
+  values?: {
+    [value: string]: {
+      default: string;
+      conditions: { [condition: string]: string };
+    };
+  };
+  name: string;
+  vars?: {
+    default: string;
+    conditions: { [condition: string]: string };
+  };
+  staticScale?: string[] | Record<string, string>;
+  dynamicScale?: true | Record<string, string>;
+};
+
+export type DefinePropertiesReturn = {
+  config: SprinkleProperties;
+};
 
 // Props
 
-type ValueOrConditionObject<T, Conditions> =
+type ValueOrConditionObject<T, Conditions extends ConditionalMap> =
   | T
-  | Partial<Record<keyof Conditions, T>>;
+  | Partial<Record<keyof Conditions['conditions'], T>>;
 
-/**
- * Properties that are `staticProperties` only, and not
- * also configured in `dynamicProperties`
- */
-type ExclusivelyStaticProperties<DynamicProperties, StaticProperties> = Omit<
-  StaticProperties,
-  keyof DynamicProperties
->;
+type ValueOrConditionObjectStatic<
+  T,
+  Values extends { [k: string]: ConditionalMap },
+> =
+  | T
+  | {
+      [Condition in keyof Values[keyof Values]['conditions']]?: keyof Values;
+    };
 
-export type RainbowSprinklesProps<
-  DynamicProperties extends ConfigDynamicProperties,
-  StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
-> = {
-  [Property in keyof Pick<
-    CSSProperties,
-    keyof DynamicProperties extends keyof CSSProperties
-      ? keyof DynamicProperties
-      : never
-  >]?: DynamicProperties[Property] extends boolean // Property set to `true` (no alias to values, just any accepted CSS value)
-    ? // If the same property does have a scale set in static properties...
-      Property extends keyof StaticProperties
-      ? // ...and if the scale is an array (so not alias/theme values)
-        StaticProperties[Property] extends string[]
-        ? // ...just show the regular CSS Properties. We don't do anything special for the types here, since there's no unique values.
-          ValueOrConditionObject<CSSProperties[Property], Conditions>
-        : // Otherwise, we want to merge both the CSSProperties types and the theme/alias values provided in the config
-          ValueOrConditionObject<
-            | CSSProperties[Property]
-            | PrefixValue<keyof StaticProperties[Property]>,
-            Conditions
+export type PrefixValue<T> = `$${(string | number) & T}`;
+
+export type ChildSprinkles<Sprinkles extends SprinkleProperties> = {
+  [Prop in keyof Sprinkles]?: Sprinkles[Prop] extends StaticDynamicConditionalProperty
+    ? ValueOrConditionObject<
+        | PropertyCssValue<Prop>
+        | PrefixValue<keyof Sprinkles[Prop]['dynamicScale']>,
+        Sprinkles[Prop]['vars']
+      >
+    : Sprinkles[Prop] extends StaticDynamicConditionalPropertyArray
+    ? ValueOrConditionObject<PropertyCssValue<Prop>, Sprinkles[Prop]['vars']>
+    : Sprinkles[Prop] extends DynamicConditionalProperty
+    ? Sprinkles[Prop]['dynamicScale'] extends boolean
+      ? ValueOrConditionObject<PropertyCssValue<Prop>, Sprinkles[Prop]['vars']>
+      : ValueOrConditionObject<
+          | PropertyCssValue<Prop>
+          | PrefixValue<keyof Sprinkles[Prop]['dynamicScale']>,
+          Sprinkles[Prop]['vars']
+        >
+    : Sprinkles[Prop] extends StaticDynamicConditionalPropertyArray
+    ? ValueOrConditionObject<
+        Sprinkles[Prop]['staticScale'][number],
+        Sprinkles[Prop]['dynamic']
+      >
+    : Sprinkles[Prop] extends StaticDynamicConditionalProperty
+    ? ValueOrConditionObjectStatic<
+        PrefixValue<keyof Sprinkles[Prop]['staticScale']>,
+        Sprinkles[Prop]['values']
+      >
+    : Sprinkles[Prop] extends StaticConditionalProperty
+    ? ValueOrConditionObjectStatic<
+        PrefixValue<keyof Sprinkles[Prop]['staticScale']>,
+        Sprinkles[Prop]['values']
+      >
+    : Sprinkles[Prop] extends StaticConditionalPropertyArray
+    ? ValueOrConditionObjectStatic<
+        Sprinkles[Prop]['staticScale'][number],
+        Sprinkles[Prop]['values']
+      >
+    : /**
+     *
+     * SHORTHANDS
+     * Repeats everything above, just nested with
+     * Sprinkles[Sprinkles[Prop]['mappings'][number]]
+     *
+     */
+    Sprinkles[Prop] extends ShorthandProperty
+    ? Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalProperty
+      ? ValueOrConditionObject<
+          | PropertyCssValue<Sprinkles[Prop]['mappings'][number]>
+          | PrefixValue<
+              keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale']
+            >,
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
+        >
+      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalPropertyArray
+      ? ValueOrConditionObject<
+          PropertyCssValue<Prop>,
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
+        >
+      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends DynamicConditionalProperty
+      ? Sprinkles[Sprinkles[Prop]['mappings'][number]]['dynamicScale'] extends boolean
+        ? ValueOrConditionObject<
+            PropertyCssValue<Sprinkles[Prop]['mappings'][number]>,
+            Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
           >
-      : ValueOrConditionObject<CSSProperties[Property], Conditions>
-    : // Property has an object scale, therefore merge the alias/theme values with CSS property values
-      ValueOrConditionObject<
-        | CSSProperties[Property]
-        | PrefixValue<keyof DynamicProperties[Property]>,
-        Conditions
-      >;
-} & {
-  // Static properties
-  [Property in keyof Pick<
-    CSSProperties,
-    keyof ExclusivelyStaticProperties<
-      DynamicProperties,
-      StaticProperties
-    > extends keyof CSSProperties
-      ? keyof ExclusivelyStaticProperties<DynamicProperties, StaticProperties>
+        : ValueOrConditionObject<
+            | PropertyCssValue<Sprinkles[Prop]['mappings'][number]>
+            | PrefixValue<
+                keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['dynamicScale']
+              >,
+            Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
+          >
+      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalPropertyArray
+      ? ValueOrConditionObject<
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale'][number],
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['dynamic']
+        >
+      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalProperty
+      ? ValueOrConditionObjectStatic<
+          PrefixValue<
+            keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale']
+          >,
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['values']
+        >
+      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticConditionalProperty
+      ? ValueOrConditionObjectStatic<
+          PrefixValue<
+            keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale']
+          >,
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['values']
+        >
+      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticConditionalPropertyArray
+      ? ValueOrConditionObjectStatic<
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale'][number],
+          Sprinkles[Sprinkles[Prop]['mappings'][number]]['values']
+        >
       : never
-  >]?: StaticProperties[Property] extends string[]
-    ? // Scale is an array of CSS values
-      // e.g. {display: ['block', 'flex']}
-      ValueOrConditionObject<StaticProperties[Property][number], Conditions>
-    : // Scale is an object of alias to CSS values
-      // usually means the use of CSS vars
-      ValueOrConditionObject<
-        PrefixValue<keyof StaticProperties[Property]>,
-        Conditions
-      >;
+    : never;
 };
+
+export type SprinklesProps<Args extends ReadonlyArray<any>> = Args extends [
+  infer L,
+  ...infer R,
+]
+  ? (L extends DefinePropertiesReturn ? ChildSprinkles<L['config']> : never) &
+      SprinklesProps<R>
+  : {};
 
 // Runtime Function
 
-type RuntimeFnReturn = {
+export type RuntimeFnReturn = {
   style: Record<string, string>;
   className: string;
   otherProps: Record<string, any>;
 };
-
-export type RuntimeFn<
-  DynamicProperties extends ConfigDynamicProperties,
-  StaticProperties extends ConfigStaticProperties,
-  Conditions extends BaseConditions,
-  Shorthands extends BaseShorthand<DynamicProperties, StaticProperties>,
-  Props = RainbowSprinklesProps<
-    DynamicProperties,
-    StaticProperties,
-    Conditions
-  >,
-> = (
-  props: Props & {
-    [Key in keyof Shorthands]?: Shorthands[Key][0] extends keyof Props
-      ? Props[Shorthands[Key][0]]
-      : never;
-  },
-) => RuntimeFnReturn;

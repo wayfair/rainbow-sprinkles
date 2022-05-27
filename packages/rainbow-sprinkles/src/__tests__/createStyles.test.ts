@@ -1,11 +1,10 @@
 import * as VE from '@vanilla-extract/css';
 import { createStyles } from '../createStyles';
-import { BaseConditions } from '../types';
 
 const TABLET = 'screen and (min-width: 768px)';
 const DESKTOP = 'screen and (min-width: 1024px)';
 
-const conditions: BaseConditions = {
+const conditions = {
   mobile: {},
   tablet: { '@media': TABLET },
   desktop: { '@media': DESKTOP },
@@ -18,7 +17,7 @@ const scale = {
 
 it('returns expected configuration with vars scale', () => {
   const style = jest.spyOn(VE, 'style');
-  const result = createStyles('backgroundColor', scale, conditions);
+  const result = createStyles('backgroundColor', scale, conditions, 'mobile');
 
   const calledArgs = style.mock.calls;
   expect(calledArgs.length).toBe(3);
@@ -34,20 +33,23 @@ it('returns expected configuration with vars scale', () => {
   });
 
   expect(result).toMatchObject({
-    classes: {
-      dynamic: {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+    dynamic: {
+      default: 'backgroundColor-mobile',
+      conditions: {
+        mobile: 'backgroundColor-mobile',
+        tablet: 'backgroundColor-tablet',
+        desktop: 'backgroundColor-desktop',
       },
     },
     name: 'backgroundColor',
     vars: {
-      mobile: expect.stringContaining(''),
-      tablet: expect.stringContaining(''),
-      desktop: expect.stringContaining(''),
+      default: '--backgroundColor-mobile',
+      conditions: {
+        mobile: '--backgroundColor-mobile',
+        tablet: '--backgroundColor-tablet',
+        desktop: '--backgroundColor-desktop',
+      },
     },
-    scale,
   });
 
   style.mockClear();
@@ -55,7 +57,7 @@ it('returns expected configuration with vars scale', () => {
 
 it('returns expected configuration with scale: true', () => {
   const style = jest.spyOn(VE, 'style');
-  const result = createStyles('backgroundColor', true, conditions);
+  const result = createStyles('backgroundColor', true, conditions, 'mobile');
 
   const calledArgs = style.mock.calls;
   expect(calledArgs.length).toBe(3);
@@ -71,18 +73,22 @@ it('returns expected configuration with scale: true', () => {
   });
 
   expect(result).toMatchObject({
-    classes: {
-      dynamic: {
-        mobile: expect.stringContaining(''),
-        tablet: expect.stringContaining(''),
-        desktop: expect.stringContaining(''),
+    dynamic: {
+      default: 'backgroundColor-mobile',
+      conditions: {
+        mobile: 'backgroundColor-mobile',
+        tablet: 'backgroundColor-tablet',
+        desktop: 'backgroundColor-desktop',
       },
     },
     name: 'backgroundColor',
     vars: {
-      mobile: expect.stringContaining(''),
-      tablet: expect.stringContaining(''),
-      desktop: expect.stringContaining(''),
+      default: '--backgroundColor-mobile',
+      conditions: {
+        mobile: '--backgroundColor-mobile',
+        tablet: '--backgroundColor-tablet',
+        desktop: '--backgroundColor-desktop',
+      },
     },
   });
 

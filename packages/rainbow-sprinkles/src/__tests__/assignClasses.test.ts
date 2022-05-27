@@ -1,97 +1,91 @@
-import type { BaseConditions, CreateStylesOutput } from '../types';
+import type { CreateStylesOutput } from '../types';
 import { assignClasses } from '../assignClasses';
 
-interface Conditions extends BaseConditions {
-  mobile: { '@media': 'foo' };
-  tablet: { '@media': 'foo' };
-  desktop: { '@media': 'foo' };
-}
-const DEFAULT_CONDITION: keyof Conditions = 'mobile';
-
-const makeConfig = (classes): CreateStylesOutput<Conditions> => ({
-  classes,
-  name: 'display',
-  vars: { mobile: 'a', tablet: 'b', desktop: 'c' },
-  scale: true,
-});
-
 test('dynamic', () => {
-  const config: CreateStylesOutput<Conditions> = {
-    classes: {
-      dynamic: { mobile: 'a', tablet: 'b', desktop: 'c' },
+  const config: CreateStylesOutput = {
+    dynamic: {
+      default: 'a',
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
     },
     name: 'display',
-    vars: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    vars: {
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+      default: 'a',
+    },
   };
 
   expect(
-    assignClasses<Conditions>(config, DEFAULT_CONDITION, {
+    assignClasses(config, {
       mobile: 'foo',
       tablet: 'bar',
     }),
   ).toBe('a b');
 
-  expect(assignClasses<Conditions>(config, DEFAULT_CONDITION, 'foo')).toBe('a');
+  expect(assignClasses(config, 'foo')).toBe('a');
 });
 
 test('static', () => {
-  const config: CreateStylesOutput<Conditions> = {
-    classes: {
+  const config: CreateStylesOutput = {
+    values: {
       block: {
-        mobile: 'a',
-        tablet: 'b',
-        desktop: 'c',
+        default: 'a',
+        conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
       },
       flex: {
-        mobile: 'x',
-        tablet: 'y',
-        desktop: 'z',
+        default: 'x',
+        conditions: { mobile: 'x', tablet: 'y', desktop: 'z' },
       },
     },
     name: 'display',
   };
 
   expect(
-    assignClasses<Conditions>(config, DEFAULT_CONDITION, {
+    assignClasses(config, {
       mobile: 'block',
       tablet: 'flex',
     }),
   ).toBe('a y');
 
-  expect(assignClasses<Conditions>(config, DEFAULT_CONDITION, 'block')).toBe(
-    'a',
-  );
+  expect(assignClasses(config, 'block')).toBe('a');
 });
 
 test('static and dynamic', () => {
-  const config: CreateStylesOutput<Conditions> = {
-    vars: { mobile: 'a', tablet: 'b', desktop: 'c' },
-    classes: {
-      dynamic: {
-        mobile: '1',
-        tablet: '2',
-        desktop: '3',
-      },
+  const config: CreateStylesOutput = {
+    vars: {
+      default: 'a',
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    },
+    dynamic: {
+      default: '1',
+      conditions: { mobile: '1', tablet: '2', desktop: '3' },
+    },
+    values: {
       primary: {
-        mobile: 'a',
-        tablet: 'b',
-        desktop: 'c',
+        default: 'a',
+        conditions: {
+          mobile: 'a',
+          tablet: 'b',
+          desktop: 'c',
+        },
       },
       secondary: {
-        mobile: 'x',
-        tablet: 'y',
-        desktop: 'z',
+        default: 'x',
+        conditions: {
+          mobile: 'x',
+          tablet: 'y',
+          desktop: 'z',
+        },
       },
     },
     name: 'color',
-    scale: {
+    staticScale: {
       primary: 'color1',
       secondary: 'color2',
     },
   };
 
   expect(
-    assignClasses<Conditions>(config, DEFAULT_CONDITION, {
+    assignClasses(config, {
       mobile: 'foo',
       tablet: 'primary',
       desktop: 'secondary',
