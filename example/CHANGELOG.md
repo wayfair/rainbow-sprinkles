@@ -1,5 +1,12 @@
 # example
 
+## 0.1.11
+
+### Patch Changes
+
+- Updated dependencies [e9f8620]
+  - rainbow-sprinkles@0.11.0
+
 ## 0.1.10
 
 ### Patch Changes
