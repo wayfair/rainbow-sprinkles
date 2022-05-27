@@ -1,4 +1,0 @@
-{
-  "main": "dist/rainbow-sprinkles-createRainbowSprinkles.cjs.js",
-  "module": "dist/rainbow-sprinkles-createRainbowSprinkles.esm.js"
-}
