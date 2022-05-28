@@ -34,7 +34,7 @@ export type ConfigShorthands<DynamicProperties, StaticProperties> = {
 
 export type ConditionalMap = {
   default: string;
-  conditions: { [condition: string]: string };
+  conditions?: { [condition: string]: string };
 };
 
 export type DynamicConditionalProperty = {
@@ -111,18 +111,18 @@ export type SprinkleProperties = {
 export type CreateStylesOutput = {
   dynamic?: {
     default: string;
-    conditions: { [condition: string]: string };
+    conditions?: { [condition: string]: string };
   };
   values?: {
     [value: string]: {
       default: string;
-      conditions: { [condition: string]: string };
+      conditions?: { [condition: string]: string };
     };
   };
   name: string;
   vars?: {
     default: string;
-    conditions: { [condition: string]: string };
+    conditions?: { [condition: string]: string };
   };
   staticScale?: string[] | Record<string, string>;
   dynamicScale?: true | Record<string, string>;

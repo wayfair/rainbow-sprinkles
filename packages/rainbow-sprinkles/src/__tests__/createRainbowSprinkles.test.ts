@@ -276,3 +276,55 @@ describe('static and dynamic properties and shorthands', () => {
     });
   });
 });
+
+describe('dynamic (no conditions)', () => {
+  const properties = defineProperties({
+    dynamicProperties: {
+      padding: vars.space,
+      color: vars.color,
+      background: vars.color,
+    },
+    shorthands: {
+      bg: ['background'],
+    },
+  });
+
+  const rainbowSprinkles = createRainbowSprinkles(properties);
+
+  it('handles scale values and non-scale values', () => {
+    expect(
+      rainbowSprinkles({ color: '$gray50', padding: '40px', bg: '$gray50' }),
+    ).toMatchObject({
+      className: 'background color padding',
+      style: {
+        '--color': vars.color.gray50,
+        '--background': vars.color.gray50,
+        '--padding': '40px',
+      },
+    });
+  });
+});
+
+describe('static (no conditions)', () => {
+  const properties = defineProperties({
+    staticProperties: {
+      padding: vars.space,
+      color: vars.color,
+      background: vars.color,
+    },
+    shorthands: {
+      bg: ['background'],
+    },
+  });
+
+  const rainbowSprinkles = createRainbowSprinkles(properties);
+
+  it('handles scale values', () => {
+    expect(rainbowSprinkles({ color: '$gray50', bg: '$gray50' })).toMatchObject(
+      {
+        className: 'background-gray50 color-gray50',
+        style: {},
+      },
+    );
+  });
+});

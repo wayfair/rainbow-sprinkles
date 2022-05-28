@@ -8,6 +8,18 @@ export function createStyles(
   conditions: Record<string, Record<string, string>>,
   defaultCondition: string,
 ): CreateStylesOutput {
+  if (!conditions) {
+    const cssVar = createVar(property);
+    const className = style({ [property]: cssVar }, property);
+
+    return {
+      vars: { default: cssVar },
+      dynamic: { default: className },
+      dynamicScale: scale,
+      name: property,
+    };
+  }
+
   const vars = mapValues(conditions, (_, conditionName) =>
     createVar(`${property}-${conditionName}`),
   );
