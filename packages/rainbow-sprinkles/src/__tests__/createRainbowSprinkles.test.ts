@@ -175,6 +175,10 @@ describe('static properties only', () => {
     rainbowSprinkles({ fontSize: '23px' });
     // @ts-expect-error
     rainbowSprinkles({ px: '23px' });
+    // @ts-expect-error
+    rainbowSprinkles({ px: { mobile: 'foo' } });
+    // @ts-expect-error
+    rainbowSprinkles({ fontSize: { mobile: 'foo' } });
   });
 });
 

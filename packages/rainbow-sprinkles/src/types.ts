@@ -211,7 +211,7 @@ export type ChildSprinkle<
 > = Sprinkle extends StaticDynamicConditionalProperty
   ? ValueOrConditionObject<
       | PropertyCssValue<Sprinkle['name']>
-      | PrefixValue<keyof Sprinkle['dynamicScale']>,
+      | PrefixValue<keyof Sprinkle['staticScale']>,
       Sprinkle['vars']
     >
   : Sprinkle extends StaticDynamicConditionalPropertyArray
