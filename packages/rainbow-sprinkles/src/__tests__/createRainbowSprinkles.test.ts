@@ -171,14 +171,25 @@ describe('static properties only', () => {
       });
     });
 
-    // @ts-expect-error
-    rainbowSprinkles({ fontSize: '23px' });
-    // @ts-expect-error
-    rainbowSprinkles({ px: '23px' });
-    // @ts-expect-error
-    rainbowSprinkles({ px: { mobile: 'foo' } });
-    // @ts-expect-error
-    rainbowSprinkles({ fontSize: { mobile: 'foo' } });
+    test('errors when expected', () => {
+      const consoleError = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      // @ts-expect-error
+      rainbowSprinkles({ fontSize: '23px' });
+      // @ts-expect-error
+      rainbowSprinkles({ px: '23px' });
+      // @ts-expect-error
+      rainbowSprinkles({ px: { mobile: 'foo' } });
+      // @ts-expect-error
+      rainbowSprinkles({ fontSize: { mobile: 'foo' } });
+
+      // Called twice for px shorthand
+      expect(consoleError).toHaveBeenCalledTimes(6);
+
+      consoleError.mockRestore();
+    });
   });
 });
 
@@ -391,8 +402,18 @@ describe('static (no conditions)', () => {
     );
   });
 
-  // @ts-expect-error
-  rainbowSprinkles({ padding: '22px' });
-  // @ts-expect-error
-  rainbowSprinkles({ bg: 'foo' });
+  it('errors when expected', () => {
+    const consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    // @ts-expect-error
+    rainbowSprinkles({ padding: '22px' });
+    // @ts-expect-error
+    rainbowSprinkles({ bg: 'foo' });
+
+    expect(consoleError).toHaveBeenCalledTimes(2);
+
+    consoleError.mockRestore();
+  });
 });
