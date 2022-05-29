@@ -32,14 +32,28 @@ export type ConfigShorthands<DynamicProperties, StaticProperties> = {
   >;
 };
 
-export type ConditionalMap = {
+export type ConditionalPropertyValue = {
   default: string;
-  conditions?: { [condition: string]: string };
+  conditions: { [conditionName: string]: string };
 };
 
+type NonConditionalPropertyValue = {
+  default: string;
+};
+
+export type DynamicProperty = {
+  dynamic: NonConditionalPropertyValue;
+  vars: NonConditionalPropertyValue;
+  dynamicScale:
+    | {
+        [token: string]: string;
+      }
+    | true;
+  name: string;
+};
 export type DynamicConditionalProperty = {
-  dynamic: ConditionalMap;
-  vars: ConditionalMap;
+  dynamic: ConditionalPropertyValue;
+  vars: ConditionalPropertyValue;
   dynamicScale:
     | {
         [token: string]: string;
@@ -48,17 +62,33 @@ export type DynamicConditionalProperty = {
   name: string;
 };
 
+export type StaticPropertyArray = {
+  values: {
+    [value: string]: NonConditionalPropertyValue;
+  };
+  staticScale: string[];
+  name: string;
+};
 export type StaticConditionalPropertyArray = {
   values: {
-    [value: string]: ConditionalMap;
+    [value: string]: ConditionalPropertyValue;
   };
   staticScale: string[];
   name: string;
 };
 
+export type StaticProperty = {
+  values: {
+    [value: string]: NonConditionalPropertyValue;
+  };
+  staticScale: {
+    [token: string]: string;
+  };
+  name: string;
+};
 export type StaticConditionalProperty = {
   values: {
-    [value: string]: ConditionalMap;
+    [value: string]: ConditionalPropertyValue;
   };
   staticScale: {
     [token: string]: string;
@@ -66,24 +96,46 @@ export type StaticConditionalProperty = {
   name: string;
 };
 
-export type StaticDynamicConditionalPropertyArray = {
-  dynamic: ConditionalMap;
+export type StaticDynamicPropertyArray = {
+  dynamic: NonConditionalPropertyValue;
   values: {
-    [value: string]: ConditionalMap;
+    [value: string]: NonConditionalPropertyValue;
   };
   name: string;
   staticScale: string[];
   dynamicScale: true;
-  vars: ConditionalMap;
+  vars: NonConditionalPropertyValue;
 };
-
-export type StaticDynamicConditionalProperty = {
-  dynamic: ConditionalMap;
+export type StaticDynamicConditionalPropertyArray = {
+  dynamic: ConditionalPropertyValue;
   values: {
-    [value: string]: ConditionalMap;
+    [value: string]: ConditionalPropertyValue;
   };
   name: string;
-  vars: ConditionalMap;
+  staticScale: string[];
+  dynamicScale: true;
+  vars: ConditionalPropertyValue;
+};
+
+export type StaticDynamicProperty = {
+  dynamic: NonConditionalPropertyValue;
+  values: {
+    [value: string]: NonConditionalPropertyValue;
+  };
+  name: string;
+  vars: NonConditionalPropertyValue;
+  staticScale: {
+    [token: string]: string;
+  };
+  dynamicScale: true;
+};
+export type StaticDynamicConditionalProperty = {
+  dynamic: ConditionalPropertyValue;
+  values: {
+    [value: string]: ConditionalPropertyValue;
+  };
+  name: string;
+  vars: ConditionalPropertyValue;
   staticScale: {
     [token: string]: string;
   };
@@ -96,6 +148,11 @@ export type ShorthandProperty = {
 
 export type SprinkleProperties = {
   [k: string]:
+    | DynamicProperty
+    | StaticProperty
+    | StaticPropertyArray
+    | StaticDynamicPropertyArray
+    | StaticDynamicProperty
     | DynamicConditionalProperty
     | StaticConditionalProperty
     | StaticConditionalPropertyArray
@@ -134,118 +191,81 @@ export type DefinePropertiesReturn = {
 
 // Props
 
-type ValueOrConditionObject<T, Conditions extends ConditionalMap> =
+type ValueOrConditionObject<T, Conditions extends ConditionalPropertyValue> =
   | T
   | Partial<Record<keyof Conditions['conditions'], T>>;
 
 type ValueOrConditionObjectStatic<
   T,
-  Values extends { [k: string]: ConditionalMap },
+  Values extends { [k: string]: ConditionalPropertyValue },
 > =
   | T
   | {
-      [Condition in keyof Values[keyof Values]['conditions']]?: keyof Values;
+      [Condition in keyof Values[keyof Values]['conditions']]?: T;
     };
 
 export type PrefixValue<T> = `$${(string | number) & T}`;
 
+export type ChildSprinkle<
+  Sprinkle extends SprinkleProperties[keyof SprinkleProperties],
+> = Sprinkle extends StaticDynamicConditionalProperty
+  ? ValueOrConditionObject<
+      | PropertyCssValue<Sprinkle['name']>
+      | PrefixValue<keyof Sprinkle['dynamicScale']>,
+      Sprinkle['vars']
+    >
+  : Sprinkle extends StaticDynamicConditionalPropertyArray
+  ? ValueOrConditionObject<PropertyCssValue<Sprinkle['name']>, Sprinkle['vars']>
+  : Sprinkle extends DynamicConditionalProperty
+  ? Sprinkle['dynamicScale'] extends boolean
+    ? ValueOrConditionObject<
+        PropertyCssValue<Sprinkle['name']>,
+        Sprinkle['vars']
+      >
+    : ValueOrConditionObject<
+        | PropertyCssValue<Sprinkle['name']>
+        | PrefixValue<keyof Sprinkle['dynamicScale']>,
+        Sprinkle['vars']
+      >
+  : Sprinkle extends StaticDynamicConditionalPropertyArray
+  ? ValueOrConditionObject<Sprinkle['staticScale'][number], Sprinkle['dynamic']>
+  : Sprinkle extends StaticDynamicConditionalProperty
+  ? ValueOrConditionObjectStatic<
+      PrefixValue<keyof Sprinkle['staticScale']>,
+      Sprinkle['values']
+    >
+  : Sprinkle extends StaticConditionalProperty
+  ? ValueOrConditionObjectStatic<
+      PrefixValue<keyof Sprinkle['staticScale']>,
+      Sprinkle['values']
+    >
+  : Sprinkle extends StaticConditionalPropertyArray
+  ? ValueOrConditionObjectStatic<
+      Sprinkle['staticScale'][number],
+      Sprinkle['values']
+    >
+  : Sprinkle extends DynamicProperty
+  ?
+      | PropertyCssValue<Sprinkle['name']>
+      | (Sprinkle['dynamicScale'] extends boolean
+          ? never
+          : PrefixValue<keyof Sprinkle['dynamicScale']>)
+  : Sprinkle extends StaticProperty
+  ? PrefixValue<keyof Sprinkle['staticScale']>
+  : Sprinkle extends StaticPropertyArray
+  ? Sprinkle['staticScale'][number]
+  : Sprinkle extends StaticDynamicProperty
+  ?
+      | PrefixValue<keyof Sprinkle['staticScale']>
+      | PropertyCssValue<Sprinkle['name']>
+  : Sprinkle extends StaticDynamicPropertyArray
+  ? PropertyCssValue<Sprinkle['name']>
+  : never;
+
 export type ChildSprinkles<Sprinkles extends SprinkleProperties> = {
-  [Prop in keyof Sprinkles]?: Sprinkles[Prop] extends StaticDynamicConditionalProperty
-    ? ValueOrConditionObject<
-        | PropertyCssValue<Prop>
-        | PrefixValue<keyof Sprinkles[Prop]['dynamicScale']>,
-        Sprinkles[Prop]['vars']
-      >
-    : Sprinkles[Prop] extends StaticDynamicConditionalPropertyArray
-    ? ValueOrConditionObject<PropertyCssValue<Prop>, Sprinkles[Prop]['vars']>
-    : Sprinkles[Prop] extends DynamicConditionalProperty
-    ? Sprinkles[Prop]['dynamicScale'] extends boolean
-      ? ValueOrConditionObject<PropertyCssValue<Prop>, Sprinkles[Prop]['vars']>
-      : ValueOrConditionObject<
-          | PropertyCssValue<Prop>
-          | PrefixValue<keyof Sprinkles[Prop]['dynamicScale']>,
-          Sprinkles[Prop]['vars']
-        >
-    : Sprinkles[Prop] extends StaticDynamicConditionalPropertyArray
-    ? ValueOrConditionObject<
-        Sprinkles[Prop]['staticScale'][number],
-        Sprinkles[Prop]['dynamic']
-      >
-    : Sprinkles[Prop] extends StaticDynamicConditionalProperty
-    ? ValueOrConditionObjectStatic<
-        PrefixValue<keyof Sprinkles[Prop]['staticScale']>,
-        Sprinkles[Prop]['values']
-      >
-    : Sprinkles[Prop] extends StaticConditionalProperty
-    ? ValueOrConditionObjectStatic<
-        PrefixValue<keyof Sprinkles[Prop]['staticScale']>,
-        Sprinkles[Prop]['values']
-      >
-    : Sprinkles[Prop] extends StaticConditionalPropertyArray
-    ? ValueOrConditionObjectStatic<
-        Sprinkles[Prop]['staticScale'][number],
-        Sprinkles[Prop]['values']
-      >
-    : /**
-     *
-     * SHORTHANDS
-     * Repeats everything above, just nested with
-     * Sprinkles[Sprinkles[Prop]['mappings'][number]]
-     *
-     */
-    Sprinkles[Prop] extends ShorthandProperty
-    ? Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalProperty
-      ? ValueOrConditionObject<
-          | PropertyCssValue<Sprinkles[Prop]['mappings'][number]>
-          | PrefixValue<
-              keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale']
-            >,
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
-        >
-      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalPropertyArray
-      ? ValueOrConditionObject<
-          PropertyCssValue<Prop>,
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
-        >
-      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends DynamicConditionalProperty
-      ? Sprinkles[Sprinkles[Prop]['mappings'][number]]['dynamicScale'] extends boolean
-        ? ValueOrConditionObject<
-            PropertyCssValue<Sprinkles[Prop]['mappings'][number]>,
-            Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
-          >
-        : ValueOrConditionObject<
-            | PropertyCssValue<Sprinkles[Prop]['mappings'][number]>
-            | PrefixValue<
-                keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['dynamicScale']
-              >,
-            Sprinkles[Sprinkles[Prop]['mappings'][number]]['vars']
-          >
-      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalPropertyArray
-      ? ValueOrConditionObject<
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale'][number],
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['dynamic']
-        >
-      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticDynamicConditionalProperty
-      ? ValueOrConditionObjectStatic<
-          PrefixValue<
-            keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale']
-          >,
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['values']
-        >
-      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticConditionalProperty
-      ? ValueOrConditionObjectStatic<
-          PrefixValue<
-            keyof Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale']
-          >,
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['values']
-        >
-      : Sprinkles[Sprinkles[Prop]['mappings'][number]] extends StaticConditionalPropertyArray
-      ? ValueOrConditionObjectStatic<
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['staticScale'][number],
-          Sprinkles[Sprinkles[Prop]['mappings'][number]]['values']
-        >
-      : never
-    : never;
+  [Prop in keyof Sprinkles]?: Sprinkles[Prop] extends ShorthandProperty
+    ? ChildSprinkle<Sprinkles[Sprinkles[Prop]['mappings'][number]]>
+    : ChildSprinkle<Sprinkles[Prop]>;
 };
 
 export type SprinklesProps<Args extends ReadonlyArray<any>> = Args extends [

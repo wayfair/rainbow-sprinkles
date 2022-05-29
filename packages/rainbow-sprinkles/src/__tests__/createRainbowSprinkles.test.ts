@@ -119,6 +119,65 @@ describe('dynamic properties only', () => {
   });
 });
 
+describe('static properties only', () => {
+  const responsiveProps = defineProperties({
+    conditions: {
+      mobile: {},
+      tablet: { '@media': 'screen and (min-width: 768px)' },
+      desktop: { '@media': 'screen and (min-width: 1024px)' },
+    },
+    defaultCondition: 'mobile',
+    staticProperties: {
+      padding: vars.space,
+      paddingLeft: vars.space,
+      paddingRight: vars.space,
+      fontSize: vars.fontSize,
+      color: vars.color,
+      background: vars.color,
+    },
+    shorthands: {
+      p: ['padding'],
+      px: ['paddingLeft', 'paddingRight'],
+      bg: ['background'],
+    },
+  });
+
+  const rainbowSprinkles = createRainbowSprinkles(responsiveProps);
+
+  describe('rainbowSprinkles', () => {
+    it('handles scale values', () => {
+      expect(
+        rainbowSprinkles({ color: '$gray50', padding: '$2x' }),
+      ).toMatchObject({
+        className: 'color-gray50-mobile padding-2x-mobile',
+      });
+    });
+
+    it('handles shorthands', () => {
+      expect(rainbowSprinkles({ px: '$1x' })).toMatchObject({
+        className: 'paddingLeft-1x-mobile paddingRight-1x-mobile',
+      });
+    });
+
+    it('handles conditionals', () => {
+      expect(
+        rainbowSprinkles({
+          px: { mobile: '$1x', tablet: '$2x' },
+          fontSize: { mobile: '$1x', desktop: '$2x' },
+        }),
+      ).toMatchObject({
+        className:
+          'paddingLeft-1x-mobile paddingLeft-2x-tablet paddingRight-1x-mobile paddingRight-2x-tablet fontSize-1x-mobile fontSize-2x-desktop',
+      });
+    });
+
+    // @ts-expect-error
+    rainbowSprinkles({ fontSize: '23px' });
+    // @ts-expect-error
+    rainbowSprinkles({ px: '23px' });
+  });
+});
+
 describe('static and dynamic properties', () => {
   const responsiveProps = defineProperties({
     dynamicProperties: {
@@ -327,4 +386,9 @@ describe('static (no conditions)', () => {
       },
     );
   });
+
+  // @ts-expect-error
+  rainbowSprinkles({ padding: '22px' });
+  // @ts-expect-error
+  rainbowSprinkles({ bg: 'foo' });
 });
