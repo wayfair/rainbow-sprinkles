@@ -18,6 +18,12 @@ export function createStaticStyles(
     : scale;
 
   const values = mapValues(scaleObj, (scaleValue, scaleKey) => {
+    if (!conditions) {
+      return {
+        default: style({ [property]: scaleValue }, `${property}-${scaleKey}`),
+      };
+    }
+
     const classes = mapValues(conditions, (conditionValue, conditionName) => {
       let styleValue = { [property]: scaleValue };
       if (conditionValue['@media']) {
@@ -55,5 +61,3 @@ export function createStaticStyles(
     staticScale: scaleObj,
   };
 }
-
-export type CreateStaticStyles = typeof createStaticStyles;
