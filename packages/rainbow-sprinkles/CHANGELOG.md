@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.12.0
+
+### Minor Changes
+
+- a1cc5b9: Add support for no conditions
+
 ## 0.11.0
 
 ### Minor Changes
