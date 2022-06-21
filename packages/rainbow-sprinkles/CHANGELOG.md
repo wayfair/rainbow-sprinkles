@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.12.1
+
+### Patch Changes
+
+- 0db3335: Prevents assigning a variable if the value of a property matches a static value.
+
 ## 0.12.0
 
 ### Minor Changes
