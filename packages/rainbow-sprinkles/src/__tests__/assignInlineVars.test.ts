@@ -19,12 +19,12 @@ test('dynamic', () => {
     name: 'display',
   };
 
-  expect(assignInlineVars(config, 'foo')).toMatchObject({
+  expect(assignInlineVars(config, 'foo')).toEqual({
     '--mobile': 'foo',
   });
   expect(
     assignInlineVars(config, { mobile: 'foo', tablet: 'bar' }),
-  ).toMatchObject({
+  ).toEqual({
     '--mobile': 'foo',
     '--tablet': 'bar',
   });
@@ -48,8 +48,8 @@ test('ignores null and undefined prop values', () => {
     name: 'display',
   };
 
-  expect(assignInlineVars(config, null)).toMatchObject({});
-  expect(assignInlineVars(config, undefined)).toMatchObject({});
+  expect(assignInlineVars(config, null)).toEqual({});
+  expect(assignInlineVars(config, undefined)).toEqual({});
 });
 
 test('static', () => {
@@ -76,9 +76,9 @@ test('static', () => {
       mobile: 'block',
       tablet: 'flex',
     }),
-  ).toMatchObject({});
+  ).toEqual({});
 
-  expect(assignInlineVars(config, 'block')).toMatchObject({});
+  expect(assignInlineVars(config, 'block')).toEqual({});
 });
 
 test('static and dynamic', () => {
@@ -117,5 +117,7 @@ test('static and dynamic', () => {
       mobile: 'foo',
       tablet: 'flex',
     }),
-  ).toMatchObject({ '--mobile': 'foo' });
+  ).toEqual({ '--mobile': 'foo' });
+  
+  expect(assignInlineVars(config, 'block')).toEqual({});
 });

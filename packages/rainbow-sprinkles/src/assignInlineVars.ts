@@ -13,7 +13,7 @@ function _assignInlineVars(
     const parsedValue = trim$(propValue) ?? propValue;
     // If the propValue matches a static value,
     // don't assign any variables
-    if (values?.conditions?.[parsedValue] || !dynamic) {
+    if (values?.[parsedValue] || values?.conditions?.[parsedValue] || !dynamic) {
       return {};
     }
     return assignInlineVars({
