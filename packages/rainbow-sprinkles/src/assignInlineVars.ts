@@ -10,10 +10,14 @@ function _assignInlineVars(
 
   // Value is a string, ie not responsive
   if (typeof propValue === 'string') {
-    const parsedValue = trim$(propValue) ?? propValue;
+    const parsedValue = trim$(propValue);
     // If the propValue matches a static value,
     // don't assign any variables
-    if (values?.[parsedValue] || values?.conditions?.[parsedValue] || !dynamic) {
+    if (
+      values?.[parsedValue] ||
+      values?.conditions?.[parsedValue] ||
+      !dynamic
+    ) {
       return {};
     }
     return assignInlineVars({
@@ -31,7 +35,7 @@ function _assignInlineVars(
   const variableAssignments = Object.entries(propValue).reduce(
     (acc: Record<string, string>, [bp, value]) => {
       if (value) {
-        const parsedValue = trim$(value) ?? value;
+        const parsedValue = trim$(value);
         if (values?.[parsedValue] || !dynamic) {
           // If value has a static class, don't assign any variables
           return acc;

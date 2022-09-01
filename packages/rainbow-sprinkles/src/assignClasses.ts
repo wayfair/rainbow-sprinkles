@@ -13,7 +13,7 @@ export function assignClasses(
 
   // Value is a string or number, ie not responsive
   if (typeof propValue === 'string') {
-    const value = trim$(propValue) ?? propValue;
+    const value = trim$(propValue);
     // Check for static value first
     if (values?.[value]) {
       return values[value].default;
@@ -44,7 +44,7 @@ export function assignClasses(
   const className = keys
     .map((bp) => {
       const rawValueAtBp = propValue[bp];
-      const valueAtBp = trim$(rawValueAtBp) ?? rawValueAtBp;
+      const valueAtBp = trim$(rawValueAtBp);
 
       // Check for static value first
       if (values?.[valueAtBp]) {

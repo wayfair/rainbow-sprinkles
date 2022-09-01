@@ -1,8 +1,11 @@
-const VALUE_REGEX = /^\$(\w*)/;
+const VALUE_REGEX = /(-)?\$(\w*)/;
 
-export function trim$(rawValue: string): string | undefined {
+export function trim$(rawValue: string): string {
   const matches = rawValue.match(VALUE_REGEX);
-  return matches?.[1];
+  if (matches) {
+    return (matches[1] ?? '').concat(matches[2]);
+  }
+  return rawValue;
 }
 
 export function mapValues<

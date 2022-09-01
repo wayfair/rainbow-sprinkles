@@ -1,6 +1,20 @@
 import { createRainbowSprinkles, defineProperties } from 'rainbow-sprinkles';
 import { vars } from '../vars.css';
 
+const positiveSpace = {
+  '250': vars.space['250'],
+  '500': vars.space['500'],
+  '1000': vars.space['1000'],
+  '1500': vars.space['1500'],
+  '2000': vars.space['2000'],
+  '2500': vars.space['2500'],
+  '3000': vars.space['3000'],
+  '3500': vars.space['3500'],
+  '4000': vars.space['4000'],
+  '4500': vars.space['4500'],
+  '5000': vars.space['5000'],
+} as const;
+
 const responsiveProperties = defineProperties({
   conditions: {
     mobile: {},
@@ -13,12 +27,12 @@ const responsiveProperties = defineProperties({
     flexDirection: true,
     alignItems: true,
     justifyContent: true,
-    gap: vars.space,
-    padding: vars.space,
-    paddingLeft: vars.space,
-    paddingRight: vars.space,
-    paddingTop: vars.space,
-    paddingBottom: vars.space,
+    gap: positiveSpace,
+    padding: positiveSpace,
+    paddingLeft: positiveSpace,
+    paddingRight: positiveSpace,
+    paddingTop: positiveSpace,
+    paddingBottom: positiveSpace,
     width: true,
     height: true,
     borderRadius: vars.borderRadius,
