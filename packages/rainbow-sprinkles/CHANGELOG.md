@@ -1,5 +1,15 @@
 # rainbow-sprinkles
 
+## 0.13.0
+
+### Minor Changes
+
+- a4ec472: Added support for negative values
+
+### Patch Changes
+
+- d60c450: Updated dependencies
+
 ## 0.12.1
 
 ### Patch Changes
@@ -88,7 +98,7 @@
   // App.tsx
   import { rainbowSprinkles } from './rainbow-sprinkles.css';
 
-  const Box = props => {
+  const Box = (props) => {
     const { className, style, otherProps } = rainbowSprinkles(props);
 
     return <div className={className} style={style} {...otherProps} />;
