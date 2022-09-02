@@ -204,7 +204,9 @@ type ValueOrConditionObjectStatic<
       [Condition in keyof Values[keyof Values]['conditions']]?: T;
     };
 
-export type PrefixValue<T> = `$${(string | number) & T}`;
+export type PrefixValue<T> = T extends `-${infer Root}`
+  ? `-$${Root}`
+  : `$${(string | number) & T}`;
 
 export type ChildSprinkle<
   Sprinkle extends SprinkleProperties[keyof SprinkleProperties],

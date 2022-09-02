@@ -22,9 +22,7 @@ test('dynamic', () => {
   expect(assignInlineVars(config, 'foo')).toEqual({
     '--mobile': 'foo',
   });
-  expect(
-    assignInlineVars(config, { mobile: 'foo', tablet: 'bar' }),
-  ).toEqual({
+  expect(assignInlineVars(config, { mobile: 'foo', tablet: 'bar' })).toEqual({
     '--mobile': 'foo',
     '--tablet': 'bar',
   });
@@ -118,6 +116,6 @@ test('static and dynamic', () => {
       tablet: 'flex',
     }),
   ).toEqual({ '--mobile': 'foo' });
-  
+
   expect(assignInlineVars(config, 'block')).toEqual({});
 });

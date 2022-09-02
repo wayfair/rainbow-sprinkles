@@ -2,6 +2,9 @@ import { defineProperties, createRainbowSprinkles } from '../';
 
 const vars = {
   space: {
+    '-1x': '-5px',
+    '-2x': '-10px',
+    '-3x': '-15px',
     none: '0',
     '1x': '5px',
     '2x': '10px',
@@ -87,6 +90,18 @@ describe('dynamic properties only', () => {
       });
     });
 
+    it('handles negated values', () => {
+      expect(
+        rainbowSprinkles({ color: '-$gray50', padding: '-$2x' }),
+      ).toMatchObject({
+        className: 'color-mobile padding-mobile',
+        style: {
+          '--color-mobile': '-$gray50',
+          '--padding-mobile': vars.space['-2x'],
+        },
+      });
+    });
+
     it('handles shorthands', () => {
       expect(rainbowSprinkles({ px: '$1x' })).toMatchObject({
         className: 'paddingLeft-mobile paddingRight-mobile',
@@ -100,17 +115,19 @@ describe('dynamic properties only', () => {
     it('handles conditionals', () => {
       expect(
         rainbowSprinkles({
-          px: { mobile: '$1x', tablet: '$2x' },
+          px: { mobile: '$1x', tablet: '$2x', desktop: '-$3x' },
           fontSize: { mobile: '$1x', desktop: '$2x' },
         }),
       ).toMatchObject({
         className:
-          'paddingLeft-mobile paddingLeft-tablet paddingRight-mobile paddingRight-tablet fontSize-mobile fontSize-desktop',
+          'paddingLeft-mobile paddingLeft-tablet paddingLeft-desktop paddingRight-mobile paddingRight-tablet paddingRight-desktop fontSize-mobile fontSize-desktop',
         style: {
           '--paddingLeft-mobile': vars.space['1x'],
           '--paddingRight-mobile': vars.space['1x'],
           '--paddingLeft-tablet': vars.space['2x'],
           '--paddingRight-tablet': vars.space['2x'],
+          '--paddingLeft-desktop': vars.space['-3x'],
+          '--paddingRight-desktop': vars.space['-3x'],
           '--fontSize-mobile': vars.fontSize['1x'],
           '--fontSize-desktop': vars.fontSize['2x'],
         },
@@ -147,9 +164,14 @@ describe('static properties only', () => {
   describe('rainbowSprinkles', () => {
     it('handles scale values', () => {
       expect(
-        rainbowSprinkles({ color: '$gray50', padding: '$2x' }),
+        rainbowSprinkles({
+          color: '$gray50',
+          padding: '$2x',
+          paddingRight: '-$3x',
+        }),
       ).toMatchObject({
-        className: 'color-gray50-mobile padding-2x-mobile',
+        className:
+          'color-gray50-mobile padding-2x-mobile paddingRight--3x-mobile',
       });
     });
 
