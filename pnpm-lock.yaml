@@ -52,7 +52,7 @@ importers:
       '@types/react': 18.0.18
       '@types/react-dom': 18.0.6
       '@vanilla-extract/babel-plugin': 1.1.7
-      '@vanilla-extract/css': 1.7.3
+      '@vanilla-extract/css': 1.9.0
       '@vanilla-extract/dynamic': 2.0.2
       '@vanilla-extract/next-plugin': 2.0.2
       eslint: 8.23.0
@@ -67,7 +67,7 @@ importers:
       webpack: 5.74.0
     dependencies:
       '@vanilla-extract/babel-plugin': 1.1.7
-      '@vanilla-extract/css': 1.7.3
+      '@vanilla-extract/css': 1.9.0
       '@vanilla-extract/dynamic': 2.0.2
       '@vanilla-extract/next-plugin': 2.0.2_next@12.2.5+webpack@5.74.0
       next: 12.2.5_ae15dee70e5880821ff92b3ed2fe9507
@@ -88,12 +88,12 @@ importers:
   packages/rainbow-sprinkles:
     specifiers:
       '@types/jest': 29.0.0
-      '@vanilla-extract/css': 1.7.3
+      '@vanilla-extract/css': 1.9.0
       '@vanilla-extract/dynamic': 2.0.2
       jest: 29.0.1
     devDependencies:
       '@types/jest': 29.0.0
-      '@vanilla-extract/css': 1.7.3
+      '@vanilla-extract/css': 1.9.0
       '@vanilla-extract/dynamic': 2.0.2
       jest: 29.0.1_3483f04a9ff91bc9dd3b24b68f75f712
 
@@ -2839,8 +2839,8 @@ packages:
       - supports-color
     dev: false
 
-  /@vanilla-extract/css/1.7.3:
-    resolution: {integrity: sha512-ZwfNvk9LjVdsHON4bNAGXBu0dPo4e1RlgghnW1A4lcQruvFU7zdq+wEqodrX3O0D2qRkupOGgjAbTSddwqKoQA==}
+  /@vanilla-extract/css/1.9.0:
+    resolution: {integrity: sha512-YERVutWIpttfkEAynBUgdHKMcSPjMAtu5IFfDfEdXmeygilV12S5WUYMzjrqu0F/LZBtqrHG5fa2tiCiFpay+w==}
     dependencies:
       '@emotion/hash': 0.8.0
       '@vanilla-extract/private': 1.0.3
@@ -2862,7 +2862,7 @@ packages:
   /@vanilla-extract/integration/5.0.1:
     resolution: {integrity: sha512-HRV/HvC/lihb9wT3x5s7pf5qLjqxSd9nBePJ10juOuMB5cl2ZClEcts076m9BuRKM3wRK2h7KuwkNsaUtjujxQ==}
     dependencies:
-      '@vanilla-extract/css': 1.7.3
+      '@vanilla-extract/css': 1.9.0
       esbuild: 0.11.23
       eval: 0.1.6
       find-up: 5.0.0
