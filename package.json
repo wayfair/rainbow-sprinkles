@@ -34,7 +34,7 @@
     "@types/react": "18.0.18",
     "@types/react-dom": "18.0.6",
     "@vanilla-extract/jest-transform": "1.0.1",
-    "concurrently": "7.3.0",
+    "concurrently": "7.4.0",
     "jest": "28.1.3",
     "prettier": "2.7.1",
     "react": "18.2.0",
