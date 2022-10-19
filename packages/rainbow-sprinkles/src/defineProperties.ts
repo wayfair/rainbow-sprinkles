@@ -228,7 +228,5 @@ export function defineProperties(options: any): any {
     config[staticProp] = Object.assign({}, config?.[staticProp], style);
   }
 
-  return {
-    config,
-  };
+  return { config };
 }

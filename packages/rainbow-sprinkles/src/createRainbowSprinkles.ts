@@ -1,34 +1,15 @@
-import type {
-  RuntimeFnReturn,
-  DefinePropertiesReturn,
-  SprinklesProps,
-} from './types';
+import type { DefinePropertiesReturn } from './types';
 import { addFunctionSerializer } from '@vanilla-extract/css/functionSerializer';
-import { createRuntimeFn } from './createRuntimeFn';
-
-export type SprinklesFn<Args extends ReadonlyArray<DefinePropertiesReturn>> = (
-  props: SprinklesProps<Args>,
-) => RuntimeFnReturn;
+import { createRuntimeFn, SprinklesFn } from './createRuntimeFn';
 
 export function createRainbowSprinkles<
-  Args extends ReadonlyArray<DefinePropertiesReturn>,
->(...args: Args): SprinklesFn<Args> {
-  const cssConfig = Object.assign({}, ...args.map((a) => a.config));
-  const properties = Object.keys(cssConfig);
+  Configs extends ReadonlyArray<DefinePropertiesReturn>,
+>(...configs: Configs): SprinklesFn<Configs> {
+  const sprinkles = createRuntimeFn(...configs);
 
-  const shorthandNames = properties.filter(
-    (property) => 'mappings' in cssConfig[property],
-  );
-
-  const config = {
-    cssConfig,
-    shorthandNames,
-    properties,
-  };
-
-  return addFunctionSerializer(createRuntimeFn(config), {
+  return addFunctionSerializer(sprinkles, {
     importPath: 'rainbow-sprinkles/createRuntimeFn',
     importName: 'createRuntimeFn',
-    args: [config],
+    args: configs,
   });
 }
