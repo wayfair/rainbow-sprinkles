@@ -42,6 +42,6 @@
     "ts-jest": "28.0.8",
     "ts-node": "10.9.1",
     "tslib": "2.4.0",
-    "typescript": "4.8.2"
+    "typescript": "4.8.4"
   }
 }

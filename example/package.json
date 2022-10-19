@@ -27,6 +27,6 @@
     "eslint-config-next": "12.3.0",
     "next-transpile-modules": "9.0.0",
     "polished": "4.2.2",
-    "typescript": "4.8.2"
+    "typescript": "4.8.4"
   }
 }
