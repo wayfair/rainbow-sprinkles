@@ -134,7 +134,39 @@ describe('dynamic properties only', () => {
       });
     });
     it('has properties', () => {
-      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot(`
+        Set {
+          "p",
+          "pl",
+          "pr",
+          "pt",
+          "pb",
+          "paddingX",
+          "paddingY",
+          "px",
+          "py",
+          "bg",
+          "placeItems",
+          "display",
+          "flexDirection",
+          "alignItems",
+          "justifyContent",
+          "gap",
+          "padding",
+          "paddingLeft",
+          "paddingRight",
+          "paddingTop",
+          "paddingBottom",
+          "width",
+          "height",
+          "borderRadius",
+          "fontFamily",
+          "fontSize",
+          "textAlign",
+          "color",
+          "background",
+        }
+      `);
     });
   });
 });
@@ -217,7 +249,19 @@ describe('static properties only', () => {
     });
 
     it('has properties', () => {
-      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot(`
+        Set {
+          "p",
+          "px",
+          "bg",
+          "padding",
+          "paddingLeft",
+          "paddingRight",
+          "fontSize",
+          "color",
+          "background",
+        }
+      `);
     });
   });
 });
@@ -317,7 +361,12 @@ describe('static and dynamic properties', () => {
     });
 
     it('has properties', () => {
-      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot(`
+        Set {
+          "display",
+          "textAlign",
+        }
+      `);
     });
   });
 });
@@ -383,7 +432,15 @@ describe('static and dynamic properties and shorthands', () => {
     });
 
     it('has properties', () => {
-      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot(`
+        Set {
+          "mx",
+          "bg",
+          "backgroundColor",
+          "marginLeft",
+          "marginRight",
+        }
+      `);
     });
   });
 });
@@ -455,6 +512,13 @@ describe('static (no conditions)', () => {
   });
 
   it('has properties', () => {
-    expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
+    expect(rainbowSprinkles.properties).toMatchInlineSnapshot(`
+      Set {
+        "bg",
+        "padding",
+        "color",
+        "background",
+      }
+    `);
   });
 });
