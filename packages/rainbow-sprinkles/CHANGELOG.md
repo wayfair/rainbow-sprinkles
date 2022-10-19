@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.14.0
+
+### Minor Changes
+
+- 5030301: Attached `properties` to rainbowSprinkles method to access all configured property names
+
 ## 0.13.0
 
 ### Minor Changes
