@@ -185,9 +185,7 @@ export type CreateStylesOutput = {
   dynamicScale?: true | Record<string, string>;
 };
 
-export type DefinePropertiesReturn = {
-  config: SprinkleProperties;
-};
+export type DefinePropertiesReturn = SprinkleProperties;
 
 // Props
 

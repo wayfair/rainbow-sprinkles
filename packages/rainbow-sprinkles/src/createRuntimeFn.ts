@@ -1,17 +1,32 @@
 import { assignClasses } from './assignClasses';
 import { assignInlineVars } from './assignInlineVars';
-import { ShorthandProperty, SprinkleProperties } from './types';
+import {
+  DefinePropertiesReturn,
+  RuntimeFnReturn,
+  ShorthandProperty,
+  SprinklesProps,
+} from './types';
 
-export const createRuntimeFn = ({
-  cssConfig,
-  shorthandNames,
-  properties,
-}: {
-  cssConfig: SprinkleProperties;
-  shorthandNames: string[];
-  properties: string[];
-}) => {
-  return (props: any) => {
+export type SprinklesFn<Args extends ReadonlyArray<DefinePropertiesReturn>> = ((
+  props: SprinklesProps<Args>,
+) => RuntimeFnReturn) & { properties: Set<keyof SprinklesProps<Args>> };
+
+export const createRuntimeFn = <
+  Configs extends ReadonlyArray<DefinePropertiesReturn>,
+>(
+  ...configs: Configs
+): SprinklesFn<Configs> => {
+  const cssConfig = Object.assign({}, ...configs);
+  const properties = Object.keys(cssConfig) as Array<
+    keyof SprinklesProps<Configs>
+  >;
+  const propertiesSet = new Set(properties);
+
+  const shorthandNames = properties.filter(
+    (property) => 'mappings' in cssConfig[property],
+  );
+
+  const fn = (props: any) => {
     const style: Record<string, string> = {};
     const className: string[] = [];
     const otherProps: Record<string, any> = {};
@@ -39,7 +54,7 @@ export const createRuntimeFn = ({
       : props;
 
     for (const property in finalProps) {
-      if (!properties.includes(property)) {
+      if (!propertiesSet.has(property as any)) {
         otherProps[property] = props[property];
         continue;
       }
@@ -63,4 +78,6 @@ export const createRuntimeFn = ({
       otherProps,
     };
   };
+
+  return Object.assign(fn, { properties: propertiesSet });
 };
