@@ -52,7 +52,7 @@ importers:
       '@types/react': 18.0.18
       '@types/react-dom': 18.0.6
       '@vanilla-extract/babel-plugin': 1.2.0
-      '@vanilla-extract/css': 1.9.0
+      '@vanilla-extract/css': 1.9.1
       '@vanilla-extract/dynamic': 2.0.2
       '@vanilla-extract/next-plugin': 2.0.2
       eslint: 8.23.0
@@ -67,7 +67,7 @@ importers:
       webpack: 5.74.0
     dependencies:
       '@vanilla-extract/babel-plugin': 1.2.0
-      '@vanilla-extract/css': 1.9.0
+      '@vanilla-extract/css': 1.9.1
       '@vanilla-extract/dynamic': 2.0.2
       '@vanilla-extract/next-plugin': 2.0.2_next@12.3.0+webpack@5.74.0
       next: 12.3.0_biqbaboplfbrettd7655fr4n2y
