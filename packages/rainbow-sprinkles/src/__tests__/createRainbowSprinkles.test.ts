@@ -133,6 +133,9 @@ describe('dynamic properties only', () => {
         },
       });
     });
+    it('has properties', () => {
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
+    });
   });
 });
 
@@ -211,6 +214,10 @@ describe('static properties only', () => {
       expect(consoleError).toHaveBeenCalledTimes(6);
 
       consoleError.mockRestore();
+    });
+
+    it('has properties', () => {
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
     });
   });
 });
@@ -308,6 +315,10 @@ describe('static and dynamic properties', () => {
 
       consoleError.mockRestore();
     });
+
+    it('has properties', () => {
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
+    });
   });
 });
 
@@ -369,6 +380,10 @@ describe('static and dynamic properties and shorthands', () => {
           '--marginRight-desktop': '50px',
         },
       });
+    });
+
+    it('has properties', () => {
+      expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
     });
   });
 });
@@ -437,5 +452,9 @@ describe('static (no conditions)', () => {
     expect(consoleError).toHaveBeenCalledTimes(2);
 
     consoleError.mockRestore();
+  });
+
+  it('has properties', () => {
+    expect(rainbowSprinkles.properties).toMatchInlineSnapshot();
   });
 });

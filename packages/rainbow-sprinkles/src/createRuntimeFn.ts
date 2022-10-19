@@ -16,7 +16,7 @@ export const createRuntimeFn = <
 >(
   ...configs: Configs
 ): SprinklesFn<Configs> => {
-  const cssConfig = Object.assign({}, ...configs);
+  const cssConfig = Object.assign({}, ...configs.map((c) => c.config));
   const properties = Object.keys(cssConfig) as Array<
     keyof SprinklesProps<Configs>
   >;
