@@ -1,12 +1,14 @@
 const VALUE_REGEX = /(-)?\$(\w*)/;
 
 export function trim$(rawValue: string | number): string {
-  const v = `${rawValue}`;
-  const matches = v.match(VALUE_REGEX);
+  if (typeof rawValue === 'number') {
+    return `${rawValue}`;
+  }
+  const matches = rawValue.match(VALUE_REGEX);
   if (matches) {
     return (matches[1] ?? '').concat(matches[2]);
   }
-  return v;
+  return rawValue;
 }
 
 export function mapValues<
