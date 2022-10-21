@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.14.1
+
+### Patch Changes
+
+- 9835d49: Fixes errors when using Numbers as values
+
 ## 0.14.0
 
 ### Minor Changes
