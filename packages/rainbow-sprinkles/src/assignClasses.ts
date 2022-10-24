@@ -12,7 +12,7 @@ export function assignClasses(
   const { dynamic, values, name: propName } = propertyConfig;
 
   // Value is a string or number, ie not responsive
-  if (typeof propValue === 'string') {
+  if (typeof propValue === 'string' || typeof propValue === 'number') {
     const value = trim$(propValue);
     // Check for static value first
     if (values?.[value]) {
