@@ -92,3 +92,26 @@ test('static and dynamic', () => {
     }),
   ).toBe('1 b z');
 });
+
+test('supports number values', () => {
+  const config: CreateStylesOutput = {
+    dynamic: {
+      default: 'a',
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    },
+    name: 'lineHeight',
+    vars: {
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+      default: 'a',
+    },
+  };
+
+  expect(
+    assignClasses(config, {
+      mobile: 1,
+      tablet: 3,
+    }),
+  ).toBe('a b');
+
+  expect(assignClasses(config, 'foo')).toBe('a');
+});

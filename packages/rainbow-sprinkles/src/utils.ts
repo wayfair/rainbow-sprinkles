@@ -1,12 +1,11 @@
 const VALUE_REGEX = /(-)?\$(\w*)/;
 
-export function trim$(rawValue: string | number): string {
-  if (typeof rawValue === 'number') {
-    return `${rawValue}`;
-  }
-  const matches = rawValue.match(VALUE_REGEX);
-  if (matches) {
-    return (matches[1] ?? '').concat(matches[2]);
+export function trim$(rawValue: string | number): string | number {
+  if (typeof rawValue === 'string') {
+    const matches = rawValue.match(VALUE_REGEX);
+    if (matches) {
+      return (matches[1] ?? '').concat(matches[2]);
+    }
   }
   return rawValue;
 }

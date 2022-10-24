@@ -18,6 +18,6 @@ it('matches negative values with -', () => {
 });
 
 it('supports numbers', () => {
-  expect(trim$(0)).toBe('0');
-  expect(trim$(250)).toBe('250');
+  expect(trim$(0)).toBe(0);
+  expect(trim$(250)).toBe(250);
 });

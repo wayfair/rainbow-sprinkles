@@ -9,7 +9,7 @@ function _assignInlineVars(
   const { vars, dynamicScale, values, dynamic } = propertyConfig;
 
   // Value is a string, ie not responsive
-  if (typeof propValue === 'string') {
+  if (typeof propValue === 'string' || typeof propValue === 'number') {
     const parsedValue = trim$(propValue);
     // If the propValue matches a static value,
     // don't assign any variables
@@ -21,7 +21,7 @@ function _assignInlineVars(
       return {};
     }
     return assignInlineVars({
-      [vars.default]: dynamicScale?.[parsedValue] ?? propValue,
+      [vars.default]: dynamicScale?.[parsedValue] ?? `${propValue}`,
     });
   }
 
@@ -41,7 +41,7 @@ function _assignInlineVars(
           return acc;
         }
         hasProperty = true;
-        acc[vars.conditions[bp]] = dynamicScale?.[parsedValue] ?? value;
+        acc[vars.conditions[bp]] = dynamicScale?.[parsedValue] ?? `${value}`;
       }
       return acc;
     },

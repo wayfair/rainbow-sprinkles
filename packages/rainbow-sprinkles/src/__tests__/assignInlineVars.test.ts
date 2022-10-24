@@ -119,3 +119,30 @@ test('static and dynamic', () => {
 
   expect(assignInlineVars(config, 'block')).toEqual({});
 });
+
+test('supports number values', () => {
+  const config: CreateStylesOutput = {
+    dynamic: {
+      default: 'a',
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    },
+    vars: {
+      default: '--mobile',
+      conditions: {
+        mobile: '--mobile',
+        tablet: '--tablet',
+        desktop: '--desktop',
+      },
+    },
+    dynamicScale: true,
+    name: 'lineHeight',
+  };
+
+  expect(assignInlineVars(config, 2)).toEqual({
+    '--mobile': '2',
+  });
+  expect(assignInlineVars(config, { mobile: 1, tablet: 3 })).toEqual({
+    '--mobile': '1',
+    '--tablet': '3',
+  });
+});
