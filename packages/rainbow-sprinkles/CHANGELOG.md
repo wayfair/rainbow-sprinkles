@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.14.2
+
+### Patch Changes
+
+- 9818127: Fixed stringification of number values
+
 ## 0.14.1
 
 ### Patch Changes
