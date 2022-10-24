@@ -16,3 +16,8 @@ it('matches negative values with -', () => {
   expect(trim$('-$2500')).toBe('-2500');
   expect(trim$('-$gray100')).toBe('-gray100');
 });
+
+it('supports numbers', () => {
+  expect(trim$(0)).toBe(0);
+  expect(trim$(250)).toBe(250);
+});
