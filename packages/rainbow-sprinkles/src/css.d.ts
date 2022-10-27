@@ -9601,7 +9601,7 @@ declare namespace DataType {
 
   type LineStyle = "dashed" | "dotted" | "double" | "groove" | "hidden" | "inset" | "none" | "outset" | "ridge" | "solid";
 
-  type LineWidth = number | "medium" | "thick" | "thin";
+  type LineWidth = number | OnlyString | "medium" | "thick" | "thin";
 
   type MaskLayer = Position | RepeatStyle | GeometryBox | CompositingOperator | MaskingMode | "no-clip" | "none" | OnlyString;
 
