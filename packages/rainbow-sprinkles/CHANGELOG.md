@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.14.3
+
+### Patch Changes
+
+- ce5d3ab: Updated CSS type for Line Width to support strings
+
 ## 0.14.2
 
 ### Patch Changes
