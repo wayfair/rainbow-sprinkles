@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.15.0
+
+### Minor Changes
+
+- um: Added support for multiple distinct values in shorthand properties.
+
 ## 0.14.3
 
 ### Patch Changes
