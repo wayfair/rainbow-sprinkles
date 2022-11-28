@@ -4,7 +4,7 @@
 
 ### Minor Changes
 
-- um: Added support for multiple distinct values in shorthand properties.
+- ad63335: Added support for multiple differing values in CSS shorthand properties.
 
 ## 0.14.3
 
