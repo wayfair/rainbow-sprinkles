@@ -20,8 +20,19 @@ function _assignInlineVars(
     ) {
       return {};
     }
+    
+    let valueToAssign = dynamicScale?.[parsedValue] ?? `${propValue}`;
+
+    // Account for cases where there may be multiple values (e.g. padding = "$500 $1000")
+    if (typeof propValue === 'string' && propValue.split(' ').length > 1) {
+      const splitValue = propValue.split(' ');
+      valueToAssign = splitValue.reduce((acc, curr) => {
+        return `${acc} ${dynamicScale?.[trim$(curr)] ?? `${curr}`}`;
+      }, '');
+    }
+    
     return assignInlineVars({
-      [vars.default]: dynamicScale?.[parsedValue] ?? `${propValue}`,
+      [vars.default]: valueToAssign,
     });
   }
 
@@ -40,8 +51,17 @@ function _assignInlineVars(
           // If value has a static class, don't assign any variables
           return acc;
         }
+
+        let valueToAssign = dynamicScale?.[parsedValue] ?? `${value}`;
+
+        if (typeof value === 'string' && value.split(' ').length > 1) {
+          const splitValue = value.split(' ');
+          valueToAssign = splitValue.reduce((acc, curr) => {
+            return `${acc} ${dynamicScale?.[trim$(curr)] ?? `${curr}`}`;
+          }, '');
+        }
         hasProperty = true;
-        acc[vars.conditions[bp]] = dynamicScale?.[parsedValue] ?? `${value}`;
+        acc[vars.conditions[bp]] = valueToAssign;
       }
       return acc;
     },
