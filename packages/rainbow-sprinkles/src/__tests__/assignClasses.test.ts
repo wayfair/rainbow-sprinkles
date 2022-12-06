@@ -115,3 +115,26 @@ test('supports number values', () => {
 
   expect(assignClasses(config, 'foo')).toBe('a');
 });
+
+test('supports 0 values', () => {
+  const config: CreateStylesOutput = {
+    dynamic: {
+      default: 'a',
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    },
+    name: 'flexShrink',
+    vars: {
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+      default: 'a',
+    },
+  };
+
+  expect(
+    assignClasses(config, {
+      mobile: 0,
+      tablet: 1,
+    }),
+  ).toBe('a b');
+
+  expect(assignClasses(config, 0)).toBe('a');
+});

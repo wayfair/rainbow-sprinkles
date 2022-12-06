@@ -5,7 +5,7 @@ export function assignClasses(
   propertyConfig: CreateStylesOutput,
   propValue: unknown,
 ): string {
-  if (!propValue) {
+  if (!propValue && propValue !== 0) {
     return '';
   }
 
