@@ -1,5 +1,12 @@
 # rainbow-sprinkles
 
+## 0.14.4
+
+### Patch Changes
+
+- 0af248c: Update types to allow `null` in sprinkle values
+- 19bd82c: Fixed classes not being created when property value is 0
+
 ## 0.14.3
 
 ### Patch Changes
