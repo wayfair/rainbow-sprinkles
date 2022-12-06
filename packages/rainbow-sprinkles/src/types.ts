@@ -193,15 +193,17 @@ export type DefinePropertiesReturn = {
 
 type ValueOrConditionObject<T, Conditions extends ConditionalPropertyValue> =
   | T
-  | Partial<Record<keyof Conditions['conditions'], T>>;
+  | null
+  | Partial<Record<keyof Conditions['conditions'], T | null>>;
 
 type ValueOrConditionObjectStatic<
   T,
   Values extends { [k: string]: ConditionalPropertyValue },
 > =
   | T
+  | null
   | {
-      [Condition in keyof Values[keyof Values]['conditions']]?: T;
+      [Condition in keyof Values[keyof Values]['conditions']]?: T | null;
     };
 
 export type PrefixValue<T> = T extends `-${infer Root}`
