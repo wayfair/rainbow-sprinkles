@@ -1,10 +1,11 @@
 # rainbow-sprinkles
 
-## 0.15.0
+## 0.14.4
 
-### Minor Changes
+### Patch Changes
 
-- ad63335: Added support for multiple differing values in CSS shorthand properties.
+- 0af248c: Update types to allow `null` in sprinkle values
+- 19bd82c: Fixed classes not being created when property value is 0
 
 ## 0.14.3
 
