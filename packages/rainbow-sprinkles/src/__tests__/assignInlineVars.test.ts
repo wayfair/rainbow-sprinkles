@@ -1,5 +1,12 @@
 import { CreateStylesOutput } from '../types';
-import { assignInlineVars } from '../assignInlineVars';
+import { assignInlineVars, replaceVars } from '../assignInlineVars';
+
+const fn = (
+  ...args: [
+    Parameters<typeof assignInlineVars>[0],
+    Parameters<typeof assignInlineVars>[1],
+  ]
+) => assignInlineVars(...args, new Map());
 
 test('dynamic', () => {
   const config: CreateStylesOutput = {
@@ -19,10 +26,10 @@ test('dynamic', () => {
     name: 'display',
   };
 
-  expect(assignInlineVars(config, 'foo')).toEqual({
+  expect(fn(config, 'foo')).toEqual({
     '--mobile': 'foo',
   });
-  expect(assignInlineVars(config, { mobile: 'foo', tablet: 'bar' })).toEqual({
+  expect(fn(config, { mobile: 'foo', tablet: 'bar' })).toEqual({
     '--mobile': 'foo',
     '--tablet': 'bar',
   });
@@ -46,8 +53,8 @@ test('ignores null and undefined prop values', () => {
     name: 'display',
   };
 
-  expect(assignInlineVars(config, null)).toEqual({});
-  expect(assignInlineVars(config, undefined)).toEqual({});
+  expect(fn(config, null)).toEqual({});
+  expect(fn(config, undefined)).toEqual({});
 });
 
 test('static', () => {
@@ -70,13 +77,13 @@ test('static', () => {
   };
 
   expect(
-    assignInlineVars(config, {
+    fn(config, {
       mobile: 'block',
       tablet: 'flex',
     }),
   ).toEqual({});
 
-  expect(assignInlineVars(config, 'block')).toEqual({});
+  expect(fn(config, 'block')).toEqual({});
 });
 
 test('static and dynamic', () => {
@@ -111,13 +118,13 @@ test('static and dynamic', () => {
   };
 
   expect(
-    assignInlineVars(config, {
+    fn(config, {
       mobile: 'foo',
       tablet: 'flex',
     }),
   ).toEqual({ '--mobile': 'foo' });
 
-  expect(assignInlineVars(config, 'block')).toEqual({});
+  expect(fn(config, 'block')).toEqual({});
 });
 
 test('supports number values', () => {
@@ -138,11 +145,32 @@ test('supports number values', () => {
     name: 'lineHeight',
   };
 
-  expect(assignInlineVars(config, 2)).toEqual({
+  expect(fn(config, 2)).toEqual({
     '--mobile': '2',
   });
-  expect(assignInlineVars(config, { mobile: 1, tablet: 3 })).toEqual({
+  expect(fn(config, { mobile: 1, tablet: 3 })).toEqual({
     '--mobile': '1',
     '--tablet': '3',
   });
+});
+
+test('replaceVars', () => {
+  const scale = {
+    '-1x': '-5px',
+    '-2x': '-10px',
+    '-3x': '-15px',
+    none: '0',
+    '1x': '5px',
+    '2x': '10px',
+    '3x': '15px',
+  };
+
+  const run = (v: string) => replaceVars(v, scale);
+
+  expect(run('1x')).toBe('1x');
+  expect(run('$1x')).toBe(scale['1x']);
+  expect(run('-$2x')).toBe(scale['-2x']);
+  expect(run('$1x -$2x')).toBe(`${scale['1x']} ${scale['-2x']}`);
+  expect(run('-$1x $2x')).toBe(`${scale['-1x']} ${scale['2x']}`);
+  expect(run('-1x 2x')).toBe('-1x 2x');
 });

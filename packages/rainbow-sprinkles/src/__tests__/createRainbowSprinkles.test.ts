@@ -92,12 +92,17 @@ describe('dynamic properties only', () => {
 
     it('handles negated values', () => {
       expect(
-        rainbowSprinkles({ color: '-$gray50', padding: '-$2x' }),
+        rainbowSprinkles({
+          color: '-$gray50',
+          paddingTop: '-$2x',
+          padding: '-$1x -$3x',
+        }),
       ).toMatchObject({
-        className: 'color-mobile padding-mobile',
+        className: 'color-mobile paddingTop-mobile padding-mobile',
         style: {
           '--color-mobile': '-$gray50',
-          '--padding-mobile': vars.space['-2x'],
+          '--paddingTop-mobile': vars.space['-2x'],
+          '--padding-mobile': `${vars.space['-1x']} ${vars.space['-3x']}`,
         },
       });
     });
@@ -270,6 +275,7 @@ describe('static and dynamic properties', () => {
   const responsiveProps = defineProperties({
     dynamicProperties: {
       display: true,
+      padding: vars.space,
     },
     staticProperties: {
       display: ['block', 'inline-block'],
@@ -364,6 +370,7 @@ describe('static and dynamic properties', () => {
       expect(rainbowSprinkles.properties).toMatchInlineSnapshot(`
         Set {
           "display",
+          "padding",
           "textAlign",
         }
       `);
@@ -521,4 +528,64 @@ describe('static (no conditions)', () => {
       }
     `);
   });
+});
+
+/**
+ * Point of this test is to affirm two things
+ *
+ * First is that we want to make sure that we're using cached values,
+ * which we check by counting the number of calls to `replaceVars`
+ *
+ * Second is that we return the correct cached values. If the same
+ * prop value is used at different conditions, we should make sure
+ * that we're returning the right classes and styles for that condition
+ */
+test('caching', () => {
+  const responsiveProps = defineProperties({
+    dynamicProperties: {
+      display: true,
+      padding: vars.space,
+    },
+    staticProperties: {
+      display: ['block', 'inline-block'],
+      textAlign: ['left', 'right'],
+    },
+    conditions: {
+      mobile: {},
+      tablet: { '@media': 'screen and (min-width: 768px)' },
+      desktop: { '@media': 'screen and (min-width: 1024px)' },
+    },
+    defaultCondition: 'mobile',
+  });
+
+  const rainbowSprinkles = createRainbowSprinkles(responsiveProps);
+  globalThis.replaceVarsCallback = jest.fn();
+
+  const arg1 = { display: 'block', padding: '-$2x' };
+  const arg1Result = {
+    className: 'display-block-mobile padding-mobile',
+    style: {
+      '--padding-mobile': vars.space['-2x'],
+    },
+  };
+  const arg2 = {
+    display: { mobile: 'block', tablet: 'inline-block' },
+    padding: { mobile: '$1x', tablet: '-$2x' },
+  };
+  const arg2Result = {
+    className:
+      'display-block-mobile display-inline-block-tablet padding-mobile padding-tablet',
+    style: {
+      '--padding-mobile': vars.space['1x'],
+      '--padding-tablet': vars.space['-2x'],
+    },
+  };
+
+  expect(rainbowSprinkles(arg1)).toMatchObject(arg1Result);
+  expect(rainbowSprinkles(arg2)).toMatchObject(arg2Result);
+  expect(globalThis.replaceVarsCallback).toHaveBeenCalledTimes(4);
+
+  expect(rainbowSprinkles(arg1)).toMatchObject(arg1Result);
+  expect(rainbowSprinkles(arg2)).toMatchObject(arg2Result);
+  expect(globalThis.replaceVarsCallback).toHaveBeenCalledTimes(4);
 });

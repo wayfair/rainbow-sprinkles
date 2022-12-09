@@ -1,6 +1,13 @@
 import type { CreateStylesOutput } from '../types';
 import { assignClasses } from '../assignClasses';
 
+const fn = (
+  ...args: [
+    Parameters<typeof assignClasses>[0],
+    Parameters<typeof assignClasses>[1],
+  ]
+) => assignClasses(...args, new Map());
+
 test('dynamic', () => {
   const config: CreateStylesOutput = {
     dynamic: {
@@ -15,13 +22,13 @@ test('dynamic', () => {
   };
 
   expect(
-    assignClasses(config, {
+    fn(config, {
       mobile: 'foo',
       tablet: 'bar',
     }),
   ).toBe('a b');
 
-  expect(assignClasses(config, 'foo')).toBe('a');
+  expect(fn(config, 'foo')).toBe('a');
 });
 
 test('static', () => {
@@ -40,13 +47,13 @@ test('static', () => {
   };
 
   expect(
-    assignClasses(config, {
+    fn(config, {
       mobile: 'block',
       tablet: 'flex',
     }),
   ).toBe('a y');
 
-  expect(assignClasses(config, 'block')).toBe('a');
+  expect(fn(config, 'block')).toBe('a');
 });
 
 test('static and dynamic', () => {
@@ -85,7 +92,7 @@ test('static and dynamic', () => {
   };
 
   expect(
-    assignClasses(config, {
+    fn(config, {
       mobile: 'foo',
       tablet: 'primary',
       desktop: 'secondary',
@@ -107,13 +114,13 @@ test('supports number values', () => {
   };
 
   expect(
-    assignClasses(config, {
+    fn(config, {
       mobile: 1,
       tablet: 3,
     }),
   ).toBe('a b');
 
-  expect(assignClasses(config, 'foo')).toBe('a');
+  expect(fn(config, 'foo')).toBe('a');
 });
 
 test('supports 0 values', () => {
@@ -130,11 +137,11 @@ test('supports 0 values', () => {
   };
 
   expect(
-    assignClasses(config, {
+    fn(config, {
       mobile: 0,
       tablet: 1,
     }),
   ).toBe('a b');
 
-  expect(assignClasses(config, 0)).toBe('a');
+  expect(fn(config, 0)).toBe('a');
 });

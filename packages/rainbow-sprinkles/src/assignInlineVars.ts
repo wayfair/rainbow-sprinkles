@@ -1,39 +1,37 @@
 import { CSSProperties, CreateStylesOutput } from './types';
 import { assignInlineVars } from '@vanilla-extract/dynamic';
-import { trim$ } from './utils';
 
 function _assignInlineVars(
   propertyConfig: CreateStylesOutput,
   propValue: unknown,
+  cache: Map<number | string, string>,
 ): CSSProperties | null {
   const { vars, dynamicScale, values, dynamic } = propertyConfig;
 
+  if (!dynamic) {
+    return {};
+  }
+
   // Value is a string, ie not responsive
   if (typeof propValue === 'string' || typeof propValue === 'number') {
-    const parsedValue = trim$(propValue);
+    let parsedValue: string;
+    if (cache.has(propValue)) {
+      parsedValue = cache.get(propValue);
+    } else {
+      parsedValue = replaceVars(`${propValue}`, dynamicScale);
+      cache.set(propValue, parsedValue);
+    }
+
     // If the propValue matches a static value,
     // don't assign any variables
-    if (
-      values?.[parsedValue] ||
-      values?.conditions?.[parsedValue] ||
-      !dynamic
-    ) {
+    if (values?.[parsedValue] || values?.conditions?.[parsedValue]) {
       return {};
     }
-    
-    let valueToAssign = dynamicScale?.[parsedValue] ?? `${propValue}`;
 
-    // Account for cases where there may be multiple values (e.g. padding = "$500 $1000")
-    if (typeof propValue === 'string' && propValue.split(' ').length > 1) {
-      const splitValue = propValue.split(' ');
-      valueToAssign = splitValue.reduce((acc, curr) => {
-        return `${acc} ${dynamicScale?.[trim$(curr)] ?? `${curr}`}`;
-      }, '');
-    }
-    
-    return assignInlineVars({
-      [vars.default]: valueToAssign,
+    const result = assignInlineVars({
+      [vars.default]: parsedValue,
     });
+    return result;
   }
 
   // If no entries, exit gracefully
@@ -43,32 +41,63 @@ function _assignInlineVars(
 
   let hasProperty = false;
 
-  const variableAssignments = Object.entries(propValue).reduce(
-    (acc: Record<string, string>, [bp, value]) => {
-      if (value) {
-        const parsedValue = trim$(value);
-        if (values?.[parsedValue] || !dynamic) {
-          // If value has a static class, don't assign any variables
-          return acc;
-        }
-
-        let valueToAssign = dynamicScale?.[parsedValue] ?? `${value}`;
-
-        if (typeof value === 'string' && value.split(' ').length > 1) {
-          const splitValue = value.split(' ');
-          valueToAssign = splitValue.reduce((acc, curr) => {
-            return `${acc} ${dynamicScale?.[trim$(curr)] ?? `${curr}`}`;
-          }, '');
-        }
-        hasProperty = true;
-        acc[vars.conditions[bp]] = valueToAssign;
+  const variableAssignments = Object.entries(
+    propValue as Record<string | number, string>,
+  ).reduce((acc: Record<string, string>, [bp, value]) => {
+    if (typeof value === 'string' || typeof value === 'number') {
+      let parsedValue: string;
+      if (cache.has(value)) {
+        parsedValue = cache.get(value);
+      } else {
+        parsedValue = replaceVars(`${value}`, dynamicScale);
+        cache.set(value, parsedValue);
       }
-      return acc;
-    },
-    {},
-  );
+
+      if (values?.[parsedValue] || !dynamic) {
+        // If value has a static class, don't assign any variables
+        return acc;
+      }
+
+      hasProperty = true;
+      acc[vars.conditions[bp]] = parsedValue;
+    }
+
+    return acc;
+  }, {});
 
   return hasProperty ? assignInlineVars(variableAssignments) : {};
+}
+
+/**
+ * Parses a string for things with '$'
+ *
+ * (?<negated>-)? -> optionally captures '-', names it "negated"
+ * \B\$           -> capture '$' when preceded by a "non-word" (whitespace, punctuation)
+ * (?<token>\w+)  -> capture the "word" following the '$'
+ * /g             -> capture all instances
+ */
+const REG = /(?<negated>-)?\B\$(?<token>\w+)/g;
+
+/**
+ * Takes a value and replaces all '$' values with the
+ * values in the scale, if available
+ */
+export function replaceVars(
+  propValue: string,
+  scale: CreateStylesOutput['dynamicScale'],
+) {
+  if (process.env.NODE_ENV === 'test') {
+    globalThis.replaceVarsCallback?.();
+  }
+  const parsed = propValue.replace(REG, (match, ...args) => {
+    const { negated, token }: { negated?: '-'; token?: string } = args.at(-1);
+    const v = `${negated ? '-' : ''}${token}`;
+    if (scale?.[v]) {
+      return scale[v];
+    }
+    return match;
+  });
+  return parsed;
 }
 
 export { _assignInlineVars as assignInlineVars };
