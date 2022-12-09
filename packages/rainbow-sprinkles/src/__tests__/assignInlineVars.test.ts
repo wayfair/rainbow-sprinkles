@@ -173,4 +173,6 @@ test('replaceVars', () => {
   expect(run('$1x -$2x')).toBe(`${scale['1x']} ${scale['-2x']}`);
   expect(run('-$1x $2x')).toBe(`${scale['-1x']} ${scale['2x']}`);
   expect(run('-1x 2x')).toBe('-1x 2x');
+  expect(run('calc(100% - $2x)')).toBe(`calc(100% - ${scale['2x']})`);
+  expect(run('calc($3x - $2x)')).toBe(`calc(${scale['3x']} - ${scale['2x']})`);
 });

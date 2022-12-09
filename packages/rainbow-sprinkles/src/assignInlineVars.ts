@@ -53,7 +53,7 @@ function _assignInlineVars(
         cache.set(value, parsedValue);
       }
 
-      if (values?.[parsedValue] || !dynamic) {
+      if (values && parsedValue in values) {
         // If value has a static class, don't assign any variables
         return acc;
       }
