@@ -1,12 +1,17 @@
 import type { CreateStylesOutput } from '../types';
 import { assignClasses } from '../assignClasses';
 
-const fn = (
+let fn = assignClasses as (
   ...args: [
     Parameters<typeof assignClasses>[0],
     Parameters<typeof assignClasses>[1],
   ]
-) => assignClasses(...args, new Map());
+) => ReturnType<typeof assignClasses>;
+
+beforeEach(() => {
+  // Create a new cache for each test
+  fn = (...args) => assignClasses(...args, new Map());
+});
 
 test('dynamic', () => {
   const config: CreateStylesOutput = {

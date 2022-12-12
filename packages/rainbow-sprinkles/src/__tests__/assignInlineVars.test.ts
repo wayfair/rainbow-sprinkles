@@ -1,12 +1,17 @@
 import { CreateStylesOutput } from '../types';
 import { assignInlineVars, replaceVars } from '../assignInlineVars';
 
-const fn = (
+let fn = assignInlineVars as (
   ...args: [
     Parameters<typeof assignInlineVars>[0],
     Parameters<typeof assignInlineVars>[1],
   ]
-) => assignInlineVars(...args, new Map());
+) => ReturnType<typeof assignInlineVars>;
+
+beforeEach(() => {
+  // Create a new cache for each test
+  fn = (...args) => assignInlineVars(...args, new Map());
+});
 
 test('dynamic', () => {
   const config: CreateStylesOutput = {
