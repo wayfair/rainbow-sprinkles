@@ -1,5 +1,6 @@
 import type { CreateStylesOutput } from '../types';
 import { assignClasses } from '../assignClasses';
+import * as utils from '../utils';
 
 let fn = assignClasses as (
   ...args: [
@@ -49,6 +50,7 @@ test('static', () => {
       },
     },
     name: 'display',
+    staticScale: ['block', 'flex'],
   };
 
   expect(
@@ -96,13 +98,23 @@ test('static and dynamic', () => {
     },
   };
 
+  // Apply dynamic class and static classes correctly
+  expect(
+    fn(config, {
+      mobile: 'foo',
+      tablet: '$primary',
+      desktop: '$secondary',
+    }),
+  ).toBe('1 b z');
+
+  // All non-configured values apply dynamic classes
   expect(
     fn(config, {
       mobile: 'foo',
       tablet: 'primary',
       desktop: 'secondary',
     }),
-  ).toBe('1 b z');
+  ).toBe('1 2 3');
 });
 
 test('supports number values', () => {
@@ -149,4 +161,60 @@ test('supports 0 values', () => {
   ).toBe('a b');
 
   expect(fn(config, 0)).toBe('a');
+});
+
+test('caching', () => {
+  const spy = jest.spyOn(utils, 'getValueConfig');
+  const config: CreateStylesOutput = {
+    vars: {
+      default: 'a',
+      conditions: { mobile: 'a', tablet: 'b', desktop: 'c' },
+    },
+    dynamic: {
+      default: '1',
+      conditions: { mobile: '1', tablet: '2', desktop: '3' },
+    },
+    values: {
+      primary: {
+        default: 'a',
+        conditions: {
+          mobile: 'a',
+          tablet: 'b',
+          desktop: 'c',
+        },
+      },
+      secondary: {
+        default: 'x',
+        conditions: {
+          mobile: 'x',
+          tablet: 'y',
+          desktop: 'z',
+        },
+      },
+    },
+    name: 'color',
+    staticScale: {
+      primary: 'color1',
+      secondary: 'color2',
+    },
+  };
+
+  const cache = new Map();
+
+  assignClasses(config, '$primary', cache);
+  assignClasses(config, '$primary', cache);
+  assignClasses(config, '$secondary', cache);
+  assignClasses(config, '$secondary', cache);
+
+  expect(spy).toHaveBeenCalledTimes(2);
+
+  assignClasses(config, { mobile: '$primary', desktop: '$secondary' }, cache);
+  expect(spy).toHaveBeenCalledTimes(4);
+  assignClasses(config, { mobile: '$primary', desktop: '$secondary' }, cache);
+  expect(spy).toHaveBeenCalledTimes(4);
+
+  assignClasses(config, { mobile: '$secondary', desktop: '$primary' }, cache);
+  expect(spy).toHaveBeenCalledTimes(6);
+
+  spy.mockRestore();
 });

@@ -338,32 +338,42 @@ describe('static and dynamic properties', () => {
     });
 
     describe('props with just static values', () => {
-      const consoleError = jest
-        .spyOn(console, 'error')
-        .mockImplementation(() => {});
+      let consoleError;
 
-      expect(rainbowSprinkles({ textAlign: 'left' })).toMatchObject({
-        className: 'textAlign-left-mobile',
-        otherProps: {},
-        style: {},
+      beforeAll(() => {
+        consoleError = jest
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
       });
-      // @ts-expect-error
-      expect(rainbowSprinkles({ textAlign: 'center' })).toMatchObject({
-        className: '',
-        otherProps: {},
-        style: {},
-      });
-      expect(
-        rainbowSprinkles({
-          // @ts-expect-error
-          textAlign: { mobile: 'left', tablet: 'center' },
-        }),
-      ).toMatchObject({
-        className: 'textAlign-left-mobile',
-      });
-      expect(console.error).toHaveBeenCalledTimes(2);
 
-      consoleError.mockRestore();
+      afterAll(() => {
+        consoleError.mockRestore();
+      });
+
+      it('handles non-conditional static value', () => {
+        expect(rainbowSprinkles({ textAlign: 'left' })).toMatchObject({
+          className: 'textAlign-left-mobile',
+          otherProps: {},
+          style: {},
+        });
+      });
+      it('returns nothing for non-configured value', () => {
+        // @ts-expect-error
+        expect(rainbowSprinkles({ textAlign: 'center' })).toMatchObject({
+          className: '',
+          otherProps: {},
+          style: {},
+        });
+        expect(
+          rainbowSprinkles({
+            // @ts-expect-error
+            textAlign: { mobile: 'left', tablet: 'center' },
+          }),
+        ).toMatchObject({
+          className: 'textAlign-left-mobile',
+        });
+        expect(console.error).toHaveBeenCalledTimes(2);
+      });
     });
 
     it('has properties', () => {
@@ -528,64 +538,4 @@ describe('static (no conditions)', () => {
       }
     `);
   });
-});
-
-/**
- * Point of this test is to affirm two things
- *
- * First is that we want to make sure that we're using cached values,
- * which we check by counting the number of calls to `replaceVars`
- *
- * Second is that we return the correct cached values. If the same
- * prop value is used at different conditions, we should make sure
- * that we're returning the right classes and styles for that condition
- */
-test('caching', () => {
-  const responsiveProps = defineProperties({
-    dynamicProperties: {
-      display: true,
-      padding: vars.space,
-    },
-    staticProperties: {
-      display: ['block', 'inline-block'],
-      textAlign: ['left', 'right'],
-    },
-    conditions: {
-      mobile: {},
-      tablet: { '@media': 'screen and (min-width: 768px)' },
-      desktop: { '@media': 'screen and (min-width: 1024px)' },
-    },
-    defaultCondition: 'mobile',
-  });
-
-  const rainbowSprinkles = createRainbowSprinkles(responsiveProps);
-  globalThis.replaceVarsCallback = jest.fn();
-
-  const arg1 = { display: 'block', padding: '-$2x' };
-  const arg1Result = {
-    className: 'display-block-mobile padding-mobile',
-    style: {
-      '--padding-mobile': vars.space['-2x'],
-    },
-  };
-  const arg2 = {
-    display: { mobile: 'block', tablet: 'inline-block' },
-    padding: { mobile: '$1x', tablet: '-$2x' },
-  };
-  const arg2Result = {
-    className:
-      'display-block-mobile display-inline-block-tablet padding-mobile padding-tablet',
-    style: {
-      '--padding-mobile': vars.space['1x'],
-      '--padding-tablet': vars.space['-2x'],
-    },
-  };
-
-  expect(rainbowSprinkles(arg1)).toMatchObject(arg1Result);
-  expect(rainbowSprinkles(arg2)).toMatchObject(arg2Result);
-  expect(globalThis.replaceVarsCallback).toHaveBeenCalledTimes(4);
-
-  expect(rainbowSprinkles(arg1)).toMatchObject(arg1Result);
-  expect(rainbowSprinkles(arg2)).toMatchObject(arg2Result);
-  expect(globalThis.replaceVarsCallback).toHaveBeenCalledTimes(4);
 });

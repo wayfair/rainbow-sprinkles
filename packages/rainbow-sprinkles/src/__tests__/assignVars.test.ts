@@ -1,16 +1,14 @@
 import { CreateStylesOutput } from '../types';
-import { assignInlineVars, replaceVars } from '../assignInlineVars';
+import { assignVars } from '../assignVars';
+import * as utils from '../utils';
 
-let fn = assignInlineVars as (
-  ...args: [
-    Parameters<typeof assignInlineVars>[0],
-    Parameters<typeof assignInlineVars>[1],
-  ]
-) => ReturnType<typeof assignInlineVars>;
+let fn = assignVars as (
+  ...args: [Parameters<typeof assignVars>[0], Parameters<typeof assignVars>[1]]
+) => ReturnType<typeof assignVars>;
 
 beforeEach(() => {
   // Create a new cache for each test
-  fn = (...args) => assignInlineVars(...args, new Map());
+  fn = (...args) => assignVars(...args, new Map());
 });
 
 test('dynamic', () => {
@@ -159,25 +157,45 @@ test('supports number values', () => {
   });
 });
 
-test('replaceVars', () => {
-  const scale = {
-    '-1x': '-5px',
-    '-2x': '-10px',
-    '-3x': '-15px',
-    none: '0',
-    '1x': '5px',
-    '2x': '10px',
-    '3x': '15px',
+test('caching', () => {
+  const spy = jest.spyOn(utils, 'replaceVarsInValue');
+  const config: CreateStylesOutput = {
+    dynamic: {
+      default: '1',
+      conditions: { mobile: '1', tablet: '2', desktop: '3' },
+    },
+    vars: {
+      default: '--mobile',
+      conditions: {
+        mobile: '--mobile',
+        tablet: '--tablet',
+        desktop: '--desktop',
+      },
+    },
+    name: 'display',
   };
 
-  const run = (v: string) => replaceVars(v, scale);
+  const cache = new Map();
 
-  expect(run('1x')).toBe('1x');
-  expect(run('$1x')).toBe(scale['1x']);
-  expect(run('-$2x')).toBe(scale['-2x']);
-  expect(run('$1x -$2x')).toBe(`${scale['1x']} ${scale['-2x']}`);
-  expect(run('-$1x $2x')).toBe(`${scale['-1x']} ${scale['2x']}`);
-  expect(run('-1x 2x')).toBe('-1x 2x');
-  expect(run('calc(100% - $2x)')).toBe(`calc(100% - ${scale['2x']})`);
-  expect(run('calc($3x - $2x)')).toBe(`calc(${scale['3x']} - ${scale['2x']})`);
+  assignVars(config, 'block', cache);
+  assignVars(config, 'block', cache);
+  assignVars(config, 'inline-block', cache);
+  assignVars(config, 'inline-block', cache);
+
+  expect(spy).toHaveBeenCalledTimes(2);
+
+  assignVars(config, { mobile: 'block', desktop: 'flex' }, cache);
+  // An additional for 'flex'
+  expect(spy).toHaveBeenCalledTimes(3);
+
+  assignVars(config, { mobile: 'block', desktop: 'flex' }, cache);
+  expect(spy).toHaveBeenCalledTimes(3);
+
+  assignVars(
+    config,
+    { mobile: 'block', tablet: 'block', desktop: 'flex' },
+    cache,
+  );
+  expect(spy).toHaveBeenCalledTimes(3);
+  spy.mockRestore();
 });

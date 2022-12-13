@@ -1,11 +1,11 @@
 import { CSSProperties, CreateStylesOutput } from './types';
-import { assignInlineVars } from '@vanilla-extract/dynamic';
+import { replaceVarsInValue } from './utils';
 
-function _assignInlineVars(
+export function assignVars(
   propertyConfig: CreateStylesOutput,
   propValue: unknown,
   cache: Map<number | string, string>,
-): CSSProperties | null {
+): CSSProperties {
   const { vars, dynamicScale, values, dynamic } = propertyConfig;
 
   if (!dynamic) {
@@ -18,7 +18,7 @@ function _assignInlineVars(
     if (cache.has(propValue)) {
       parsedValue = cache.get(propValue);
     } else {
-      parsedValue = replaceVars(`${propValue}`, dynamicScale);
+      parsedValue = replaceVarsInValue(`${propValue}`, dynamicScale);
       cache.set(propValue, parsedValue);
     }
 
@@ -28,9 +28,9 @@ function _assignInlineVars(
       return {};
     }
 
-    const result = assignInlineVars({
+    const result = {
       [vars.default]: parsedValue,
-    });
+    };
     return result;
   }
 
@@ -38,8 +38,6 @@ function _assignInlineVars(
   if ((propValue && Object.keys(propValue).length < 1) || propValue == null) {
     return {};
   }
-
-  let hasProperty = false;
 
   const variableAssignments = Object.entries(
     propValue as Record<string | number, string>,
@@ -49,7 +47,7 @@ function _assignInlineVars(
       if (cache.has(value)) {
         parsedValue = cache.get(value);
       } else {
-        parsedValue = replaceVars(`${value}`, dynamicScale);
+        parsedValue = replaceVarsInValue(`${value}`, dynamicScale);
         cache.set(value, parsedValue);
       }
 
@@ -58,46 +56,11 @@ function _assignInlineVars(
         return acc;
       }
 
-      hasProperty = true;
       acc[vars.conditions[bp]] = parsedValue;
     }
 
     return acc;
   }, {});
 
-  return hasProperty ? assignInlineVars(variableAssignments) : {};
+  return variableAssignments;
 }
-
-/**
- * Parses a string for things with '$'
- *
- * (?<negated>-)? -> optionally captures '-', names it "negated"
- * \B\$           -> capture '$' when preceded by a "non-word" (whitespace, punctuation)
- * (?<token>\w+)  -> capture the "word" following the '$'
- * /g             -> capture all instances
- */
-const REG = /(?<negated>-)?\B\$(?<token>\w+)/g;
-
-/**
- * Takes a value and replaces all '$' values with the
- * values in the scale, if available
- */
-export function replaceVars(
-  propValue: string,
-  scale: CreateStylesOutput['dynamicScale'],
-) {
-  if (process.env.NODE_ENV === 'test') {
-    globalThis.replaceVarsCallback?.();
-  }
-  const parsed = propValue.replace(REG, (match, ...args) => {
-    const { negated, token }: { negated?: '-'; token?: string } = args.at(-1);
-    const v = `${negated ? '-' : ''}${token}`;
-    if (scale?.[v]) {
-      return scale[v];
-    }
-    return match;
-  });
-  return parsed;
-}
-
-export { _assignInlineVars as assignInlineVars };

@@ -1,5 +1,6 @@
 import { assignClasses } from './assignClasses';
-import { assignInlineVars } from './assignInlineVars';
+import { assignVars } from './assignVars';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import {
   DefinePropertiesReturn,
   RuntimeFnReturn,
@@ -104,16 +105,13 @@ export const createRuntimeFn = <
         }
 
         className.push(assignClasses(propertyConfig, propValue, classCache));
-        Object.assign(
-          style,
-          assignInlineVars(propertyConfig, propValue, styleCache),
-        );
+        Object.assign(style, assignVars(propertyConfig, propValue, styleCache));
       }
     }
 
     return {
       className: className.join(' ').trim(),
-      style,
+      style: assignInlineVars(style),
       otherProps,
     };
   };
