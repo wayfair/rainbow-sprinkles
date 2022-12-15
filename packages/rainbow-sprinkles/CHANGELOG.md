@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.15.1
+
+### Patch Changes
+
+- bf7d842: Replaced Array.at() to improve browser support
+
 ## 0.15.0
 
 ### Minor Changes
