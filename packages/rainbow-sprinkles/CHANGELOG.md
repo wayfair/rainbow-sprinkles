@@ -1,5 +1,12 @@
 # rainbow-sprinkles
 
+## 0.15.0
+
+### Minor Changes
+
+- 35565d6: - Added support for multiple vars in the same prop value
+  - Added caching to increase performance of repeatedly parsing prop values
+
 ## 0.14.4
 
 ### Patch Changes
