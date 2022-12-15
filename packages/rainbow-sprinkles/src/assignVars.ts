@@ -6,7 +6,7 @@ export function assignVars(
   propValue: unknown,
   cache: Map<number | string, string>,
 ): CSSProperties {
-  const { vars, dynamicScale, values, dynamic } = propertyConfig;
+  const { name, vars, dynamicScale, values, dynamic } = propertyConfig;
 
   if (!dynamic) {
     return {};
@@ -29,7 +29,7 @@ export function assignVars(
     }
 
     const result = {
-      [vars.default]: parsedValue,
+      [name]: parsedValue,
     };
     return result;
   }

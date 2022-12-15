@@ -10,9 +10,49 @@ export function assignClasses(
     return '';
   }
 
+  const { dynamic, values, name: propName, staticScale } = propertyConfig;
+
   // Value is a string or number, ie not responsive
   if (typeof propValue === 'string' || typeof propValue === 'number') {
-    return handleEntry(propertyConfig, `${propValue}`, cache);
+    const cacheKey = propValue;
+
+    if (cache.has(cacheKey)) {
+      return cache.get(cacheKey);
+    }
+
+    // Check for static value first
+    if (values) {
+      if (Array.isArray(staticScale) && staticScale.includes(propValue)) {
+        const result = values[propValue].default;
+        cache.set(cacheKey, result);
+        return result;
+      }
+
+      const parsedValue = getValueConfig(`${propValue}`, values);
+      if (parsedValue) {
+        const result = parsedValue.default;
+        cache.set(cacheKey, result);
+        return result;
+      }
+    }
+
+    if (dynamic) {
+      const result = '';
+      cache.set(cacheKey, result);
+      return result;
+    }
+
+    // If the property is not dynamic, and unrecognized value is provided
+    // Quietly warn
+    // eslint-disable-next-line no-console
+    console.error(
+      `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
+        values,
+      )
+        .map((className) => `"${className}"`)
+        .join(', ')}. Received: ${JSON.stringify(propValue)}.`,
+    );
+    return '';
   }
 
   const keys = Object.keys(propValue);
@@ -25,7 +65,48 @@ export function assignClasses(
   const className = keys
     .map((condition) => {
       const rawValueAtCondition = `${propValue[condition]}`;
-      return handleEntry(propertyConfig, rawValueAtCondition, cache, condition);
+
+      const cacheKey = condition
+        ? `${condition}${rawValueAtCondition}`
+        : rawValueAtCondition;
+
+      if (cache.has(cacheKey)) {
+        return cache.get(cacheKey);
+      }
+
+      // Check for static value first
+      if (values) {
+        if (Array.isArray(staticScale) && staticScale.includes(propValue)) {
+          const result = values[rawValueAtCondition].conditions[condition];
+          cache.set(cacheKey, result);
+          return result;
+        }
+
+        const parsedValue = getValueConfig(`${rawValueAtCondition}`, values);
+        if (parsedValue) {
+          const result = parsedValue.conditions[condition];
+          cache.set(cacheKey, result);
+          return result;
+        }
+      }
+
+      if (dynamic) {
+        const result = dynamic.conditions[condition];
+        cache.set(cacheKey, result);
+        return result;
+      }
+
+      // If the property is not dynamic, and unrecognized value is provided
+      // Quietly warn
+      // eslint-disable-next-line no-console
+      console.error(
+        `Rainbow Sprinkles: invalid value provided to prop '${propName}'. Expected one of ${Object.keys(
+          values,
+        )
+          .map((className) => `"${className}"`)
+          .join(', ')}. Received: ${JSON.stringify(propValue)}.`,
+      );
+      return '';
     })
     .filter(Boolean);
 
