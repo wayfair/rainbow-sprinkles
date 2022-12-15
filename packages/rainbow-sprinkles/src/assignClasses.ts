@@ -66,9 +66,7 @@ export function assignClasses(
     .map((condition) => {
       const rawValueAtCondition = `${propValue[condition]}`;
 
-      const cacheKey = condition
-        ? `${condition}${rawValueAtCondition}`
-        : rawValueAtCondition;
+      const cacheKey = `${condition}${rawValueAtCondition}`;
 
       if (cache.has(cacheKey)) {
         return cache.get(cacheKey);
@@ -82,7 +80,7 @@ export function assignClasses(
           return result;
         }
 
-        const parsedValue = getValueConfig(`${rawValueAtCondition}`, values);
+        const parsedValue = getValueConfig(rawValueAtCondition, values);
         if (parsedValue) {
           const result = parsedValue.conditions[condition];
           cache.set(cacheKey, result);
