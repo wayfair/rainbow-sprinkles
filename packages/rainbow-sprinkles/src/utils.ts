@@ -1,14 +1,14 @@
-const VALUE_REGEX = /(-)?\$(\w*)/;
+import { CreateStylesOutput } from './types';
 
-export function trim$(rawValue: string | number): string | number {
-  if (typeof rawValue === 'string') {
-    const matches = rawValue.match(VALUE_REGEX);
-    if (matches) {
-      return (matches[1] ?? '').concat(matches[2]);
-    }
-  }
-  return rawValue;
-}
+/**
+ * Parses a string for things with '$'
+ *
+ * (?<negated>-)? -> optionally captures '-', names it "negated"
+ * \B\$           -> capture '$' when preceded by a "non-word" (whitespace, punctuation)
+ * (?<token>\w+)  -> capture the "word" following the '$'
+ * /g             -> capture all instances
+ */
+export const VALUE_REGEX = /(?<negated>-)?\B\$(?<token>\w+)/g;
 
 export function mapValues<
   Value,
@@ -25,4 +25,43 @@ export function mapValues<
   }
 
   return result as any;
+}
+
+/**
+ * Takes a value and replaces all '$' values with the
+ * values in the scale, if available
+ */
+export function replaceVarsInValue(
+  propValue: string,
+  scale: CreateStylesOutput['dynamicScale'],
+) {
+  const parsed = propValue.replace(VALUE_REGEX, (match, ...args) => {
+    const { negated, token }: { negated?: '-'; token?: string } = args.at(-1);
+    const v = `${negated ? '-' : ''}${token}`;
+    if (scale?.[v]) {
+      return scale[v];
+    }
+    return match;
+  });
+  return parsed;
+}
+
+/**
+ * Takes a value and replaces all '$' values with the
+ * values in the scale, if available
+ */
+export function getValueConfig(
+  propValue: string,
+  scale: CreateStylesOutput['values'],
+): CreateStylesOutput['values'][keyof CreateStylesOutput['values']] | null {
+  const parsed = [...propValue.matchAll(VALUE_REGEX)];
+  if (parsed.length === 1) {
+    const { negated, token }: { negated?: '-'; token?: string } =
+      parsed[0].groups;
+    const v = `${negated ? '-' : ''}${token}`;
+    if (v in scale) {
+      return scale[v];
+    }
+  }
+  return null;
 }

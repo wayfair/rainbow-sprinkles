@@ -10,13 +10,12 @@ export default function App() {
       width="100vw"
       display="flex"
       placeItems="center"
-      padding="$3500"
       fontFamily="$body"
     >
       <Box
         bg="$core10"
         borderRadius={{ mobile: '$4x', desktop: '$5x' }}
-        padding={{ mobile: '$2500', desktop: '$3000' }}
+        padding={{ mobile: '$2000 $2500', desktop: '$3000 $3500' }}
       >
         <Box
           display="flex"
@@ -26,7 +25,7 @@ export default function App() {
         >
           <Box
             animation={{ hover: '5s pinwheelSpin ease infinite' }}
-            size={{ mobile: '60px', tablet: '75px', desktop: '100px' }}
+            size={{ mobile: '60px', tablet: '75px', desktop: '200px' }}
             aria-hidden="true"
           >
             <Pinwheel label="Wayfair Pinwheel" />
@@ -34,7 +33,7 @@ export default function App() {
           <Box
             as="h1"
             color="$black80"
-            typeSize={{ mobile: '$1000', desktop: '$1000' }}
+            typeSize={{ mobile: '$1000', desktop: '$2500' }}
           >
             Vanilla Extract & Rainbow Sprinkles
           </Box>

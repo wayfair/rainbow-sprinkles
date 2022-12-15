@@ -92,12 +92,17 @@ describe('dynamic properties only', () => {
 
     it('handles negated values', () => {
       expect(
-        rainbowSprinkles({ color: '-$gray50', padding: '-$2x' }),
+        rainbowSprinkles({
+          color: '-$gray50',
+          paddingTop: '-$2x',
+          padding: '-$1x -$3x',
+        }),
       ).toMatchObject({
-        className: 'color-mobile padding-mobile',
+        className: 'color-mobile paddingTop-mobile padding-mobile',
         style: {
           '--color-mobile': '-$gray50',
-          '--padding-mobile': vars.space['-2x'],
+          '--paddingTop-mobile': vars.space['-2x'],
+          '--padding-mobile': `${vars.space['-1x']} ${vars.space['-3x']}`,
         },
       });
     });
@@ -270,6 +275,7 @@ describe('static and dynamic properties', () => {
   const responsiveProps = defineProperties({
     dynamicProperties: {
       display: true,
+      padding: vars.space,
     },
     staticProperties: {
       display: ['block', 'inline-block'],
@@ -332,38 +338,49 @@ describe('static and dynamic properties', () => {
     });
 
     describe('props with just static values', () => {
-      const consoleError = jest
-        .spyOn(console, 'error')
-        .mockImplementation(() => {});
+      let consoleError;
 
-      expect(rainbowSprinkles({ textAlign: 'left' })).toMatchObject({
-        className: 'textAlign-left-mobile',
-        otherProps: {},
-        style: {},
+      beforeAll(() => {
+        consoleError = jest
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
       });
-      // @ts-expect-error
-      expect(rainbowSprinkles({ textAlign: 'center' })).toMatchObject({
-        className: '',
-        otherProps: {},
-        style: {},
-      });
-      expect(
-        rainbowSprinkles({
-          // @ts-expect-error
-          textAlign: { mobile: 'left', tablet: 'center' },
-        }),
-      ).toMatchObject({
-        className: 'textAlign-left-mobile',
-      });
-      expect(console.error).toHaveBeenCalledTimes(2);
 
-      consoleError.mockRestore();
+      afterAll(() => {
+        consoleError.mockRestore();
+      });
+
+      it('handles non-conditional static value', () => {
+        expect(rainbowSprinkles({ textAlign: 'left' })).toMatchObject({
+          className: 'textAlign-left-mobile',
+          otherProps: {},
+          style: {},
+        });
+      });
+      it('returns nothing for non-configured value', () => {
+        // @ts-expect-error
+        expect(rainbowSprinkles({ textAlign: 'center' })).toMatchObject({
+          className: '',
+          otherProps: {},
+          style: {},
+        });
+        expect(
+          rainbowSprinkles({
+            // @ts-expect-error
+            textAlign: { mobile: 'left', tablet: 'center' },
+          }),
+        ).toMatchObject({
+          className: 'textAlign-left-mobile',
+        });
+        expect(console.error).toHaveBeenCalledTimes(2);
+      });
     });
 
     it('has properties', () => {
       expect(rainbowSprinkles.properties).toMatchInlineSnapshot(`
         Set {
           "display",
+          "padding",
           "textAlign",
         }
       `);

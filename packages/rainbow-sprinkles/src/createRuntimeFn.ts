@@ -1,5 +1,6 @@
 import { assignClasses } from './assignClasses';
-import { assignInlineVars } from './assignInlineVars';
+import { assignVars } from './assignVars';
+import { assignInlineVars } from '@vanilla-extract/dynamic';
 import {
   DefinePropertiesReturn,
   RuntimeFnReturn,
@@ -25,6 +26,26 @@ export const createRuntimeFn = <
   const shorthandNames = properties.filter(
     (property) => 'mappings' in cssConfig[property],
   );
+
+  /**
+   * Cache the inline styles and classes for properties and their values
+   *
+   * Structure in object notation would look like:
+   * cache: {
+   *   propName: {
+   *      class: {
+   *        propValue: 'className'
+   *      },
+   *      style: {
+   *        propValue: 'inline style value'
+   *      }
+   *   }
+   * }
+   */
+  const cache: Map<
+    string,
+    Map<'class' | 'style', Map<string | number, string>>
+  > = new Map();
 
   const fn = (props: any) => {
     const style: Record<string, string> = {};
@@ -66,15 +87,31 @@ export const createRuntimeFn = <
         continue;
       }
 
+      let classCache: Map<string | number, string>;
+      let styleCache: Map<string | number, string>;
+
       if (propertyConfig) {
-        className.push(assignClasses(propertyConfig, propValue));
-        Object.assign(style, assignInlineVars(propertyConfig, propValue));
+        if (cache.has(property)) {
+          const c = cache.get(property);
+          classCache = c.get('class');
+          styleCache = c.get('style');
+        } else {
+          const propCache = new Map();
+          classCache = new Map();
+          styleCache = new Map();
+          propCache.set('class', classCache);
+          propCache.set('style', styleCache);
+          cache.set(property, propCache);
+        }
+
+        className.push(assignClasses(propertyConfig, propValue, classCache));
+        Object.assign(style, assignVars(propertyConfig, propValue, styleCache));
       }
     }
 
     return {
       className: className.join(' ').trim(),
-      style,
+      style: assignInlineVars(style),
       otherProps,
     };
   };

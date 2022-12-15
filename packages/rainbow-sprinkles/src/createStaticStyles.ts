@@ -58,6 +58,6 @@ export function createStaticStyles(
   return {
     values,
     name: property,
-    staticScale: scaleObj,
+    staticScale: scale,
   };
 }

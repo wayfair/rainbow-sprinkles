@@ -181,7 +181,7 @@ export type CreateStylesOutput = {
     default: string;
     conditions?: { [condition: string]: string };
   };
-  staticScale?: string[] | Record<string, string>;
+  staticScale?: ReadonlyArray<string> | Record<string, string>;
   dynamicScale?: true | Record<string, string>;
 };
 

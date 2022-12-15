@@ -1,5 +1,15 @@
 import { CreateStylesOutput } from '../types';
-import { assignInlineVars } from '../assignInlineVars';
+import { assignVars } from '../assignVars';
+import * as utils from '../utils';
+
+let fn = assignVars as (
+  ...args: [Parameters<typeof assignVars>[0], Parameters<typeof assignVars>[1]]
+) => ReturnType<typeof assignVars>;
+
+beforeEach(() => {
+  // Create a new cache for each test
+  fn = (...args) => assignVars(...args, new Map());
+});
 
 test('dynamic', () => {
   const config: CreateStylesOutput = {
@@ -19,10 +29,10 @@ test('dynamic', () => {
     name: 'display',
   };
 
-  expect(assignInlineVars(config, 'foo')).toEqual({
+  expect(fn(config, 'foo')).toEqual({
     '--mobile': 'foo',
   });
-  expect(assignInlineVars(config, { mobile: 'foo', tablet: 'bar' })).toEqual({
+  expect(fn(config, { mobile: 'foo', tablet: 'bar' })).toEqual({
     '--mobile': 'foo',
     '--tablet': 'bar',
   });
@@ -46,8 +56,8 @@ test('ignores null and undefined prop values', () => {
     name: 'display',
   };
 
-  expect(assignInlineVars(config, null)).toEqual({});
-  expect(assignInlineVars(config, undefined)).toEqual({});
+  expect(fn(config, null)).toEqual({});
+  expect(fn(config, undefined)).toEqual({});
 });
 
 test('static', () => {
@@ -70,13 +80,13 @@ test('static', () => {
   };
 
   expect(
-    assignInlineVars(config, {
+    fn(config, {
       mobile: 'block',
       tablet: 'flex',
     }),
   ).toEqual({});
 
-  expect(assignInlineVars(config, 'block')).toEqual({});
+  expect(fn(config, 'block')).toEqual({});
 });
 
 test('static and dynamic', () => {
@@ -111,13 +121,13 @@ test('static and dynamic', () => {
   };
 
   expect(
-    assignInlineVars(config, {
+    fn(config, {
       mobile: 'foo',
       tablet: 'flex',
     }),
   ).toEqual({ '--mobile': 'foo' });
 
-  expect(assignInlineVars(config, 'block')).toEqual({});
+  expect(fn(config, 'block')).toEqual({});
 });
 
 test('supports number values', () => {
@@ -138,11 +148,54 @@ test('supports number values', () => {
     name: 'lineHeight',
   };
 
-  expect(assignInlineVars(config, 2)).toEqual({
+  expect(fn(config, 2)).toEqual({
     '--mobile': '2',
   });
-  expect(assignInlineVars(config, { mobile: 1, tablet: 3 })).toEqual({
+  expect(fn(config, { mobile: 1, tablet: 3 })).toEqual({
     '--mobile': '1',
     '--tablet': '3',
   });
+});
+
+test('caching', () => {
+  const spy = jest.spyOn(utils, 'replaceVarsInValue');
+  const config: CreateStylesOutput = {
+    dynamic: {
+      default: '1',
+      conditions: { mobile: '1', tablet: '2', desktop: '3' },
+    },
+    vars: {
+      default: '--mobile',
+      conditions: {
+        mobile: '--mobile',
+        tablet: '--tablet',
+        desktop: '--desktop',
+      },
+    },
+    name: 'display',
+  };
+
+  const cache = new Map();
+
+  assignVars(config, 'block', cache);
+  assignVars(config, 'block', cache);
+  assignVars(config, 'inline-block', cache);
+  assignVars(config, 'inline-block', cache);
+
+  expect(spy).toHaveBeenCalledTimes(2);
+
+  assignVars(config, { mobile: 'block', desktop: 'flex' }, cache);
+  // An additional for 'flex'
+  expect(spy).toHaveBeenCalledTimes(3);
+
+  assignVars(config, { mobile: 'block', desktop: 'flex' }, cache);
+  expect(spy).toHaveBeenCalledTimes(3);
+
+  assignVars(
+    config,
+    { mobile: 'block', tablet: 'block', desktop: 'flex' },
+    cache,
+  );
+  expect(spy).toHaveBeenCalledTimes(3);
+  spy.mockRestore();
 });
