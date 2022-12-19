@@ -28,10 +28,7 @@ export function assignVars(
       return {};
     }
 
-    const result = {
-      [name]: parsedValue,
-    };
-    return result;
+    return { [name]: parsedValue };
   }
 
   // If no entries, exit gracefully

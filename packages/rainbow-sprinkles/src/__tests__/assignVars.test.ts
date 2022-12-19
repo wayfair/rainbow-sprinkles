@@ -30,7 +30,7 @@ test('dynamic', () => {
   };
 
   expect(fn(config, 'foo')).toEqual({
-    '--mobile': 'foo',
+    display: 'foo',
   });
   expect(fn(config, { mobile: 'foo', tablet: 'bar' })).toEqual({
     '--mobile': 'foo',
@@ -149,7 +149,7 @@ test('supports number values', () => {
   };
 
   expect(fn(config, 2)).toEqual({
-    '--mobile': '2',
+    lineHeight: '2',
   });
   expect(fn(config, { mobile: 1, tablet: 3 })).toEqual({
     '--mobile': '1',

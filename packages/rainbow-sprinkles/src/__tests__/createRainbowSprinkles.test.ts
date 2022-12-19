@@ -82,10 +82,10 @@ describe('dynamic properties only', () => {
       expect(
         rainbowSprinkles({ color: '$gray50', padding: '40px' }),
       ).toMatchObject({
-        className: 'color-mobile padding-mobile',
+        className: '',
         style: {
-          '--color-mobile': vars.color['gray50'],
-          '--padding-mobile': '40px',
+          color: vars.color['gray50'],
+          padding: '40px',
         },
       });
     });
@@ -98,21 +98,21 @@ describe('dynamic properties only', () => {
           padding: '-$1x -$3x',
         }),
       ).toMatchObject({
-        className: 'color-mobile paddingTop-mobile padding-mobile',
+        className: '',
         style: {
-          '--color-mobile': '-$gray50',
-          '--paddingTop-mobile': vars.space['-2x'],
-          '--padding-mobile': `${vars.space['-1x']} ${vars.space['-3x']}`,
+          color: '-$gray50',
+          paddingTop: vars.space['-2x'],
+          padding: `${vars.space['-1x']} ${vars.space['-3x']}`,
         },
       });
     });
 
     it('handles shorthands', () => {
       expect(rainbowSprinkles({ px: '$1x' })).toMatchObject({
-        className: 'paddingLeft-mobile paddingRight-mobile',
+        className: '',
         style: {
-          '--paddingLeft-mobile': vars.space['1x'],
-          '--paddingRight-mobile': vars.space['1x'],
+          paddingLeft: vars.space['1x'],
+          paddingRight: vars.space['1x'],
         },
       });
     });
@@ -301,9 +301,9 @@ describe('static and dynamic properties', () => {
 
       it('creates class and var for dynamic value', () => {
         expect(rainbowSprinkles({ display: 'flex' })).toMatchObject({
-          className: 'display-mobile',
+          className: '',
           style: {
-            '--display-mobile': 'flex',
+            display: 'flex',
           },
         });
       });
@@ -326,7 +326,7 @@ describe('static and dynamic properties', () => {
         });
       });
 
-      it.only('handles just static values in a conditional object', () => {
+      it('handles just static values in a conditional object', () => {
         expect(
           rainbowSprinkles({
             display: { mobile: 'block', tablet: 'inline-block' },
@@ -357,7 +357,7 @@ describe('static and dynamic properties', () => {
           style: {},
         });
       });
-      it.skip('returns nothing for non-configured value', () => {
+      it('returns nothing for non-configured value', () => {
         // @ts-expect-error
         expect(rainbowSprinkles({ textAlign: 'center' })).toMatchObject({
           className: '',
@@ -372,7 +372,7 @@ describe('static and dynamic properties', () => {
         ).toMatchObject({
           className: 'textAlign-left-mobile',
         });
-        expect(console.error).toHaveBeenCalledTimes(2);
+        expect(consoleError).toHaveBeenCalledTimes(2);
       });
     });
 

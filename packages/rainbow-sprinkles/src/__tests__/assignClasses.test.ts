@@ -34,7 +34,7 @@ test('dynamic', () => {
     }),
   ).toBe('a b');
 
-  expect(fn(config, 'foo')).toBe('a');
+  expect(fn(config, 'foo')).toBe('');
 });
 
 test('static', () => {
@@ -137,7 +137,7 @@ test('supports number values', () => {
     }),
   ).toBe('a b');
 
-  expect(fn(config, 'foo')).toBe('a');
+  expect(fn(config, 'foo')).toBe('');
 });
 
 test('supports 0 values', () => {
@@ -160,7 +160,7 @@ test('supports 0 values', () => {
     }),
   ).toBe('a b');
 
-  expect(fn(config, 0)).toBe('a');
+  expect(fn(config, 0)).toBe('');
 });
 
 test('caching', () => {

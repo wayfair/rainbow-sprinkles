@@ -37,6 +37,7 @@ export function assignClasses(
     }
 
     if (dynamic) {
+      // When there's no conditions and dynamic, we just use inline styles
       const result = '';
       cache.set(cacheKey, result);
       return result;
@@ -74,7 +75,10 @@ export function assignClasses(
 
       // Check for static value first
       if (values) {
-        if (Array.isArray(staticScale) && staticScale.includes(propValue)) {
+        if (
+          Array.isArray(staticScale) &&
+          staticScale.includes(rawValueAtCondition)
+        ) {
           const result = values[rawValueAtCondition].conditions[condition];
           cache.set(cacheKey, result);
           return result;
