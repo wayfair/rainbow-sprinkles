@@ -4,7 +4,7 @@
 
 <div align="center">
 
-[![Release](https://img.shields.io/github/v/release/wayfair/rainbow-sprinkles?display_name=tag)](packages/rainbow-sprinkles/CHANGELOG.md)
+[![Release](https://img.shields.io/github/v/release/wayfair/rainbow-sprinkles?display_name=tag)](/packages/rainbow-sprinkles/CHANGELOG.md)
 [![license: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](CODE_OF_CONDUCT.md)
 [![Maintainer](https://img.shields.io/badge/Maintainer-Wayfair-7F187F)](https://wayfair.github.io)
@@ -150,9 +150,9 @@ import { Box } from './Box';
 function App() {
   return (
     // Use pre-defined values
-    <Box bg="$blue50" margin="$large">
+    <Box bg="$blue50" margin="$medium $large">
       {/* Or any valid CSS value */}
-      <Box textAlign="center" fontSize="30px">
+      <Box textAlign="center" fontSize={{ mobile: '16px', desktop: '32px' }}>
         Hello world!
       </Box>
     </Box>

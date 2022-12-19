@@ -36,7 +36,8 @@ export function replaceVarsInValue(
   scale: CreateStylesOutput['dynamicScale'],
 ) {
   const parsed = propValue.replace(VALUE_REGEX, (match, ...args) => {
-    const { negated, token }: { negated?: '-'; token?: string } = args.at(-1);
+    const { negated, token }: { negated?: '-'; token?: string } =
+      args[args.length - 1];
     const v = `${negated ? '-' : ''}${token}`;
     if (scale?.[v]) {
       return scale[v];
