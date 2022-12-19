@@ -9,10 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@vanilla-extract/babel-plugin": "1.2.0",
-    "@vanilla-extract/css": "1.9.1",
-    "@vanilla-extract/dynamic": "2.0.2",
-    "@vanilla-extract/next-plugin": "2.0.2",
+    "@vanilla-extract/css": "1.9.2",
+    "@vanilla-extract/dynamic": "2.0.3",
+    "@vanilla-extract/next-plugin": "2.1.1",
     "next": "12.3.0",
     "rainbow-sprinkles": "workspace:*",
     "react": "18.2.0",

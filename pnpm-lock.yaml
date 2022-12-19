@@ -51,10 +51,9 @@ importers:
       '@types/node': 18.7.14
       '@types/react': 18.0.18
       '@types/react-dom': 18.0.6
-      '@vanilla-extract/babel-plugin': 1.2.0
-      '@vanilla-extract/css': 1.9.1
-      '@vanilla-extract/dynamic': 2.0.2
-      '@vanilla-extract/next-plugin': 2.0.2
+      '@vanilla-extract/css': 1.9.2
+      '@vanilla-extract/dynamic': 2.0.3
+      '@vanilla-extract/next-plugin': 2.1.1
       eslint: 8.23.0
       eslint-config-next: 12.3.0
       next: 12.3.0
@@ -66,10 +65,9 @@ importers:
       typescript: 4.8.4
       webpack: 5.74.0
     dependencies:
-      '@vanilla-extract/babel-plugin': 1.2.0
-      '@vanilla-extract/css': 1.9.1
-      '@vanilla-extract/dynamic': 2.0.2
-      '@vanilla-extract/next-plugin': 2.0.2_next@12.3.0+webpack@5.74.0
+      '@vanilla-extract/css': 1.9.2
+      '@vanilla-extract/dynamic': 2.0.3
+      '@vanilla-extract/next-plugin': 2.1.1_next@12.3.0+webpack@5.74.0
       next: 12.3.0_biqbaboplfbrettd7655fr4n2y
       rainbow-sprinkles: link:../packages/rainbow-sprinkles
       react: 18.2.0
@@ -88,13 +86,13 @@ importers:
   packages/rainbow-sprinkles:
     specifiers:
       '@types/jest': 29.0.0
-      '@vanilla-extract/css': 1.9.1
-      '@vanilla-extract/dynamic': 2.0.2
+      '@vanilla-extract/css': 1.9.2
+      '@vanilla-extract/dynamic': 2.0.3
       jest: 28.1.3
     devDependencies:
       '@types/jest': 29.0.0
-      '@vanilla-extract/css': 1.9.1
-      '@vanilla-extract/dynamic': 2.0.2
+      '@vanilla-extract/css': 1.9.2
+      '@vanilla-extract/dynamic': 2.0.3
       jest: 28.1.3
 
 packages:
@@ -1466,8 +1464,8 @@ packages:
       '@jridgewell/trace-mapping': 0.3.9
     dev: false
 
-  /@emotion/hash/0.8.0:
-    resolution: {integrity: sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==}
+  /@emotion/hash/0.9.0:
+    resolution: {integrity: sha512-14FtKiHhy2QoPIzdTcvh//8OyBlknNs2nXRwIhG904opCby3l+9Xaf/wuPvICBF0rc1ZCNBd3nKe9cd2mecVkQ==}
 
   /@eslint/eslintrc/1.3.1:
     resolution: {integrity: sha512-OhSY22oQQdw3zgPOOwdoj01l/Dzl1Z+xyUP33tkSN+aqyEhymJCcPHyXt+ylW8FSe0TfRC2VG+ROQOapD0aZSQ==}
@@ -2406,20 +2404,10 @@ packages:
       - supports-color
     dev: false
 
-  /@vanilla-extract/babel-plugin/1.2.0:
-    resolution: {integrity: sha512-4R+hqoyzoyJIrE+NgrYxZuL6GqGH28hiBrPUOxwtvqnJJ5WnUl2/WzItLDDH9YT1Auwl3cIR7pcbrV6HIchORA==}
+  /@vanilla-extract/css/1.9.2:
+    resolution: {integrity: sha512-CE5+R89LOl9XG5dRwEIvVyl/YcS2GkqjdE/XnGJ+p7Fp6Exu08fifv7tY87XxFeCIRAbc9psM+h4lF+wC3Y0fg==}
     dependencies:
-      '@babel/core': 7.18.13
-      '@babel/template': 7.18.10
-      '@vanilla-extract/integration': 5.0.1
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
-  /@vanilla-extract/css/1.9.1:
-    resolution: {integrity: sha512-pu2SFiff5jRhPwvGoj8cM5l/qIyLvigOmy22ss5DGjwV5pJYezRjDLxWumi2luIwioMWvh9EozCjyfH8nq+7fQ==}
-    dependencies:
-      '@emotion/hash': 0.8.0
+      '@emotion/hash': 0.9.0
       '@vanilla-extract/private': 1.0.3
       ahocorasick: 1.0.2
       chalk: 4.1.2
@@ -2431,22 +2419,10 @@ packages:
       media-query-parser: 2.0.2
       outdent: 0.8.0
 
-  /@vanilla-extract/dynamic/2.0.2:
-    resolution: {integrity: sha512-U4nKaEQ8Kuz+exXEr51DUpyaOuzo24/S/k1YbDPQR06cYcNjQqvwFRnwWtZ+9ImocqM1wTKtzrdUgSTtLGIwAg==}
+  /@vanilla-extract/dynamic/2.0.3:
+    resolution: {integrity: sha512-Rglfw2gXAYiBzAQ4jgUG7rBgE2c88e/zcG27ZVoIqMHVq56wf2C1katGMm1yFMNBgzqM7oBNYzz4YOMzznydkg==}
     dependencies:
       '@vanilla-extract/private': 1.0.3
-
-  /@vanilla-extract/integration/5.0.1:
-    resolution: {integrity: sha512-HRV/HvC/lihb9wT3x5s7pf5qLjqxSd9nBePJ10juOuMB5cl2ZClEcts076m9BuRKM3wRK2h7KuwkNsaUtjujxQ==}
-    dependencies:
-      '@vanilla-extract/css': 1.9.1
-      esbuild: 0.11.23
-      eval: 0.1.6
-      find-up: 5.0.0
-      javascript-stringify: 2.1.0
-      lodash: 4.17.21
-      outdent: 0.8.0
-    dev: false
 
   /@vanilla-extract/integration/6.0.0:
     resolution: {integrity: sha512-uBz4QAhKYswyhN3LYd4duuN3uq7WT1jKckd0sP2+Y8gL+6UXdhN9QOUvNBfvofkrYYWqS8efH4hnsGyyWW8f+w==}
@@ -2454,7 +2430,7 @@ packages:
       '@babel/core': 7.18.13
       '@babel/plugin-syntax-typescript': 7.18.6_@babel+core@7.18.13
       '@vanilla-extract/babel-plugin-debug-ids': 1.0.0
-      '@vanilla-extract/css': 1.9.1
+      '@vanilla-extract/css': 1.9.2
       esbuild: 0.11.23
       eval: 0.1.6
       find-up: 5.0.0
@@ -2474,12 +2450,12 @@ packages:
       - supports-color
     dev: false
 
-  /@vanilla-extract/next-plugin/2.0.2_next@12.3.0+webpack@5.74.0:
-    resolution: {integrity: sha512-91xtYoE/TVQcL9vkjN1sP8SDoDJVVuHOhwjeR3W1jgLFrKydrODRxmu9qzuRKcBVM2R7ayGdBQOKmm3HL2xpug==}
+  /@vanilla-extract/next-plugin/2.1.1_next@12.3.0+webpack@5.74.0:
+    resolution: {integrity: sha512-8+7WRL7JRv9w9MOwTpVi/ZDv3qXkxjkgJgxzS9wQJHjvdfcs0Xyq30ePeaJfBN4b6ClUeqOdj7UYa8fqKA8oOQ==}
     peerDependencies:
       next: '>=12.0.5'
     dependencies:
-      '@vanilla-extract/webpack-plugin': 2.1.12_webpack@5.74.0
+      '@vanilla-extract/webpack-plugin': 2.2.0_webpack@5.74.0
       browserslist: 4.21.3
       next: 12.3.0_biqbaboplfbrettd7655fr4n2y
     transitivePeerDependencies:
@@ -2490,12 +2466,12 @@ packages:
   /@vanilla-extract/private/1.0.3:
     resolution: {integrity: sha512-17kVyLq3ePTKOkveHxXuIJZtGYs+cSoev7BlP+Lf4916qfDhk/HBjvlYDe8egrea7LNPHKwSZJK/bzZC+Q6AwQ==}
 
-  /@vanilla-extract/webpack-plugin/2.1.12_webpack@5.74.0:
-    resolution: {integrity: sha512-8mAbIDEh9r7a5cgb3wcILzuhEbGNddV4/qvwogOlxhoGrP4deUKJHEtPURDviWZ+x/FzFZtZ3glWU7WD8+WN8A==}
+  /@vanilla-extract/webpack-plugin/2.2.0_webpack@5.74.0:
+    resolution: {integrity: sha512-EQrnT7gIki+Wm57eIRZRw6pi4M4VVnwiSp5OOcQF81XdZvoYXo51Ern7+dHKS+Xxli151BWTUsg/UZSpaAz29Q==}
     peerDependencies:
       webpack: ^4.30.0 || ^5.20.2
     dependencies:
-      '@vanilla-extract/integration': 5.0.1
+      '@vanilla-extract/integration': 6.0.0
       chalk: 4.1.2
       debug: 4.3.4
       loader-utils: 2.0.2
