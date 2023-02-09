@@ -3,12 +3,12 @@ import { CreateStylesOutput } from './types';
 /**
  * Parses a string for things with '$'
  *
- * (?<negated>-)? -> optionally captures '-', names it "negated"
+ * (-)? -> optionally captures '-', names it "negated"
  * \B\$           -> capture '$' when preceded by a "non-word" (whitespace, punctuation)
- * (?<token>\w+)  -> capture the "word" following the '$'
+ * (\w+)  -> capture the "word" following the '$'
  * /g             -> capture all instances
  */
-export const VALUE_REGEX = /(?<negated>-)?\B\$(?<token>\w+)/g;
+export const VALUE_REGEX = /(-)?\B\$(\w+)/g;
 
 export function mapValues<
   Value,
@@ -36,8 +36,7 @@ export function replaceVarsInValue(
   scale: CreateStylesOutput['dynamicScale'],
 ) {
   const parsed = propValue.replace(VALUE_REGEX, (match, ...args) => {
-    const { negated, token }: { negated?: '-'; token?: string } =
-      args[args.length - 1];
+    const [negated, token] = args;
     const v = `${negated ? '-' : ''}${token}`;
     if (scale?.[v]) {
       return scale[v];
@@ -55,10 +54,13 @@ export function getValueConfig(
   propValue: string,
   scale: CreateStylesOutput['values'],
 ): CreateStylesOutput['values'][keyof CreateStylesOutput['values']] | null {
-  const parsed = [...propValue.matchAll(VALUE_REGEX)];
-  if (parsed.length === 1) {
-    const { negated, token }: { negated?: '-'; token?: string } =
-      parsed[0].groups;
+  let match: RegExpExecArray | null;
+  const parsed: string[] = [];
+  while ((match = VALUE_REGEX.exec(propValue))) {
+    parsed.push(...match.slice(1));
+  }
+  if (parsed.length === 2) {
+    const [negated, token] = parsed;
     const v = `${negated ? '-' : ''}${token}`;
     if (v in scale) {
       return scale[v];
