@@ -8,7 +8,7 @@ import { CreateStylesOutput } from './types';
  * (?<token>\w+)  -> capture the "word" following the '$'
  * /g             -> capture all instances
  */
-export const VALUE_REGEX = /(?<negated>-)?\B\$(?<token>\w+)/g;
+export const VALUE_REGEX = /(-)?\B\$(\w+)/g;
 
 export function mapValues<
   Value,
@@ -55,10 +55,13 @@ export function getValueConfig(
   propValue: string,
   scale: CreateStylesOutput['values'],
 ): CreateStylesOutput['values'][keyof CreateStylesOutput['values']] | null {
-  const parsed = [...propValue.matchAll(VALUE_REGEX)];
-  if (parsed.length === 1) {
-    const { negated, token }: { negated?: '-'; token?: string } =
-      parsed[0].groups;
+  let match: RegExpExecArray | null;
+  const parsed: string[] = [];
+  while ((match = VALUE_REGEX.exec(propValue))) {
+    parsed.push(...match.slice(1));
+  }
+  if (parsed.length === 2) {
+    const [negated, token] = parsed;
     const v = `${negated ? '-' : ''}${token}`;
     if (v in scale) {
       return scale[v];
