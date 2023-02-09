@@ -3,9 +3,9 @@ import { CreateStylesOutput } from './types';
 /**
  * Parses a string for things with '$'
  *
- * (?<negated>-)? -> optionally captures '-', names it "negated"
+ * (-)? -> optionally captures '-', names it "negated"
  * \B\$           -> capture '$' when preceded by a "non-word" (whitespace, punctuation)
- * (?<token>\w+)  -> capture the "word" following the '$'
+ * (\w+)  -> capture the "word" following the '$'
  * /g             -> capture all instances
  */
 export const VALUE_REGEX = /(-)?\B\$(\w+)/g;
@@ -36,8 +36,7 @@ export function replaceVarsInValue(
   scale: CreateStylesOutput['dynamicScale'],
 ) {
   const parsed = propValue.replace(VALUE_REGEX, (match, ...args) => {
-    const { negated, token }: { negated?: '-'; token?: string } =
-      args[args.length - 1];
+    const [negated, token] = args;
     const v = `${negated ? '-' : ''}${token}`;
     if (scale?.[v]) {
       return scale[v];
