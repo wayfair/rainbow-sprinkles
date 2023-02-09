@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.15.2
+
+### Patch Changes
+
+- fabac72: Replace String.matchAll with RegExp.exec to broaden browser and Node version support
+
 ## 0.15.1
 
 ### Patch Changes
