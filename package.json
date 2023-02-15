@@ -43,5 +43,8 @@
     "ts-node": "10.9.1",
     "tslib": "2.4.0",
     "typescript": "4.8.4"
+  },
+  "devDependencies": {
+    "all-contributors-cli": "^6.24.0"
   }
 }

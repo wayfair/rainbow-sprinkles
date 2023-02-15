@@ -1,0 +1,71 @@
+{
+  "projectName": "rainbow-sprinkles",
+  "projectOwner": "wayfair",
+  "repoType": "github",
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "roginfarrer",
+      "name": "Rogin Farrer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/9063669?v=4",
+      "profile": "https://github.com/roginfarrer",
+      "contributions": [
+        "code",
+        "doc",
+        "infra",
+        "test",
+        "review",
+        "bug",
+        "example",
+        "ideas"
+      ]
+    },
+    {
+      "login": "mooronic",
+      "name": "mooronic",
+      "avatar_url": "https://avatars.githubusercontent.com/u/119345755?v=4",
+      "profile": "https://github.com/mooronic",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "skyesong",
+      "name": "Cathy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3420442?v=4",
+      "profile": "https://github.com/skyesong",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "kbondanza",
+      "name": "Kelly",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8070092?v=4",
+      "profile": "https://github.com/kbondanza",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "hamlim",
+      "name": "Matt Hamlin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5579638?v=4",
+      "profile": "https://matthamlin.me/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "simontaisne",
+      "name": "Simon Taisne",
+      "avatar_url": "https://avatars.githubusercontent.com/u/233639?v=4",
+      "profile": "https://github.com/simontaisne",
+      "contributions": [
+        "code",
+        "bug",
+        "ideas"
+      ]
+    }
+  ]
+}

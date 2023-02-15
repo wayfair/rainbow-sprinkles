@@ -5,6 +5,7 @@ on: # Rebuild any PRs and main branch changes
     branches:
       - main
   pull_request:
+    - '!all-contributors/**'
 
 jobs:
   test:
