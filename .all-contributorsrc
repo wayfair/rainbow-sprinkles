@@ -21,6 +21,15 @@
       ]
     },
     {
+      "login": "hamlim",
+      "name": "Matt Hamlin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5579638?v=4",
+      "profile": "https://matthamlin.me/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
       "login": "mooronic",
       "name": "mooronic",
       "avatar_url": "https://avatars.githubusercontent.com/u/119345755?v=4",
@@ -43,15 +52,6 @@
       "name": "Kelly",
       "avatar_url": "https://avatars.githubusercontent.com/u/8070092?v=4",
       "profile": "https://github.com/kbondanza",
-      "contributions": [
-        "code"
-      ]
-    },
-    {
-      "login": "hamlim",
-      "name": "Matt Hamlin",
-      "avatar_url": "https://avatars.githubusercontent.com/u/5579638?v=4",
-      "profile": "https://matthamlin.me/",
       "contributions": [
         "code"
       ]
