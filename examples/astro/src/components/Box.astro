@@ -1,0 +1,22 @@
+---
+import { rainbowSprinkles, Sprinkles } from './Box.css';
+import type { HTMLTag, HTMLAttributes } from 'astro/types';
+
+export type Props<C extends HTMLTag> = Sprinkles &
+  HTMLAttributes<C> & {
+    as?: C;
+  };
+
+const { as: Component = 'div', ...props } = Astro.props;
+
+const { className, style, otherProps } = rainbowSprinkles(props);
+
+let inlineStyle = '';
+for (const prop in style) {
+  inlineStyle += `${prop}:${style[prop]};`;
+}
+---
+
+<Component class={className} style={inlineStyle} {...otherProps}>
+  <slot />
+</Component>
