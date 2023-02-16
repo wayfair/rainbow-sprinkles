@@ -31,7 +31,7 @@
     "@types/jest": "28.1.8",
     "@types/lodash.merge": "4.6.7",
     "@types/node": "18.7.14",
-    "@types/react": "18.0.18",
+    "@types/react": "18.0.28",
     "@types/react-dom": "18.0.6",
     "@vanilla-extract/jest-transform": "1.0.1",
     "concurrently": "7.4.0",
