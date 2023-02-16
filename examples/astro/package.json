@@ -1,0 +1,26 @@
+{
+  "name": "astro-example",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@vanilla-extract/dynamic": "2.0.2",
+    "@vanilla-extract/recipes": "^0.3.0",
+    "astro": "^2.0.11",
+    "polished": "4.2.2",
+    "rainbow-sprinkles": "workspace:*"
+  },
+  "devDependencies": {
+    "@vanilla-extract/css": "1.9.5",
+    "@vanilla-extract/css-utils": "^0.1.3",
+    "@vanilla-extract/vite-plugin": "^3.8.0",
+    "astro-vanilla-extract": "^2.0.0"
+  }
+}
