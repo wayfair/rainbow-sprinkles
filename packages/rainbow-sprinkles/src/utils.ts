@@ -8,7 +8,7 @@ import { CreateStylesOutput } from './types';
  * (\w+)  -> capture the "word" following the '$'
  * /g             -> capture all instances
  */
-export const VALUE_REGEX = /(-)?\B\$(\w+)/g;
+export const VALUE_REGEX = /(-)?\B\$([\w\-.]+)/g;
 
 export function mapValues<
   Value,
