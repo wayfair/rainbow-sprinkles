@@ -298,22 +298,29 @@ describe('static properties only', () => {
 
     describe('parses scale values with hyphens, underscores, and periods', () => {
       test.each([
-        ['$gray200', vars.color['gray200']],
-        ['$gray-500', vars.color['gray-500']],
-        ['$gray.500', vars.color['gray.500']],
-        ['$gray_500', vars.color['gray_500']],
-        ['$gray--500', vars.color['gray--500']],
-        ['$colors.gray-500', vars.color['colors.gray-500']],
+        ['$gray200', 'gray200'],
+        ['$gray-500', 'gray-500'],
+        ['$gray.500', 'gray.500'],
+        ['$gray_500', 'gray_500'],
+        ['$gray--500', 'gray--500'],
+        ['$colors.gray-500', 'colors.gray-500'],
       ])(`%s`, (key, value) => {
+        expect(
+          rainbowSprinkles({
+            color: '$gray50',
+            padding: '$2x',
+            paddingRight: '-$3x',
+          }),
+        ).toMatchObject({
+          className:
+            'color-gray50-mobile padding-2x-mobile paddingRight--3x-mobile',
+        });
         expect(
           rainbowSprinkles({
             color: key as `$${keyof typeof vars['color']}`,
           }),
         ).toMatchObject({
-          className: 'color-mobile',
-          style: {
-            '--color-mobile': value,
-          },
+          className: `color-${value}-mobile`,
         });
       });
     });
