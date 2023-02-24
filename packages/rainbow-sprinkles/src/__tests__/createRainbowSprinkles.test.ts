@@ -15,6 +15,11 @@ const vars = {
     gray50: '#efefef',
     gray100: '#fefefe',
     gray200: '#333333',
+    'gray-500': '#6b7280',
+    'gray.500': '#6b7280',
+    gray_500: '#6b7280',
+    'gray--500': '#6b7280',
+    'colors.gray-500': '#6b7280',
   },
   borderRadius: {
     '0x': '0px',
@@ -173,6 +178,28 @@ describe('dynamic properties only', () => {
         }
       `);
     });
+
+    describe('handles all scale keys', () => {
+      test.each([
+        ['$gray200', vars.color['gray200']],
+        ['$gray-500', vars.color['gray-500']],
+        ['$gray.500', vars.color['gray.500']],
+        ['$gray_500', vars.color['gray_500']],
+        ['$gray--500', vars.color['gray--500']],
+        ['$colors.gray-500', vars.color['colors.gray-500']],
+      ])(`%s`, (key, value) => {
+        expect(
+          rainbowSprinkles({
+            color: key,
+          }),
+        ).toMatchObject({
+          className: 'color-mobile',
+          style: {
+            '--color-mobile': value,
+          },
+        });
+      });
+    });
   });
 });
 
@@ -267,6 +294,28 @@ describe('static properties only', () => {
           "background",
         }
       `);
+    });
+
+    describe('handles all scale keys', () => {
+      test.each([
+        ['$gray200', vars.color['gray200']],
+        ['$gray-500', vars.color['gray-500']],
+        ['$gray.500', vars.color['gray.500']],
+        ['$gray_500', vars.color['gray_500']],
+        ['$gray--500', vars.color['gray--500']],
+        ['$colors.gray-500', vars.color['colors.gray-500']],
+      ])(`%s`, (key, value) => {
+        expect(
+          rainbowSprinkles({
+            color: key as `$${keyof typeof vars['color']}`,
+          }),
+        ).toMatchObject({
+          className: 'color-mobile',
+          style: {
+            '--color-mobile': value,
+          },
+        });
+      });
     });
   });
 });
