@@ -179,7 +179,7 @@ describe('dynamic properties only', () => {
       `);
     });
 
-    describe('handles all scale keys', () => {
+    describe('parses scale values with hyphens, underscores, and periods', () => {
       test.each([
         ['$gray200', vars.color['gray200']],
         ['$gray-500', vars.color['gray-500']],
@@ -296,7 +296,7 @@ describe('static properties only', () => {
       `);
     });
 
-    describe('handles all scale keys', () => {
+    describe('parses scale values with hyphens, underscores, and periods', () => {
       test.each([
         ['$gray200', vars.color['gray200']],
         ['$gray-500', vars.color['gray-500']],
