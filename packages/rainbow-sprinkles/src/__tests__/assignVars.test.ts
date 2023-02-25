@@ -1,15 +1,13 @@
 import { CreateStylesOutput } from '../types';
-import { assignVars } from '../assignVars';
+import { createAssignVars } from '../assignVars';
 import * as utils from '../utils';
 
-let fn = assignVars as (
-  ...args: [Parameters<typeof assignVars>[0], Parameters<typeof assignVars>[1]]
-) => ReturnType<typeof assignVars>;
-
-beforeEach(() => {
-  // Create a new cache for each test
-  fn = (...args) => assignVars(...args, new Map());
-});
+const fn: ReturnType<typeof createAssignVars> = (propertyConfig, propValue) => {
+  const result = {};
+  const fn = createAssignVars(result, new Map());
+  fn(propertyConfig, propValue);
+  return result;
+};
 
 test('dynamic', () => {
   const config: CreateStylesOutput = {
@@ -124,10 +122,12 @@ test('static and dynamic', () => {
     fn(config, {
       mobile: 'foo',
       tablet: 'flex',
+      desktop: '$block',
     }),
-  ).toEqual({ '--mobile': 'foo' });
+  ).toEqual({ '--mobile': 'foo', '--tablet': 'flex' });
 
-  expect(fn(config, 'block')).toEqual({});
+  expect(fn(config, 'block')).toEqual({ '--mobile': 'block' });
+  expect(fn(config, '$block')).toEqual({});
 });
 
 test('supports number values', () => {
@@ -175,27 +175,27 @@ test('caching', () => {
     name: 'display',
   };
 
-  const cache = new Map();
+  const fn = createAssignVars({}, new Map());
 
-  assignVars(config, 'block', cache);
-  assignVars(config, 'block', cache);
-  assignVars(config, 'inline-block', cache);
-  assignVars(config, 'inline-block', cache);
+  fn(config, 'block');
+  fn(config, 'block');
+  fn(config, 'inline-block');
+  fn(config, 'inline-block');
 
   expect(spy).toHaveBeenCalledTimes(2);
 
-  assignVars(config, { mobile: 'block', desktop: 'flex' }, cache);
+  fn(config, { mobile: 'block', desktop: 'flex' });
   // An additional for 'flex'
   expect(spy).toHaveBeenCalledTimes(3);
 
-  assignVars(config, { mobile: 'block', desktop: 'flex' }, cache);
+  fn(config, { mobile: 'block', desktop: 'flex' });
   expect(spy).toHaveBeenCalledTimes(3);
 
-  assignVars(
-    config,
-    { mobile: 'block', tablet: 'block', desktop: 'flex' },
-    cache,
-  );
+  fn(config, {
+    mobile: 'block',
+    tablet: 'block',
+    desktop: 'flex',
+  });
   expect(spy).toHaveBeenCalledTimes(3);
   spy.mockRestore();
 });

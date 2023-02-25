@@ -9,24 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@vanilla-extract/babel-plugin": "1.2.0",
-    "@vanilla-extract/css": "1.9.1",
-    "@vanilla-extract/dynamic": "2.0.2",
-    "@vanilla-extract/next-plugin": "2.0.2",
-    "next": "12.3.0",
+    "@vanilla-extract/css": "^1.9.1",
+    "@vanilla-extract/dynamic": "^2",
+    "@vanilla-extract/next-plugin": "^2.1.0",
+    "next": "13.1",
     "rainbow-sprinkles": "workspace:*",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "webpack": "5.74.0"
   },
   "devDependencies": {
     "@types/node": "18.7.14",
-    "@types/react": "18.0.18",
-    "@types/react-dom": "18.0.6",
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
     "eslint": "8.23.0",
     "eslint-config-next": "12.3.0",
-    "next-transpile-modules": "9.0.0",
     "polished": "4.2.2",
-    "typescript": "4.8.4"
+    "typescript": "^4.9.0"
   }
 }
