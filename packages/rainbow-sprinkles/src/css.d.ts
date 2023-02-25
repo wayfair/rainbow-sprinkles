@@ -7153,6 +7153,7 @@ export interface PropertiesHyphenFallback
 
 export type AtRules =
   | '@charset'
+  | '@container'
   | '@counter-style'
   | '@document'
   | '@font-face'

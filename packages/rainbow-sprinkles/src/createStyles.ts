@@ -41,6 +41,13 @@ export function createStyles(
         },
       };
     }
+    if (conditionValue['@container']) {
+      styleValue = {
+        '@container': {
+          [conditionValue['@container']]: styleValue,
+        },
+      };
+    }
     if (conditionValue['selector']) {
       styleValue = {
         selectors: {
