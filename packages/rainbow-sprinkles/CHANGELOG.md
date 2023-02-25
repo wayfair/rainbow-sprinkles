@@ -1,5 +1,15 @@
 # rainbow-sprinkles
 
+## 0.16.0
+
+### Minor Changes
+
+- 0173ace: Added support for `@container` queries
+
+### Patch Changes
+
+- 4e88f36: Fixed inline styles created for staticProperties
+
 ## 0.15.3
 
 ### Patch Changes
