@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.15.3
+
+### Patch Changes
+
+- a4ef068: Allow scale keys with hyphen or dot by modifying VALUE_REGEX
+
 ## 0.15.2
 
 ### Patch Changes
