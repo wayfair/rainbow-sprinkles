@@ -36,7 +36,7 @@ function App() {
 
 <hr />
 
-[See a codesandbox demo here](https://codesandbox.io/s/crazy-cookies-i87ddj)
+[See a stackblitz demo here!](https://stackblitz.com/edit/rainbowsprinkles-m3jek9?file=src/components/rainbow-sprinkles.css.ts)
 
 <hr />
 
