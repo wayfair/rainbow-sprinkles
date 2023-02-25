@@ -5,10 +5,10 @@ import { CreateStylesOutput } from './types';
  *
  * (-)? -> optionally captures '-', names it "negated"
  * \B\$           -> capture '$' when preceded by a "non-word" (whitespace, punctuation)
- * (\w+)  -> capture the "word" following the '$'
+ * ([\w\-.]+)  -> capture the "word" following the '$', including hyphen and period characters
  * /g             -> capture all instances
  */
-export const VALUE_REGEX = /(-)?\B\$(\w+)/g;
+export const VALUE_REGEX = /(-)?\B\$([\w\-.]+)/g;
 
 export function mapValues<
   Value,

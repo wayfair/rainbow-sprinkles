@@ -10,6 +10,8 @@ test('replaceVarsInValue', () => {
     '1x': '5px',
     '2x': '10px',
     '3x': '15px',
+    'gray-500': '#6b7280',
+    'gray.500': '#6b7280',
   };
 
   const run = (v: string) => replaceVarsInValue(v, scale);
@@ -22,6 +24,8 @@ test('replaceVarsInValue', () => {
   expect(run('-1x 2x')).toBe('-1x 2x');
   expect(run('calc(100% - $2x)')).toBe(`calc(100% - ${scale['2x']})`);
   expect(run('calc($3x - $2x)')).toBe(`calc(${scale['3x']} - ${scale['2x']})`);
+  expect(run('$gray-500')).toBe(scale['gray-500']);
+  expect(run('$gray.500')).toBe(scale['gray.500']);
 });
 
 test('getValueConfig', () => {
@@ -50,6 +54,20 @@ test('getValueConfig', () => {
         desktop: 'f',
       },
     },
+    'gray-500': {
+      default: 'light',
+      conditions: {
+        light: 'light',
+        dark: 'dark',
+      },
+    },
+    'gray.500': {
+      default: 'light',
+      conditions: {
+        light: 'light',
+        dark: 'dark',
+      },
+    },
   };
 
   const run = (v: string) => getValueConfig(v, scale);
@@ -61,4 +79,6 @@ test('getValueConfig', () => {
   expect(run('-1x')).toBe(null);
   expect(run('')).toBe(null);
   expect(run('$1x -$2x')).toBe(null);
+  expect(run('$gray-500')).toBe(scale['gray-500']);
+  expect(run('$gray.500')).toBe(scale['gray.500']);
 });
