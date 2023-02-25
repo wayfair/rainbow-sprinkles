@@ -22,6 +22,7 @@ export type ConfigConditions = {
   [conditionName: string]: {
     '@media'?: string;
     '@supports'?: string;
+    '@container'?: string;
     selector?: string;
   };
 };
