@@ -30,20 +30,32 @@ export function mapValues<
 /**
  * Takes a value and replaces all '$' values with the
  * values in the scale, if available
+ *
+ * Returns false if parsed value is in staticScale
  */
 export function replaceVarsInValue(
   propValue: string,
-  scale: CreateStylesOutput['dynamicScale'],
+  dynamicScale: CreateStylesOutput['dynamicScale'],
+  staticScale?: CreateStylesOutput['staticScale'],
 ) {
+  if (Array.isArray(staticScale) && staticScale.indexOf(propValue) > -1) {
+    return false;
+  }
+
+  let foundStatic = false;
   const parsed = propValue.replace(VALUE_REGEX, (match, ...args) => {
     const [negated, token] = args;
     const v = `${negated ? '-' : ''}${token}`;
-    if (scale?.[v]) {
-      return scale[v];
+    if (staticScale?.[v]) {
+      foundStatic = true;
+      return match;
+    }
+    if (dynamicScale?.[v]) {
+      return dynamicScale[v];
     }
     return match;
   });
-  return parsed;
+  return foundStatic ? false : parsed;
 }
 
 /**
