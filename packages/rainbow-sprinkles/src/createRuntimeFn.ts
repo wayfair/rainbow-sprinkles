@@ -7,6 +7,7 @@ import {
   ShorthandProperty,
   SprinklesProps,
 } from './types';
+import { createNormalizeValueFn } from './createNormalizeValueFn';
 
 export type SprinklesFn<Args extends ReadonlyArray<DefinePropertiesReturn>> = ((
   props: SprinklesProps<Args>,
@@ -26,6 +27,8 @@ export const createRuntimeFn = <
   const shorthandNames = properties.filter(
     (property) => 'mappings' in cssConfig[property],
   );
+
+  const normalizeResponsiveValue = createNormalizeValueFn(...configs);
 
   /**
    * Cache the inline styles and classes for properties and their values
@@ -81,7 +84,10 @@ export const createRuntimeFn = <
       }
 
       const propertyConfig = cssConfig[property];
-      const propValue = finalProps[property];
+      const propValue = normalizeResponsiveValue(
+        property,
+        finalProps[property],
+      );
 
       if ('mappings' in propertyConfig) {
         continue;
