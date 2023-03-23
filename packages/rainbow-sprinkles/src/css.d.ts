@@ -8755,7 +8755,7 @@ export namespace Property {
 
   export type OutlineColor = DataType.Color | 'invert';
 
-  export type OutlineOffset = number;
+  export type OutlineOffset = DataType.LineWidth | OnlyString;
 
   export type OutlineStyle = DataType.LineStyle | 'auto' | OnlyString;
 
