@@ -1997,9 +1997,9 @@ export interface StandardLonghandProperties {
   /**
    * The **`outline-offset`** CSS property sets the amount of space between an outline and the edge or border of an element.
    *
-   * **Syntax**: `<length>`
+   * **Syntax**: `<line-width>{1,4}`
    *
-   * **Initial value**: `0`
+   * **Initial value**: `0px`
    *
    */
   outlineOffset?: Property.OutlineOffset;
@@ -5534,9 +5534,9 @@ export interface StandardLonghandPropertiesHyphen {
   /**
    * The **`outline-offset`** CSS property sets the amount of space between an outline and the edge or border of an element.
    *
-   * **Syntax**: `<length>`
+   * **Syntax**: `<line-width>{1,4}`
    *
-   * **Initial value**: `0`
+   * **Initial value**: `0px`
    *
    */
   'outline-offset'?: Property.OutlineOffset;
