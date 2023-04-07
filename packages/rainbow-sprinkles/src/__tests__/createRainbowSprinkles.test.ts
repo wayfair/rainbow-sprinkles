@@ -317,7 +317,7 @@ describe('static properties only', () => {
         });
         expect(
           rainbowSprinkles({
-            color: key as `$${keyof typeof vars['color']}`,
+            color: key as `$${keyof (typeof vars)['color']}`,
           }),
         ).toMatchObject({
           className: `color-${value}-mobile`,
