@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.16.1
+
+### Patch Changes
+
+- 4a82f2a: Changed the type off `outlineOffset` from `<length>` to `<line-width>{1,4}`. This allows valid string sizes to be used such as `px` and `rem` units.
+
 ## 0.16.0
 
 ### Minor Changes
