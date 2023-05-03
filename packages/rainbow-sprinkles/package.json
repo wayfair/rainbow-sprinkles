@@ -1,6 +1,6 @@
 {
   "name": "rainbow-sprinkles",
-  "version": "0.16.1",
+  "version": "0.16.2",
   "description": "Responsive, theme-based style props for Vanilla Extract",
   "main": "dist/rainbow-sprinkles.cjs.js",
   "module": "dist/rainbow-sprinkles.esm.js",

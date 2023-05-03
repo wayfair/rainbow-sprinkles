@@ -1,5 +1,12 @@
 # astro-example
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [d2f2e29]
+  - rainbow-sprinkles@0.16.2
+
 ## 0.0.4
 
 ### Patch Changes
