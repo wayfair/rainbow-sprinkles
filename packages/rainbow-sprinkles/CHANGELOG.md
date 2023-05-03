@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.16.2
+
+### Patch Changes
+
+- d2f2e29: Update flexShrink type to support string values
+
 ## 0.16.1
 
 ### Patch Changes
