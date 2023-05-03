@@ -8279,7 +8279,7 @@ export namespace Property {
 
   export type FlexGrow = OnlyStringNumeric;
 
-  export type FlexShrink = OnlyNumber;
+  export type FlexShrink = OnlyStringNumeric;
 
   export type FlexWrap = 'nowrap' | 'wrap' | 'wrap-reverse';
 
