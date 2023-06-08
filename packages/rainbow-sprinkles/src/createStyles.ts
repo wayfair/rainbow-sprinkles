@@ -2,15 +2,27 @@ import { createVar, style } from '@vanilla-extract/css';
 import type { CreateStylesOutput } from './types';
 import { mapValues } from './utils';
 
+interface Options {
+  '@layer'?: string;
+}
+
 export function createStyles(
   property: string,
   scale: true | Record<string, string>,
   conditions: Record<string, Record<string, string>>,
   defaultCondition: string,
+  options: Options = {},
 ): CreateStylesOutput {
   if (!conditions) {
     const cssVar = createVar(property);
-    const className = style({ [property]: cssVar }, property);
+    const styleValue = { [property]: cssVar };
+
+    const className = style(
+      options['@layer']
+        ? { ['@layer']: { [options['@layer']]: styleValue } }
+        : styleValue,
+      property,
+    );
 
     return {
       vars: { default: cssVar },
@@ -56,7 +68,12 @@ export function createStyles(
       };
     }
 
-    return style(styleValue, `${property}-${conditionName}`);
+    return style(
+      options['@layer']
+        ? { ['@layer']: { [options['@layer']]: styleValue } }
+        : styleValue,
+      `${property}-${conditionName}`,
+    );
   });
 
   return {

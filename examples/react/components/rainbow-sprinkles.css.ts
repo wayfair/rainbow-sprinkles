@@ -1,5 +1,6 @@
 import { createRainbowSprinkles, defineProperties } from 'rainbow-sprinkles';
 import { vars } from '../vars.css';
+import { interactiveLayer, responsiveLayer } from '../layers.css';
 
 const positiveSpace = {
   '250': vars.space['250'],
@@ -16,6 +17,7 @@ const positiveSpace = {
 } as const;
 
 const responsiveProperties = defineProperties({
+  '@layer': responsiveLayer,
   conditions: {
     mobile: {},
     tablet: { '@media': 'screen and (min-width: 768px)' },
@@ -87,6 +89,7 @@ const responsiveProperties = defineProperties({
 });
 
 const interactiveProperties = defineProperties({
+  '@layer': interactiveLayer,
   conditions: {
     base: {},
     hover: { selector: '&:hover' },

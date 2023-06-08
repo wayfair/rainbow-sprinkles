@@ -2,11 +2,16 @@ import { style } from '@vanilla-extract/css';
 import type { CreateStylesOutput } from './types';
 import { mapValues } from './utils';
 
+interface Options {
+  '@layer'?: string;
+}
+
 export function createStaticStyles(
   property: string,
   scale: ReadonlyArray<string> | Record<string, string>,
   conditions: Record<string, Record<string, string>>,
   defaultCondition: string,
+  options: Options = {},
 ): CreateStylesOutput {
   const scaleObj = Array.isArray(scale)
     ? Object.assign(
@@ -18,9 +23,16 @@ export function createStaticStyles(
     : scale;
 
   const values = mapValues(scaleObj, (scaleValue, scaleKey) => {
+    const styleValue = { [property]: scaleValue };
+
     if (!conditions) {
       return {
-        default: style({ [property]: scaleValue }, `${property}-${scaleKey}`),
+        default: style(
+          options['@layer']
+            ? { ['@layer']: { [options['@layer']]: styleValue } }
+            : styleValue,
+          `${property}-${scaleKey}`,
+        ),
       };
     }
 
@@ -54,7 +66,12 @@ export function createStaticStyles(
           },
         };
       }
-      return style(styleValue, `${property}-${scaleKey}-${conditionName}`);
+      return style(
+        options['@layer']
+          ? { ['@layer']: { [options['@layer']]: styleValue } }
+          : styleValue,
+        `${property}-${scaleKey}-${conditionName}`,
+      );
     });
     return {
       conditions: classes,

@@ -133,13 +133,18 @@ export type OptionsBoth<
   shorthands?: Shorthands;
 };
 
+export interface CommonOptions {
+  '@layer'?: string;
+}
+
 // Conditional Dynamic Properties + Shorthands
 export function defineProperties<
   DynamicProperties extends ConfigDynamicProperties,
   Conditions extends ConfigConditions,
   Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
 >(
-  options: OptionsConditionalDynamic<DynamicProperties, Conditions, Shorthands>,
+  options: CommonOptions &
+    OptionsConditionalDynamic<DynamicProperties, Conditions, Shorthands>,
 ): ReturnConditionalDynamic<DynamicProperties, Conditions> &
   ReturnShorthands<Shorthands>;
 // Conditional Static Properties + Shorthands
@@ -148,7 +153,8 @@ export function defineProperties<
   Conditions extends ConfigConditions,
   Shorthands extends { [k: string]: Array<keyof StaticProperties> },
 >(
-  options: OptionsConditionalStatic<StaticProperties, Conditions, Shorthands>,
+  options: CommonOptions &
+    OptionsConditionalStatic<StaticProperties, Conditions, Shorthands>,
 ): ReturnConditionalStatic<StaticProperties, Conditions> &
   ReturnShorthands<Shorthands>;
 // Conditional Dynamic Properties + Conditional Static Properties + Shorthands
@@ -158,12 +164,13 @@ export function defineProperties<
   Conditions extends ConfigConditions,
   Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
 >(
-  options: OptionsConditionalBoth<
-    DynamicProperties,
-    StaticProperties,
-    Conditions,
-    Shorthands
-  >,
+  options: CommonOptions &
+    OptionsConditionalBoth<
+      DynamicProperties,
+      StaticProperties,
+      Conditions,
+      Shorthands
+    >,
 ): ReturnConditionalStatic<StaticProperties, Conditions> &
   ReturnConditionalDynamic<DynamicProperties, Conditions> &
   ReturnShorthands<Shorthands>;
@@ -172,14 +179,14 @@ export function defineProperties<
   DynamicProperties extends ConfigDynamicProperties,
   Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
 >(
-  options: OptionsDynamic<DynamicProperties, Shorthands>,
+  options: CommonOptions & OptionsDynamic<DynamicProperties, Shorthands>,
 ): ReturnDynamic<DynamicProperties> & ReturnShorthands<Shorthands>;
 // Static Properties + Shorthands
 export function defineProperties<
   StaticProperties extends ConfigStaticProperties,
   Shorthands extends { [k: string]: Array<keyof StaticProperties> },
 >(
-  options: OptionsStatic<StaticProperties, Shorthands>,
+  options: CommonOptions & OptionsStatic<StaticProperties, Shorthands>,
 ): ReturnStatic<StaticProperties> & ReturnShorthands<Shorthands>;
 // Dynamic Properties + Static Properties + Shorthands
 export function defineProperties<
@@ -187,7 +194,8 @@ export function defineProperties<
   StaticProperties extends ConfigStaticProperties,
   Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
 >(
-  options: OptionsBoth<DynamicProperties, StaticProperties, Shorthands>,
+  options: CommonOptions &
+    OptionsBoth<DynamicProperties, StaticProperties, Shorthands>,
 ): ReturnStatic<StaticProperties> &
   ReturnDynamic<DynamicProperties> &
   ReturnShorthands<Shorthands>;
@@ -215,6 +223,7 @@ export function defineProperties(options: any): any {
       dynamicProperties[dynamicProp],
       conditions,
       defaultCondition,
+      { '@layer': options['@layer'] },
     );
   }
 
@@ -224,6 +233,7 @@ export function defineProperties(options: any): any {
       staticProperties[staticProp],
       conditions,
       defaultCondition,
+      { '@layer': options['@layer'] },
     );
     config[staticProp] = Object.assign({}, config?.[staticProp], style);
   }

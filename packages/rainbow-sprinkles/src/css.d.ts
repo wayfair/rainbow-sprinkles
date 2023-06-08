@@ -7161,6 +7161,7 @@ export type AtRules =
   | '@import'
   | '@keyframes'
   | '@media'
+  | '@layer'
   | '@namespace'
   | '@page'
   | '@property'
