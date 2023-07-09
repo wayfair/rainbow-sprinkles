@@ -281,6 +281,10 @@ export type SprinklesProps<Args extends ReadonlyArray<any>> = Args extends [
       SprinklesProps<R>
   : {};
 
+export interface CommonOptions {
+  '@layer'?: string;
+}
+
 // Runtime Function
 
 export type RuntimeFnReturn = {

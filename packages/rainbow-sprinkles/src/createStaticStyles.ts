@@ -1,17 +1,13 @@
 import { style } from '@vanilla-extract/css';
-import type { CreateStylesOutput } from './types';
+import type { CommonOptions, CreateStylesOutput } from './types';
 import { mapValues } from './utils';
-
-interface Options {
-  '@layer'?: string;
-}
 
 export function createStaticStyles(
   property: string,
   scale: ReadonlyArray<string> | Record<string, string>,
   conditions: Record<string, Record<string, string>>,
   defaultCondition: string,
-  options: Options = {},
+  options: CommonOptions = {},
 ): CreateStylesOutput {
   const scaleObj = Array.isArray(scale)
     ? Object.assign(

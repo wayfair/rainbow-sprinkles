@@ -94,3 +94,69 @@ it('returns expected configuration with scale: true', () => {
 
   style.mockClear();
 });
+
+it('returns expected configuration for css layers', () => {
+  const style = jest.spyOn(VE, 'style');
+  const result = createStyles('backgroundColor', scale, conditions, 'mobile', {
+    '@layer': 'primary',
+  });
+
+  const calledArgs = style.mock.calls;
+  expect(calledArgs.length).toBe(3);
+
+  expect(calledArgs[0][0]).toMatchObject({
+    '@layer': {
+      primary: {
+        backgroundColor: '--backgroundColor-mobile',
+      },
+    },
+  });
+  expect(calledArgs[1][0]).toMatchObject({
+    '@layer': {
+      primary: {
+        '@media': {
+          'screen and (min-width: 768px)': {
+            backgroundColor: '--backgroundColor-tablet',
+          },
+        },
+      },
+    },
+  });
+  expect(calledArgs[2][0]).toMatchObject({
+    '@layer': {
+      primary: {
+        '@media': {
+          'screen and (min-width: 1024px)': {
+            backgroundColor: '--backgroundColor-desktop',
+          },
+        },
+      },
+    },
+  });
+
+  expect(result).toMatchObject({
+    dynamic: {
+      default: 'backgroundColor-mobile',
+      conditions: {
+        mobile: 'backgroundColor-mobile',
+        tablet: 'backgroundColor-tablet',
+        desktop: 'backgroundColor-desktop',
+      },
+    },
+    name: 'backgroundColor',
+    vars: {
+      conditions: {
+        mobile: '--backgroundColor-mobile',
+        tablet: '--backgroundColor-tablet',
+        desktop: '--backgroundColor-desktop',
+      },
+      default: '--backgroundColor-mobile',
+    },
+    dynamicScale: {
+      primary: 'primary-color',
+      secondary: 'secondary-color',
+    },
+  });
+
+  style.mockClear();
+});

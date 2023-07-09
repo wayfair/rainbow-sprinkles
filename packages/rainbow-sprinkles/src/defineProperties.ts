@@ -6,6 +6,7 @@ import type {
   ConfigStaticProperties,
   ConfigDynamicProperties,
   ConfigShorthands,
+  CommonOptions,
 } from './types';
 
 type ConditionalMap<Conditions> = {
@@ -132,10 +133,6 @@ export type OptionsBoth<
   staticProperties: StaticProperties;
   shorthands?: Shorthands;
 };
-
-export interface CommonOptions {
-  '@layer'?: string;
-}
 
 // Conditional Dynamic Properties + Shorthands
 export function defineProperties<

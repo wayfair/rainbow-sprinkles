@@ -1,17 +1,13 @@
 import { createVar, style } from '@vanilla-extract/css';
-import type { CreateStylesOutput } from './types';
+import type { CommonOptions, CreateStylesOutput } from './types';
 import { mapValues } from './utils';
-
-interface Options {
-  '@layer'?: string;
-}
 
 export function createStyles(
   property: string,
   scale: true | Record<string, string>,
   conditions: Record<string, Record<string, string>>,
   defaultCondition: string,
-  options: Options = {},
+  options: CommonOptions = {},
 ): CreateStylesOutput {
   if (!conditions) {
     const cssVar = createVar(property);
