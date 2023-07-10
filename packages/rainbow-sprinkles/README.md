@@ -169,7 +169,7 @@ You can define a [css layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@l
 import { layer } from '@vanilla-extract/css';
 import { defineProperties } from 'rainbow-sprinkles';
 
-export const responsiveLayer = layer('responsive');
+export const sprinklesLayer = layer();
 
 const properties = defineProperties({
   '@layer': sprinklesLayer
