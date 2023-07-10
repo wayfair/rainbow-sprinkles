@@ -1,5 +1,5 @@
 import { createVar, style } from '@vanilla-extract/css';
-import type { CreateStylesOutput } from './types';
+import type { CommonOptions, CreateStylesOutput } from './types';
 import { mapValues } from './utils';
 
 export function createStyles(
@@ -7,10 +7,18 @@ export function createStyles(
   scale: true | Record<string, string>,
   conditions: Record<string, Record<string, string>>,
   defaultCondition: string,
+  options: CommonOptions = {},
 ): CreateStylesOutput {
   if (!conditions) {
     const cssVar = createVar(property);
-    const className = style({ [property]: cssVar }, property);
+    const styleValue = { [property]: cssVar };
+
+    const className = style(
+      options['@layer']
+        ? { ['@layer']: { [options['@layer']]: styleValue } }
+        : styleValue,
+      property,
+    );
 
     return {
       vars: { default: cssVar },
@@ -56,7 +64,12 @@ export function createStyles(
       };
     }
 
-    return style(styleValue, `${property}-${conditionName}`);
+    return style(
+      options['@layer']
+        ? { ['@layer']: { [options['@layer']]: styleValue } }
+        : styleValue,
+      `${property}-${conditionName}`,
+    );
   });
 
   return {

@@ -160,6 +160,22 @@ function App() {
 }
 ```
 
+## CSS Layers
+
+You can define a [css layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@layer) for a given set of properties.
+
+```typescript
+// rainbow-sprinkles.css.ts
+import { layer } from '@vanilla-extract/css';
+import { defineProperties } from 'rainbow-sprinkles';
+
+export const sprinklesLayer = layer();
+
+const properties = defineProperties({
+  '@layer': sprinklesLayer
+  // etc.
+});
+
 ### `dynamicProperties` vs `staticProperties`
 
 One trade off that's made for supporting dynamic values is that we have to increase the size of the document. Instead of just appending a single class to an element to add a style, both a utility class and an inline style assignment is added to an element. While this setup will still produce an overall smaller bundle in many cases, some large applications may observe frequent recurrence of specific combinations of CSS properties and values. In these cases, those combinations can be set-up in `staticProperties` in the initial configuration. `staticProperties` will produce typical CSS utility classes. The runtime portion of Rainbow Sprinkles will defer to the CSS classes created by `staticProperties` and not apply any inline style assignments.

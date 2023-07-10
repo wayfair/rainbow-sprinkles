@@ -116,3 +116,86 @@ it('returns expected configuration given array scale', () => {
 
   style.mockClear();
 });
+
+it('returns expected configuration for css layers', () => {
+  const style = jest.spyOn(VE, 'style');
+  const result = createStaticStyles(
+    'display',
+    ['block', 'inline-block'],
+    conditions,
+    'mobile',
+    { '@layer': 'primary' },
+  );
+
+  const calledArgs = style.mock.calls;
+
+  expect(calledArgs.length).toBe(6);
+
+  expect(calledArgs[0][0]).toMatchObject({
+    '@layer': { primary: { display: 'block' } },
+  });
+  expect(calledArgs[1][0]).toMatchObject({
+    '@layer': {
+      primary: {
+        '@media': { 'screen and (min-width: 768px)': { display: 'block' } },
+      },
+    },
+  });
+  expect(calledArgs[2][0]).toMatchObject({
+    '@layer': {
+      primary: {
+        '@media': { 'screen and (min-width: 1024px)': { display: 'block' } },
+      },
+    },
+  });
+  expect(calledArgs[3][0]).toMatchObject({
+    '@layer': { primary: { display: 'inline-block' } },
+  });
+  expect(calledArgs[4][0]).toMatchObject({
+    '@layer': {
+      primary: {
+        '@media': {
+          'screen and (min-width: 768px)': {
+            display: 'inline-block',
+          },
+        },
+      },
+    },
+  });
+  expect(calledArgs[5][0]).toMatchObject({
+    '@layer': {
+      primary: {
+        '@media': {
+          'screen and (min-width: 1024px)': {
+            display: 'inline-block',
+          },
+        },
+      },
+    },
+  });
+
+  expect(result).toMatchObject({
+    values: {
+      block: {
+        conditions: {
+          mobile: 'display-block-mobile',
+          tablet: 'display-block-tablet',
+          desktop: 'display-block-desktop',
+        },
+        default: 'display-block-mobile',
+      },
+      'inline-block': {
+        conditions: {
+          mobile: 'display-inline-block-mobile',
+          tablet: 'display-inline-block-tablet',
+          desktop: 'display-inline-block-desktop',
+        },
+        default: 'display-inline-block-mobile',
+      },
+    },
+    name: 'display',
+    staticScale: ['block', 'inline-block'],
+  });
+
+  style.mockClear();
+});
