@@ -1,5 +1,26 @@
 # rainbow-sprinkles
 
+## 0.17.0
+
+### Minor Changes
+
+- 3731e6a: Support assigning properties to layers via `@layer` option on `defineProperties`
+
+  **Example usage:**
+
+  ```ts
+  // sprinkles.css.ts
+  import { defineProperties } from 'rainbow-sprinkles';
+  import { layer } from '@vanilla-extract/css';
+
+  export const sprinklesLayer = layer();
+
+  const properties = defineProperties({
+    '@layer': sprinklesLayer,
+    // etc.
+  });
+  ```
+
 ## 0.16.2
 
 ### Patch Changes
