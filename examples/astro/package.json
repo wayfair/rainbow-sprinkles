@@ -15,7 +15,7 @@
     "@vanilla-extract/recipes": "^0.3.0",
     "astro": "^2.0.11",
     "polished": "4.2.2",
-    "rainbow-sprinkles": "workspace:*"
+    "rainbow-sprinkles": "*"
   },
   "devDependencies": {
     "@vanilla-extract/css": "1.9.5",
