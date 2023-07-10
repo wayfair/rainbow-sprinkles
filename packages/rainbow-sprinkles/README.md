@@ -167,36 +167,14 @@ You can define a [css layer](https://developer.mozilla.org/en-US/docs/Web/CSS/@l
 ```typescript
 // rainbow-sprinkles.css.ts
 import { layer } from '@vanilla-extract/css';
-import { defineProperties, createRainbowSprinkles } from 'rainbow-sprinkles';
+import { defineProperties } from 'rainbow-sprinkles';
 
 export const responsiveLayer = layer('responsive');
 
-const responsiveProperties = defineProperties({
-  '@layer': responsiveLayer,
-  conditions: {
-    mobile: {},
-    tablet: { '@media': 'screen and (min-width: 768px)' },
-    desktop: { '@media': 'screen and (min-width: 1024px)' },
-  },
-  defaultCondition: 'mobile',
-  dynamicProperties: {
-    display: true,
-    flexDirection: true,
-    alignItems: true,
-    justifyContent: true,
-    width: true,
-    height: true,
-  },
-  staticProperties: {
-    display: ['block', 'flex', 'inline-block', 'inline-flex'],
-    border: {
-      '1x': '1px',
-      '2x': '2px',
-      '3x': '3px',
-    },
-  },
+const properties = defineProperties({
+  '@layer': sprinklesLayer
+  // etc.
 });
-```
 
 ### `dynamicProperties` vs `staticProperties`
 
