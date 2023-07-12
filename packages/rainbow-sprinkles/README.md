@@ -115,7 +115,7 @@ const responsiveProperties = defineProperties({
   },
 });
 
-export const rainbowSprinkles(responsiveProperties)
+export const rainbowSprinkles = createRainbowSprinkles(responsiveProperties);
 
 export type Sprinkles = Parameters<typeof rainbowSprinkles>[0];
 ```
@@ -175,6 +175,7 @@ const properties = defineProperties({
   '@layer': sprinklesLayer
   // etc.
 });
+```
 
 ### `dynamicProperties` vs `staticProperties`
 
