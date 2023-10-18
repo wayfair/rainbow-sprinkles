@@ -57,7 +57,7 @@ import { defineProperties, createRainbowSprinkles } from 'rainbow-sprinkles';
 // or import a theme (e.g. `createTheme`, `createThemeContract`)
 const vars = {
   space: {
-    none: 0,
+    none: '0',
     small: '4px',
     medium: '8px',
     large: '16px',
