@@ -78,61 +78,147 @@ type ReturnShorthands<
   };
 };
 
+type ShorthandOptions<
+  Properties extends object,
+  Shorthands extends { [shorthandName: string]: Array<keyof Properties> },
+> = {
+  shorthands?: Shorthands;
+};
+
 export type OptionsConditionalDynamic<
   DynamicProperties extends ConfigDynamicProperties,
   Conditions extends ConfigConditions,
-  Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
 > = {
   dynamicProperties: DynamicProperties;
   conditions: Conditions;
   defaultCondition: keyof Conditions;
-  shorthands?: Shorthands;
 };
 export type OptionsConditionalStatic<
   StaticProperties extends ConfigStaticProperties,
   Conditions extends ConfigConditions,
-  Shorthands extends { [k: string]: Array<keyof StaticProperties> },
 > = {
   staticProperties: StaticProperties;
   conditions: Conditions;
   defaultCondition: keyof Conditions;
-  shorthands?: Shorthands;
 };
 export type OptionsConditionalBoth<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,
   Conditions extends ConfigConditions,
-  Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
 > = {
   dynamicProperties: DynamicProperties;
   staticProperties: StaticProperties;
   conditions: Conditions;
   defaultCondition: keyof Conditions;
-  shorthands?: Shorthands;
 };
-export type OptionsDynamic<
-  DynamicProperties extends ConfigDynamicProperties,
-  Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
-> = {
-  dynamicProperties: DynamicProperties;
-  shorthands?: Shorthands;
-};
-export type OptionsStatic<
-  StaticProperties extends ConfigStaticProperties,
-  Shorthands extends { [k: string]: Array<keyof StaticProperties> },
-> = {
+export type OptionsDynamic<DynamicProperties extends ConfigDynamicProperties> =
+  {
+    dynamicProperties: DynamicProperties;
+  };
+export type OptionsStatic<StaticProperties extends ConfigStaticProperties> = {
   staticProperties: StaticProperties;
-  shorthands?: Shorthands;
 };
 export type OptionsBoth<
   DynamicProperties extends ConfigDynamicProperties,
   StaticProperties extends ConfigStaticProperties,
-  Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
 > = {
   dynamicProperties: DynamicProperties;
   staticProperties: StaticProperties;
-  shorthands?: Shorthands;
 };
+
+/**
+ * NO SHORTHANDS + NO CONDITIONS
+ */
+
+// Dynamic Properties
+export function defineProperties<
+  DynamicProperties extends ConfigDynamicProperties,
+>(
+  options: CommonOptions & OptionsDynamic<DynamicProperties>,
+): ReturnDynamic<DynamicProperties>;
+// Static Properties
+export function defineProperties<
+  StaticProperties extends ConfigStaticProperties,
+>(
+  options: CommonOptions & OptionsStatic<StaticProperties>,
+): ReturnStatic<StaticProperties>;
+// Dynamic Properties + Static Properties
+export function defineProperties<
+  DynamicProperties extends ConfigDynamicProperties,
+  StaticProperties extends ConfigStaticProperties,
+>(
+  options: CommonOptions & OptionsBoth<DynamicProperties, StaticProperties>,
+): ReturnStatic<StaticProperties> & ReturnDynamic<DynamicProperties>;
+
+/**
+ * SHORTHANDS + NO CONDITIONS
+ */
+
+// Dynamic Properties + Shorthands
+export function defineProperties<
+  DynamicProperties extends ConfigDynamicProperties,
+  Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
+>(
+  options: CommonOptions &
+    OptionsDynamic<DynamicProperties> &
+    ShorthandOptions<DynamicProperties, Shorthands>,
+): ReturnDynamic<DynamicProperties> & ReturnShorthands<Shorthands>;
+// Static Properties + Shorthands
+export function defineProperties<
+  StaticProperties extends ConfigStaticProperties,
+  Shorthands extends { [k: string]: Array<keyof StaticProperties> },
+>(
+  options: CommonOptions &
+    OptionsStatic<StaticProperties> &
+    ShorthandOptions<StaticProperties, Shorthands>,
+): ReturnStatic<StaticProperties> & ReturnShorthands<Shorthands>;
+// Dynamic Properties + Static Properties + Shorthands
+export function defineProperties<
+  DynamicProperties extends ConfigDynamicProperties,
+  StaticProperties extends ConfigStaticProperties,
+  Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
+>(
+  options: CommonOptions &
+    OptionsBoth<DynamicProperties, StaticProperties> &
+    ShorthandOptions<DynamicProperties & StaticProperties, Shorthands>,
+): ReturnStatic<StaticProperties> &
+  ReturnDynamic<DynamicProperties> &
+  ReturnShorthands<Shorthands>;
+
+/**
+ * NO SHORTHANDS + CONDITIONS
+ */
+
+// Conditional Dynamic Properties
+export function defineProperties<
+  DynamicProperties extends ConfigDynamicProperties,
+  Conditions extends ConfigConditions,
+>(
+  options: CommonOptions &
+    OptionsConditionalDynamic<DynamicProperties, Conditions>,
+): ReturnConditionalDynamic<DynamicProperties, Conditions>;
+// Conditional Static Properties
+export function defineProperties<
+  StaticProperties extends ConfigStaticProperties,
+  Conditions extends ConfigConditions,
+>(
+  options: CommonOptions &
+    OptionsConditionalStatic<StaticProperties, Conditions>,
+): ReturnConditionalStatic<StaticProperties, Conditions>;
+// Conditional Dynamic Properties + Conditional Static Properties
+export function defineProperties<
+  DynamicProperties extends ConfigDynamicProperties,
+  StaticProperties extends ConfigStaticProperties,
+  Conditions extends ConfigConditions,
+>(
+  options: CommonOptions &
+    OptionsConditionalBoth<DynamicProperties, StaticProperties, Conditions>,
+): ReturnConditionalStatic<StaticProperties, Conditions> &
+  ReturnConditionalDynamic<DynamicProperties, Conditions>;
+
+/**
+ * SHORTHANDS + CONDITIONS
+ */
 
 // Conditional Dynamic Properties + Shorthands
 export function defineProperties<
@@ -141,7 +227,8 @@ export function defineProperties<
   Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
 >(
   options: CommonOptions &
-    OptionsConditionalDynamic<DynamicProperties, Conditions, Shorthands>,
+    OptionsConditionalDynamic<DynamicProperties, Conditions> &
+    ShorthandOptions<DynamicProperties, Shorthands>,
 ): ReturnConditionalDynamic<DynamicProperties, Conditions> &
   ReturnShorthands<Shorthands>;
 // Conditional Static Properties + Shorthands
@@ -151,7 +238,8 @@ export function defineProperties<
   Shorthands extends { [k: string]: Array<keyof StaticProperties> },
 >(
   options: CommonOptions &
-    OptionsConditionalStatic<StaticProperties, Conditions, Shorthands>,
+    OptionsConditionalStatic<StaticProperties, Conditions> &
+    ShorthandOptions<StaticProperties, Shorthands>,
 ): ReturnConditionalStatic<StaticProperties, Conditions> &
   ReturnShorthands<Shorthands>;
 // Conditional Dynamic Properties + Conditional Static Properties + Shorthands
@@ -162,39 +250,10 @@ export function defineProperties<
   Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
 >(
   options: CommonOptions &
-    OptionsConditionalBoth<
-      DynamicProperties,
-      StaticProperties,
-      Conditions,
-      Shorthands
-    >,
+    OptionsConditionalBoth<DynamicProperties, StaticProperties, Conditions> &
+    ShorthandOptions<DynamicProperties & StaticProperties, Shorthands>,
 ): ReturnConditionalStatic<StaticProperties, Conditions> &
   ReturnConditionalDynamic<DynamicProperties, Conditions> &
-  ReturnShorthands<Shorthands>;
-// Dynamic Properties + Shorthands
-export function defineProperties<
-  DynamicProperties extends ConfigDynamicProperties,
-  Shorthands extends { [k: string]: Array<keyof DynamicProperties> },
->(
-  options: CommonOptions & OptionsDynamic<DynamicProperties, Shorthands>,
-): ReturnDynamic<DynamicProperties> & ReturnShorthands<Shorthands>;
-// Static Properties + Shorthands
-export function defineProperties<
-  StaticProperties extends ConfigStaticProperties,
-  Shorthands extends { [k: string]: Array<keyof StaticProperties> },
->(
-  options: CommonOptions & OptionsStatic<StaticProperties, Shorthands>,
-): ReturnStatic<StaticProperties> & ReturnShorthands<Shorthands>;
-// Dynamic Properties + Static Properties + Shorthands
-export function defineProperties<
-  DynamicProperties extends ConfigDynamicProperties,
-  StaticProperties extends ConfigStaticProperties,
-  Shorthands extends ConfigShorthands<DynamicProperties, StaticProperties>,
->(
-  options: CommonOptions &
-    OptionsBoth<DynamicProperties, StaticProperties, Shorthands>,
-): ReturnStatic<StaticProperties> &
-  ReturnDynamic<DynamicProperties> &
   ReturnShorthands<Shorthands>;
 export function defineProperties(options: any): any {
   const {
