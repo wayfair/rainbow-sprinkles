@@ -188,6 +188,7 @@ export type CreateStylesOutput = {
 
 export type DefinePropertiesReturn = {
   config: SprinkleProperties;
+  responsiveArray?: string[];
 };
 
 // Props
@@ -195,7 +196,8 @@ export type DefinePropertiesReturn = {
 type ValueOrConditionObject<T, Conditions extends ConditionalPropertyValue> =
   | T
   | null
-  | Partial<Record<keyof Conditions['conditions'], T | null>>;
+  | Partial<Record<keyof Conditions['conditions'], T | null>>
+  | T[];
 
 type ValueOrConditionObjectStatic<
   T,
@@ -205,7 +207,8 @@ type ValueOrConditionObjectStatic<
   | null
   | {
       [Condition in keyof Values[keyof Values]['conditions']]?: T | null;
-    };
+    }
+  | T[];
 
 export type PrefixValue<T> = T extends `-${infer Root}`
   ? `-$${Root}`

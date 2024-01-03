@@ -45,6 +45,7 @@ describe('dynamic properties only', () => {
       desktop: { '@media': 'screen and (min-width: 1024px)' },
     },
     defaultCondition: 'mobile',
+    responsiveArray: ['mobile', 'tablet', 'desktop'],
     dynamicProperties: {
       display: true,
       flexDirection: true,
@@ -125,13 +126,17 @@ describe('dynamic properties only', () => {
     it('handles conditionals', () => {
       expect(
         rainbowSprinkles({
+          p: ['$1x', '$2x', '$3x'],
           px: { mobile: '$1x', tablet: '$2x', desktop: '-$3x' },
           fontSize: { mobile: '$1x', desktop: '$2x' },
         }),
       ).toMatchObject({
         className:
-          'paddingLeft-mobile paddingLeft-tablet paddingLeft-desktop paddingRight-mobile paddingRight-tablet paddingRight-desktop fontSize-mobile fontSize-desktop',
+          'padding-mobile padding-tablet padding-desktop paddingLeft-mobile paddingLeft-tablet paddingLeft-desktop paddingRight-mobile paddingRight-tablet paddingRight-desktop fontSize-mobile fontSize-desktop',
         style: {
+          '--padding-mobile': vars.space['1x'],
+          '--padding-tablet': vars.space['2x'],
+          '--padding-desktop': vars.space['3x'],
           '--paddingLeft-mobile': vars.space['1x'],
           '--paddingRight-mobile': vars.space['1x'],
           '--paddingLeft-tablet': vars.space['2x'],
@@ -210,6 +215,7 @@ describe('static properties only', () => {
       tablet: { '@media': 'screen and (min-width: 768px)' },
       desktop: { '@media': 'screen and (min-width: 1024px)' },
     },
+    responsiveArray: ['mobile', 'tablet', 'desktop'],
     defaultCondition: 'mobile',
     staticProperties: {
       padding: vars.space,
@@ -251,12 +257,13 @@ describe('static properties only', () => {
     it('handles conditionals', () => {
       expect(
         rainbowSprinkles({
+          p: ['$1x', '$2x', '$3x'],
           px: { mobile: '$1x', tablet: '$2x' },
           fontSize: { mobile: '$1x', desktop: '$2x' },
         }),
       ).toMatchObject({
         className:
-          'paddingLeft-1x-mobile paddingLeft-2x-tablet paddingRight-1x-mobile paddingRight-2x-tablet fontSize-1x-mobile fontSize-2x-desktop',
+          'padding-1x-mobile padding-2x-tablet padding-3x-desktop paddingLeft-1x-mobile paddingLeft-2x-tablet paddingRight-1x-mobile paddingRight-2x-tablet fontSize-1x-mobile fontSize-2x-desktop',
       });
     });
 
@@ -343,6 +350,7 @@ describe('static and dynamic properties', () => {
       desktop: { '@media': 'screen and (min-width: 1024px)' },
     },
     defaultCondition: 'mobile',
+    responsiveArray: ['mobile', 'tablet', 'desktop'],
   });
 
   const rainbowSprinkles = createRainbowSprinkles(responsiveProps);

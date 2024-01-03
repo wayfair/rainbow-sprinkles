@@ -26,6 +26,7 @@ type ReturnConditionalDynamic<
       vars: ConditionalMap<Conditions>;
     };
   };
+  responsiveArray?: Array<keyof Conditions>;
 };
 type ReturnDynamic<DynamicProperties extends ConfigDynamicProperties> = {
   config: {
@@ -57,6 +58,7 @@ type ReturnConditionalStatic<
       name: Property;
     };
   };
+  responsiveArray?: Array<keyof Conditions>;
 };
 type ReturnStatic<StaticProperties extends ConfigStaticProperties> = {
   config: {
@@ -86,6 +88,7 @@ export type OptionsConditionalDynamic<
   dynamicProperties: DynamicProperties;
   conditions: Conditions;
   defaultCondition: keyof Conditions;
+  responsiveArray?: Array<keyof Conditions>;
   shorthands?: Shorthands;
 };
 export type OptionsConditionalStatic<
@@ -96,6 +99,7 @@ export type OptionsConditionalStatic<
   staticProperties: StaticProperties;
   conditions: Conditions;
   defaultCondition: keyof Conditions;
+  responsiveArray?: Array<keyof Conditions>;
   shorthands?: Shorthands;
 };
 export type OptionsConditionalBoth<
@@ -108,6 +112,7 @@ export type OptionsConditionalBoth<
   staticProperties: StaticProperties;
   conditions: Conditions;
   defaultCondition: keyof Conditions;
+  responsiveArray?: Array<keyof Conditions>;
   shorthands?: Shorthands;
 };
 export type OptionsDynamic<
@@ -203,6 +208,7 @@ export function defineProperties(options: any): any {
     staticProperties,
     shorthands,
     defaultCondition,
+    responsiveArray,
   } = options;
 
   let config: any = shorthands
@@ -235,5 +241,5 @@ export function defineProperties(options: any): any {
     config[staticProp] = Object.assign({}, config?.[staticProp], style);
   }
 
-  return { config };
+  return { config, responsiveArray };
 }
