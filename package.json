@@ -34,7 +34,7 @@
     "@types/node": "18.7.14",
     "@types/react": "18.2.46",
     "@types/react-dom": "18.2.18",
-    "concurrently": "8.0.1",
+    "concurrently": "8.2.2",
     "jest": "29.7.0",
     "prettier": "2.8.7",
     "react": "18.2.0",
