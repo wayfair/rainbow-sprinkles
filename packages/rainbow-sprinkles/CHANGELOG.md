@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.17.1
+
+### Patch Changes
+
+- [#156](https://github.com/wayfair/rainbow-sprinkles/pull/156) [`98dc1ed`](https://github.com/wayfair/rainbow-sprinkles/commit/98dc1eda0aa4e61b399cf3006d8c9cebc9ad00bf) Thanks [@roginfarrer](https://github.com/roginfarrer)! - Fixed complex type errors related to the permutations of configuration. See use #101 for example.
+
 ## 0.17.0
 
 ### Minor Changes
