@@ -6,7 +6,7 @@
   "module": "dist/rainbow-sprinkles.esm.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wayfair-incubator/rainbow-sprinkles.git"
+    "url": "git+https://github.com/wayfair/rainbow-sprinkles.git"
   },
   "keywords": [
     "vanilla-extract",
@@ -20,9 +20,9 @@
   "author": "Rogin Farrer <rogin@roginfarrer.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wayfair-incubator/rainbow-sprinkles/issues"
+    "url": "https://github.com/wayfair/rainbow-sprinkles/issues"
   },
-  "homepage": "https://github.com/wayfair-incubator/rainbow-sprinkles#readme",
+  "homepage": "https://github.com/wayfair/rainbow-sprinkles#readme",
   "files": [
     "/dist",
     "/createRuntimeFn"
