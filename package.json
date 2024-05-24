@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@vanilla-extract/jest-transform": "1.1.1",
-    "prettier-plugin-astro": "^0.8.0"
+    "prettier-plugin-astro": "^0.14.0"
   },
   "packageManager": "pnpm@8.13.1"
 }
