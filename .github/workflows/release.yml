@@ -12,13 +12,13 @@ jobs:
     env:
       CI: true
     steps:
-      - uses: pnpm/action-setup@master
-
       - name: Checkout Repo
         uses: actions/checkout@main
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@master
 
       - name: Setup Node.js
         uses: actions/setup-node@main
