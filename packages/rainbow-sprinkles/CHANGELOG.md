@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.17.2
+
+### Patch Changes
+
+- [#169](https://github.com/wayfair/rainbow-sprinkles/pull/169) [`54915d1`](https://github.com/wayfair/rainbow-sprinkles/commit/54915d1760593fdb49053c6caaf9956c5ae88892) Thanks [@s-robertson](https://github.com/s-robertson)! - Fix an issue where conditionless properties that have both static and dynamic values wouldn't provide autocomplete suggestions for the static values.
+
 ## 0.17.1
 
 ### Patch Changes
@@ -16,13 +22,13 @@
 
   ```ts
   // sprinkles.css.ts
-  import { defineProperties } from 'rainbow-sprinkles';
-  import { layer } from '@vanilla-extract/css';
+  import { defineProperties } from "rainbow-sprinkles";
+  import { layer } from "@vanilla-extract/css";
 
   export const sprinklesLayer = layer();
 
   const properties = defineProperties({
-    '@layer': sprinklesLayer,
+    "@layer": sprinklesLayer,
     // etc.
   });
   ```
@@ -201,7 +207,7 @@
 
   ```tsx
   // App.tsx
-  import { rainbowSprinkles } from './rainbow-sprinkles.css';
+  import { rainbowSprinkles } from "./rainbow-sprinkles.css";
 
   const Box = (props) => {
     const { className, style, otherProps } = rainbowSprinkles(props);
