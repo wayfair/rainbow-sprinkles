@@ -12,7 +12,7 @@
     "postinstall": "preconstruct dev",
     "start": "concurrently \"pnpm watch\" \"pnpm example\"",
     "format": "prettier --write --plugin-search-dir=. .",
-    "example": "rm -rf example/.next && pnpm --dir example run dev",
+    "example": "rm -rf examples/react/.next && pnpm --dir examples/react run dev",
     "test": "jest",
     "version": "changeset version && pnpm install --lockfile-only",
     "release": "pnpm build && changeset publish"
