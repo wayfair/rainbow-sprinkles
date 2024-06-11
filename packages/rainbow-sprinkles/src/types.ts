@@ -220,52 +220,58 @@ export type ChildSprinkle<
       Sprinkle['vars']
     >
   : Sprinkle extends StaticDynamicConditionalPropertyArray
-  ? ValueOrConditionObject<PropertyCssValue<Sprinkle['name']>, Sprinkle['vars']>
-  : Sprinkle extends DynamicConditionalProperty
-  ? Sprinkle['dynamicScale'] extends boolean
     ? ValueOrConditionObject<
         PropertyCssValue<Sprinkle['name']>,
         Sprinkle['vars']
       >
-    : ValueOrConditionObject<
-        | PropertyCssValue<Sprinkle['name']>
-        | PrefixValue<keyof Sprinkle['dynamicScale']>,
-        Sprinkle['vars']
-      >
-  : Sprinkle extends StaticDynamicConditionalPropertyArray
-  ? ValueOrConditionObject<Sprinkle['staticScale'][number], Sprinkle['dynamic']>
-  : Sprinkle extends StaticDynamicConditionalProperty
-  ? ValueOrConditionObjectStatic<
-      PrefixValue<keyof Sprinkle['staticScale']>,
-      Sprinkle['values']
-    >
-  : Sprinkle extends StaticConditionalProperty
-  ? ValueOrConditionObjectStatic<
-      PrefixValue<keyof Sprinkle['staticScale']>,
-      Sprinkle['values']
-    >
-  : Sprinkle extends StaticConditionalPropertyArray
-  ? ValueOrConditionObjectStatic<
-      Sprinkle['staticScale'][number],
-      Sprinkle['values']
-    >
-  : Sprinkle extends DynamicProperty
-  ?
-      | PropertyCssValue<Sprinkle['name']>
-      | (Sprinkle['dynamicScale'] extends boolean
-          ? never
-          : PrefixValue<keyof Sprinkle['dynamicScale']>)
-  : Sprinkle extends StaticProperty
-  ? PrefixValue<keyof Sprinkle['staticScale']>
-  : Sprinkle extends StaticPropertyArray
-  ? Sprinkle['staticScale'][number]
-  : Sprinkle extends StaticDynamicProperty
-  ?
-      | PrefixValue<keyof Sprinkle['staticScale']>
-      | PropertyCssValue<Sprinkle['name']>
-  : Sprinkle extends StaticDynamicPropertyArray
-  ? PropertyCssValue<Sprinkle['name']>
-  : never;
+    : Sprinkle extends DynamicConditionalProperty
+      ? Sprinkle['dynamicScale'] extends boolean
+        ? ValueOrConditionObject<
+            PropertyCssValue<Sprinkle['name']>,
+            Sprinkle['vars']
+          >
+        : ValueOrConditionObject<
+            | PropertyCssValue<Sprinkle['name']>
+            | PrefixValue<keyof Sprinkle['dynamicScale']>,
+            Sprinkle['vars']
+          >
+      : Sprinkle extends StaticDynamicConditionalPropertyArray
+        ? ValueOrConditionObject<
+            Sprinkle['staticScale'][number],
+            Sprinkle['dynamic']
+          >
+        : Sprinkle extends StaticDynamicConditionalProperty
+          ? ValueOrConditionObjectStatic<
+              PrefixValue<keyof Sprinkle['staticScale']>,
+              Sprinkle['values']
+            >
+          : Sprinkle extends StaticConditionalProperty
+            ? ValueOrConditionObjectStatic<
+                PrefixValue<keyof Sprinkle['staticScale']>,
+                Sprinkle['values']
+              >
+            : Sprinkle extends StaticConditionalPropertyArray
+              ? ValueOrConditionObjectStatic<
+                  Sprinkle['staticScale'][number],
+                  Sprinkle['values']
+                >
+              : Sprinkle extends StaticDynamicProperty
+                ?
+                    | PrefixValue<keyof Sprinkle['staticScale']>
+                    | PropertyCssValue<Sprinkle['name']>
+                : Sprinkle extends StaticDynamicPropertyArray
+                  ? PropertyCssValue<Sprinkle['name']>
+                  : Sprinkle extends DynamicProperty
+                    ?
+                        | PropertyCssValue<Sprinkle['name']>
+                        | (Sprinkle['dynamicScale'] extends boolean
+                            ? never
+                            : PrefixValue<keyof Sprinkle['dynamicScale']>)
+                    : Sprinkle extends StaticProperty
+                      ? PrefixValue<keyof Sprinkle['staticScale']>
+                      : Sprinkle extends StaticPropertyArray
+                        ? Sprinkle['staticScale'][number]
+                        : never;
 
 export type ChildSprinkles<Sprinkles extends SprinkleProperties> = {
   [Prop in keyof Sprinkles]?: Sprinkles[Prop] extends ShorthandProperty

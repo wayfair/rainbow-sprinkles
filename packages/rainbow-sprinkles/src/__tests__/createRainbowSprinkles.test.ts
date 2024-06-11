@@ -595,3 +595,32 @@ describe('static (no conditions)', () => {
     `);
   });
 });
+
+describe('dynamic and static (no conditions)', () => {
+  const properties = defineProperties({
+    dynamicProperties: {
+      background: true,
+    },
+    staticProperties: {
+      background: vars.color,
+    },
+  });
+
+  const rainbowSprinkles = createRainbowSprinkles(properties);
+
+  it('handles static scale values', () => {
+    expect(rainbowSprinkles({ background: '$gray50' })).toMatchObject({
+      className: 'background-gray50',
+      style: {},
+    });
+  });
+
+  it('handles dynamic non-scale values', () => {
+    expect(rainbowSprinkles({ background: 'red' })).toMatchObject({
+      className: 'background',
+      style: {
+        '--background': 'red',
+      },
+    });
+  });
+});
