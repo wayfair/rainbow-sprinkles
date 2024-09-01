@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 0.17.3
+
+### Patch Changes
+
+- [#173](https://github.com/wayfair/rainbow-sprinkles/pull/173) [`c21e1b8`](https://github.com/wayfair/rainbow-sprinkles/commit/c21e1b887b4fda19c5fd2d07fb28565916657f25) Thanks [@kirstbew](https://github.com/kirstbew)! - Export SprinklesFn type
+
 ## 0.17.2
 
 ### Patch Changes
