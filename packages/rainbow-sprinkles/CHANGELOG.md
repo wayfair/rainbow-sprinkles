@@ -1,5 +1,11 @@
 # rainbow-sprinkles
 
+## 1.0.0
+
+### Major Changes
+
+- [#178](https://github.com/wayfair/rainbow-sprinkles/pull/178) [`d6be7fa`](https://github.com/wayfair/rainbow-sprinkles/commit/d6be7fab367826da8657213908fd71acce5be7c2) Thanks [@roginfarrer](https://github.com/roginfarrer)! - No new changes since last release. Marking as stable!
+
 ## 0.17.3
 
 ### Patch Changes
